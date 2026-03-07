@@ -1,0 +1,4 @@
+interface:
+  display_name: "UX Figma Code Pipeline"
+  short_description: "Coordinate research, boards, tokens, Figma, and code."
+  default_prompt: "Use $ux-figma-code-pipeline to coordinate this design task from research through approval gates, Figma, implementation, and style-guide follow-through."

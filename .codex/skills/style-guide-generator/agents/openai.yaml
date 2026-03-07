@@ -1,0 +1,4 @@
+interface:
+  display_name: "Style Guide Generator"
+  short_description: "Create a reusable design reference package."
+  default_prompt: "Use $style-guide-generator to produce a reusable style guide from the approved tokens, components, and motion rules."

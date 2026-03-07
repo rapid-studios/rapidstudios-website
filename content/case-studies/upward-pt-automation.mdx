@@ -1,0 +1,108 @@
+export const meta = {
+  slug: "upward-pt-automation",
+  title: "AI Operations Automation for Physical Therapy",
+  summary:
+    "AI-powered system for streamlining recruiting, financial analysis, and operational decision-making in a growing physical therapy clinic.",
+  client: "Upward PT",
+  year: "2026",
+  tag: "AI / Operations Automation",
+  highlight:
+    "Designed a local-first automation system for recruiting, KPI analysis, and clinic planning.",
+  services: ["Recruiter bot", "CFO bot", "Operations automation"],
+  featured: true,
+  accentFrom: "#5C7CFA",
+  accentTo: "#83C5BE",
+  problem:
+    "The clinic was handling recruiting and financial planning manually, which slowed hiring decisions and made operational forecasting more cumbersome than it needed to be.",
+  solutionBullets: [
+    "Recruiter bot monitors inboxes, extracts resume data, and scores candidates against a deterministic rubric",
+    "CFO bot ingests accounting exports and computes clinic KPIs",
+    "Scenario modeling answers questions about hiring, expanded hours, and growth plans",
+    "Human approval gates, local storage, and audit logging keep outbound actions controlled"
+  ],
+  technologies: [
+    "Claude multi-agent runtime",
+    "Matrix / Element notifications",
+    "IMAP email ingestion",
+    "PDF and DOCX extraction",
+    "SQLite or Google Sheets pipeline tracking",
+    "CSV KPI calculations"
+  ],
+  architectureHighlights: [
+    "Recruiting inbox monitoring",
+    "Resume extraction and scoring",
+    "Financial CSV ingestion",
+    "Scenario analysis engine",
+    "Human approval and audit logging"
+  ],
+  outcome:
+    "The automation plan reduced manual review effort, surfaced better decisions faster, and preserved control over sensitive clinic data.",
+  metrics: [
+    { label: "Agent system", value: "2" },
+    { label: "Digest cadence", value: "Daily" },
+    { label: "Data posture", value: "Local-first" }
+  ],
+  spotlights: [
+    {
+      label: "Recruiting",
+      title: "Recruiter bot for intake, scoring, and follow-up",
+      description:
+        "The recruiter workflow handles resume ingestion, normalization, deterministic scoring, and daily digest delivery without removing human review from the loop."
+    },
+    {
+      label: "Finance",
+      title: "CFO bot for KPI tracking and scenario analysis",
+      description:
+        "The finance workflow turns exported reports into usable KPI models and answers practical questions about hiring, capacity, and expansion."
+    }
+  ]
+};
+
+## Overview
+
+Upward Physical Therapy needed practical automation that could save time without adding enterprise-level software overhead. The opportunity was to use AI agents to support two high-friction workflows: recruiting licensed PT candidates and answering financial growth questions like whether the clinic could afford another hire or expanded hours.
+
+## Problem
+
+Like many small clinics, Upward PT was managing important operational work manually. Candidate screening required reviewing resumes and tracking fit across multiple criteria, while financial planning relied on exported reports and ad hoc analysis.
+
+The clinic needed a lightweight system that could reduce manual effort, surface better decisions faster, and keep sensitive data in a controlled environment. The broader tech review also identified missing capabilities in recruiting and financial analytics within the clinic's existing tool stack.
+
+## Solution
+
+### Recruiter Bot
+
+- Monitors a recruiting inbox
+- Downloads PDF and DOCX resumes
+- Extracts and normalizes candidate data
+- Scores applicants using a deterministic rubric
+- Tracks candidate status in a pipeline
+- Sends daily digests and draft response emails for review
+
+### CFO Bot
+
+- Ingests exported QuickBooks CSVs
+- Computes clinic KPIs
+- Models scenarios like hiring another PT, expanding hours, or adding a treatment room
+- Answers natural-language financial questions
+- Produces monthly summary reports
+
+The system was intentionally designed with human approval gates, local storage, audit logging, and security mitigations for prompt injection and sensitive data handling.
+
+## Key Capabilities
+
+- AI-assisted resume intake and scoring
+- Daily candidate digest delivery to mobile chat
+- Automated KPI computation from accounting exports
+- Natural-language scenario analysis for hiring and expansion decisions
+- Local-first architecture with controlled outbound actions
+
+## Technical Approach
+
+- Claude multi-agent runtime
+- Matrix / Element notifications
+- IMAP email ingestion
+- PDF and DOCX extraction
+- SQLite or Google Sheets for pipeline tracking
+- CSV ingestion and deterministic KPI calculations
+- Claude-powered Q and A and summarization

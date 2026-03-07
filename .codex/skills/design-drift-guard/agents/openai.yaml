@@ -1,0 +1,4 @@
+interface:
+  display_name: "Design Drift Guard"
+  short_description: "Check later changes against the locked system."
+  default_prompt: "Use $design-drift-guard to review a proposed UI change against the approved tokens, components, and motion rules."

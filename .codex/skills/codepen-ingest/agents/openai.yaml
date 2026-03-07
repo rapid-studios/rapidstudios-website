@@ -1,0 +1,4 @@
+interface:
+  display_name: "CodePen Ingest"
+  short_description: "Turn CodePen references into implementation notes."
+  default_prompt: "Use $codepen-ingest to inspect public CodePen references and extract interaction notes, caveats, and adaptation guidance."

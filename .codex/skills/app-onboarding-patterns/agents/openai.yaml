@@ -1,0 +1,4 @@
+interface:
+  display_name: "App Onboarding Patterns"
+  short_description: "Design onboarding structure and activation flows."
+  default_prompt: "Use $app-onboarding-patterns to draft an onboarding flow with step structure, permission timing, and activation criteria."

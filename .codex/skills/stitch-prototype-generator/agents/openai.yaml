@@ -1,0 +1,4 @@
+interface:
+  display_name: "Stitch Prototype Generator"
+  short_description: "Generate concept directions from locked inputs."
+  default_prompt: "Use $stitch-prototype-generator to create 2-3 concept directions from the approved spec, locked tokens, and Stitch prompt."

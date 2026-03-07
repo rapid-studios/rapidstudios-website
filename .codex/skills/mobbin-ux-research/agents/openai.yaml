@@ -1,0 +1,4 @@
+interface:
+  display_name: "Mobbin UX Research"
+  short_description: "Research patterns and prepare decision-ready findings."
+  default_prompt: "Use $mobbin-ux-research to research UI patterns, cluster findings, and prepare decision-ready recommendations with screenshots."

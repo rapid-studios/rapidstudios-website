@@ -1,0 +1,84 @@
+export const meta = {
+  slug: "ai-trading-decision-platform",
+  title: "AI Trading Decision Platform",
+  summary:
+    "Machine-learning powered system for evaluating trading signals and ranking opportunities.",
+  client: "Financial Systems",
+  year: "2026",
+  tag: "Machine Learning / Financial Systems",
+  highlight:
+    "Enabled rapid evaluation of trading opportunities and scalable model experimentation.",
+  services: ["Signal processing", "ML scoring", "Decision systems"],
+  featured: true,
+  accentFrom: "#2B7CEE",
+  accentTo: "#63E6BE",
+  problem:
+    "Analyzing financial signals quickly enough to make informed trading decisions is difficult when multiple datasets and indicators must be evaluated at the same time.",
+  solutionBullets: [
+    "Process incoming market signals from multiple sources",
+    "Extract and normalize feature data for model input",
+    "Evaluate trade candidates against model and rule-based signals",
+    "Score and rank opportunities using machine-learning outputs"
+  ],
+  technologies: [
+    "Python",
+    "XGBoost",
+    "Feature engineering",
+    "Data pipelines",
+    "Model inference"
+  ],
+  architectureHighlights: [
+    "Signal ingestion",
+    "Feature pipeline",
+    "ML scoring engine",
+    "Trade ranking system",
+    "Performance tracking"
+  ],
+  outcome:
+    "The platform gave the operator a faster way to compare signals, score candidates, and iterate on model behavior without rebuilding the entire decision flow.",
+  metrics: [
+    { label: "Pipeline stages", value: "5" },
+    { label: "Engine", value: "ML-ranked" },
+    { label: "Iteration", value: "Scalable" }
+  ],
+  spotlights: [
+    {
+      label: "Architecture",
+      title: "Signal ingestion separated from scoring logic",
+      description:
+        "The system keeps ingestion, feature preparation, model scoring, and ranking distinct so experimentation can happen without destabilizing the full decision chain."
+    },
+    {
+      label: "Decisioning",
+      title: "Trade opportunities ranked, not just detected",
+      description:
+        "Instead of surfacing raw indicators, the platform prioritizes candidates based on score and confidence so decisions can happen faster."
+    }
+  ]
+};
+
+## Overview
+
+This platform was built to help evaluate trading opportunities under tighter time constraints. The core objective was to move from raw signal monitoring to a scored ranking system that could support faster, more disciplined decision-making.
+
+## Problem
+
+Financial signals become less useful when analysts need to manually reconcile too many indicators, datasets, and candidate trades. The challenge was creating a system that could structure that evaluation in a way that remained extensible.
+
+## Solution
+
+- Built a data flow for ingesting market signals and candidate events.
+- Added a feature-engineering layer to normalize the inputs used by the models.
+- Implemented model inference for candidate scoring and ranking.
+- Structured the output around trade prioritization and performance feedback.
+
+## Technology
+
+- Python-based data and scoring workflows
+- XGBoost for model-driven ranking
+- Feature engineering and inference pipelines
+- Performance tracking for iteration and evaluation
+
+## Outcome
+
+The final system made it easier to compare opportunities quickly, test new model behavior, and keep the decision pipeline scalable as more signals were introduced.

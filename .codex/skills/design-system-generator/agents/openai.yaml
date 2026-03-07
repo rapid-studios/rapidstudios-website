@@ -1,0 +1,4 @@
+interface:
+  display_name: "Design System Generator"
+  short_description: "Lock tokens, foundations, and visual rules."
+  default_prompt: "Use $design-system-generator to define and lock the project's token system, visual rules, and reusable foundations."

@@ -1,0 +1,85 @@
+export const meta = {
+  slug: "codeverified",
+  title: "CodeVerified",
+  summary:
+    "AI-powered code review platform that analyzes repositories and generates actionable engineering reports.",
+  client: "CodeVerified",
+  year: "2026",
+  tag: "AI / Developer Tools / Automation",
+  highlight: "Created a scalable platform for automated technical due diligence on software projects.",
+  services: ["Platform architecture", "Automation pipeline", "Engineering reports"],
+  featured: true,
+  accentFrom: "#2B7CEE",
+  accentTo: "#58D4FF",
+  problem:
+    "Businesses often inherit or purchase codebases but lack the technical expertise to evaluate quality, security, and maintainability with confidence.",
+  solutionBullets: [
+    "Ingest repositories into a structured review pipeline",
+    "Run automated analysis across security, maintainability, and architecture concerns",
+    "Generate structured engineering reports for business stakeholders",
+    "Combine AI analysis with human engineering verification before delivery"
+  ],
+  technologies: [
+    "Python",
+    "FastAPI worker",
+    "n8n orchestration",
+    "DeepWiki ingestion",
+    "DigitalOcean Spaces",
+    "SendGrid automation"
+  ],
+  architectureHighlights: [
+    "Repo ingestion",
+    "Analysis pipeline",
+    "AI review layer",
+    "Report generation",
+    "Automated delivery"
+  ],
+  outcome:
+    "The result was a repeatable due-diligence platform that turns repository evaluation into a scalable, auditable service instead of a manual consulting bottleneck.",
+  metrics: [
+    { label: "Pipeline stages", value: "5" },
+    { label: "Review mode", value: "AI + Human" },
+    { label: "Delivery", value: "Automated" }
+  ],
+  spotlights: [
+    {
+      label: "Pipeline",
+      title: "Repository analysis with clear artifact boundaries",
+      description:
+        "The platform was designed as a pipeline so ingestion, analysis, report assembly, and delivery could be monitored and improved independently."
+    },
+    {
+      label: "Trust",
+      title: "AI findings verified by engineering review",
+      description:
+        "Automated analysis was paired with human verification so the final report stayed actionable for technical due diligence and stakeholder decision-making."
+    }
+  ]
+};
+
+## Overview
+
+CodeVerified was built to help non-technical buyers and operators understand what they are inheriting before they commit to a software project or acquisition. The goal was to turn repository analysis into a repeatable service with credible reporting and fast turnaround.
+
+## Problem
+
+Inherited and purchased codebases often come with hidden risk. Teams need to know whether the architecture is maintainable, whether security issues are already present, and whether the code can realistically support future product plans.
+
+## Solution
+
+- Designed a repository ingestion flow that normalizes incoming projects before analysis.
+- Built an automated pipeline that scans structure, dependencies, and implementation patterns.
+- Generated structured engineering reports for security, performance, and architecture findings.
+- Added a human verification layer so the final deliverable stayed defensible and useful.
+
+## Technology
+
+- Python and FastAPI workers for processing and orchestration
+- n8n for workflow coordination
+- DeepWiki ingestion for repository understanding
+- DigitalOcean Spaces for artifact storage
+- SendGrid automation for report delivery
+
+## Outcome
+
+The platform created a scalable system for automated technical due diligence and made it easier to evaluate software projects without depending entirely on manual senior-engineer review time.

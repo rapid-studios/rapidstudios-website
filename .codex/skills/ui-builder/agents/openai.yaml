@@ -1,0 +1,4 @@
+interface:
+  display_name: "UI Builder"
+  short_description: "Generate implementation scaffolding from approved design."
+  default_prompt: "Use $ui-builder to generate UI scaffolding from the approved spec, Figma notes, tokens, and selected interaction references."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Figma Design Analyzer"
+  short_description: "Extract structure, tokens, and implementation notes."
+  default_prompt: "Use $figma-design-analyzer to analyze approved Figma frames for structure, tokens, states, accessibility risks, and implementation notes."

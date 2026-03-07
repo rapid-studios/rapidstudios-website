@@ -1,0 +1,4 @@
+interface:
+  display_name: "SaaS Dashboard Patterns"
+  short_description: "Recommend dashboard structures and wireframe starts."
+  default_prompt: "Use $saas-dashboard-layouts to recommend the best-fit dashboard layout patterns for this analytics or admin surface."

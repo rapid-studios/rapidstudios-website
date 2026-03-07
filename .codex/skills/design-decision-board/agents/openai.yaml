@@ -1,0 +1,4 @@
+interface:
+  display_name: "Design Decision Board"
+  short_description: "Build a board for visual direction choices."
+  default_prompt: "Use $design-decision-board to turn the research into a decision board with examples, recommendations, and final choice slots."

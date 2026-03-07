@@ -1,0 +1,4 @@
+interface:
+  display_name: "Figma Auto-Board Builder"
+  short_description: "Structure research, decision, and concept boards."
+  default_prompt: "Use $figma-auto-board-builder to organize a Figma board for research, decision review, look-lock, or concept comparison."

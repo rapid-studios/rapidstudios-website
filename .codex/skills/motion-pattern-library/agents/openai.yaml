@@ -1,0 +1,4 @@
+interface:
+  display_name: "Motion Pattern Library"
+  short_description: "Define reusable UI motion and reduced-motion rules."
+  default_prompt: "Use $motion-pattern-library to define reusable motion patterns that match the approved motion tokens."

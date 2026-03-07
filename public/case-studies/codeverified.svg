@@ -1,0 +1,62 @@
+<svg width="1600" height="1000" viewBox="0 0 1600 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1600" y2="1000" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#081120"/>
+      <stop offset="0.55" stop-color="#0C1830"/>
+      <stop offset="1" stop-color="#112645"/>
+    </linearGradient>
+    <linearGradient id="blue" x1="280" y1="220" x2="1320" y2="780" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2B7CEE"/>
+      <stop offset="1" stop-color="#58D4FF"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="1000" rx="36" fill="url(#bg)"/>
+  <g opacity="0.12" stroke="#58D4FF">
+    <path d="M0 120H1600"/>
+    <path d="M0 240H1600"/>
+    <path d="M0 360H1600"/>
+    <path d="M0 480H1600"/>
+    <path d="M0 600H1600"/>
+    <path d="M0 720H1600"/>
+    <path d="M0 840H1600"/>
+    <path d="M160 0V1000"/>
+    <path d="M320 0V1000"/>
+    <path d="M480 0V1000"/>
+    <path d="M640 0V1000"/>
+    <path d="M800 0V1000"/>
+    <path d="M960 0V1000"/>
+    <path d="M1120 0V1000"/>
+    <path d="M1280 0V1000"/>
+    <path d="M1440 0V1000"/>
+  </g>
+  <text x="130" y="160" fill="#EAF2FF" font-family="Arial, sans-serif" font-size="44" font-weight="700">CODEVERIFIED</text>
+  <text x="130" y="210" fill="#73B8FF" font-family="Arial, sans-serif" font-size="22" letter-spacing="3">AI CODE REVIEW PLATFORM</text>
+
+  <rect x="120" y="280" width="1360" height="560" rx="32" fill="#0D1729" stroke="#1D3552"/>
+  <rect x="160" y="320" width="1280" height="90" rx="22" fill="#101F38" stroke="#253D5D"/>
+  <text x="205" y="376" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="38" font-weight="700">Code Review Report</text>
+  <text x="206" y="408" fill="#88A1C6" font-family="Arial, sans-serif" font-size="22">sample-ecommerce-api</text>
+
+  <g>
+    <text x="245" y="500" fill="#FF6262" font-family="Arial, sans-serif" font-size="62" font-weight="700">4</text>
+    <text x="205" y="548" fill="#B9C7DD" font-family="Arial, sans-serif" font-size="24">Critical issues</text>
+    <text x="520" y="500" fill="#FFB627" font-family="Arial, sans-serif" font-size="62" font-weight="700">7</text>
+    <text x="493" y="548" fill="#B9C7DD" font-family="Arial, sans-serif" font-size="24">Warnings</text>
+    <text x="785" y="500" fill="#4A88FF" font-family="Arial, sans-serif" font-size="62" font-weight="700">12</text>
+    <text x="756" y="548" fill="#B9C7DD" font-family="Arial, sans-serif" font-size="24">Suggestions</text>
+    <text x="1056" y="500" fill="#00D084" font-family="Arial, sans-serif" font-size="62" font-weight="700">B+</text>
+    <text x="1031" y="548" fill="#B9C7DD" font-family="Arial, sans-serif" font-size="24">Overall grade</text>
+  </g>
+
+  <rect x="200" y="610" width="1200" height="160" rx="24" fill="#0B1526" stroke="#1E3148"/>
+  <text x="245" y="666" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="34" font-weight="700">Security Findings</text>
+  <text x="245" y="712" fill="#B9C7DD" font-family="Arial, sans-serif" font-size="24">SQL injection, exposed API keys, access control gaps, and architecture recommendations.</text>
+
+  <path d="M1130 620L1330 620" stroke="url(#blue)" stroke-width="16" stroke-linecap="round"/>
+  <path d="M1130 670L1280 670" stroke="url(#blue)" stroke-width="16" stroke-linecap="round" opacity="0.8"/>
+  <path d="M1130 720L1240 720" stroke="url(#blue)" stroke-width="16" stroke-linecap="round" opacity="0.6"/>
+  <circle cx="1130" cy="620" r="14" fill="#58D4FF"/>
+  <circle cx="1330" cy="620" r="14" fill="#58D4FF"/>
+  <circle cx="1280" cy="670" r="14" fill="#2B7CEE"/>
+  <circle cx="1240" cy="720" r="14" fill="#2B7CEE"/>
+</svg>

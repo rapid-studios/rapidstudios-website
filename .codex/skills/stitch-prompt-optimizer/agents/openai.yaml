@@ -1,0 +1,4 @@
+interface:
+  display_name: "Stitch Prompt Optimizer"
+  short_description: "Turn approved specs into constrained Stitch prompts."
+  default_prompt: "Use $stitch-prompt-optimizer to turn the approved spec and token choices into a constrained Stitch prompt."

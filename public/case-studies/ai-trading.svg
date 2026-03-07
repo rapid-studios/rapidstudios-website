@@ -1,0 +1,63 @@
+<svg width="1600" height="1000" viewBox="0 0 1600 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg2" x1="40" y1="30" x2="1540" y2="970" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#081120"/>
+      <stop offset="0.5" stop-color="#0A1831"/>
+      <stop offset="1" stop-color="#0C223C"/>
+    </linearGradient>
+    <linearGradient id="mint" x1="260" y1="290" x2="1320" y2="290" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2B7CEE"/>
+      <stop offset="1" stop-color="#63E6BE"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="1000" rx="36" fill="url(#bg2)"/>
+  <g opacity="0.08" stroke="#63E6BE">
+    <path d="M0 100H1600"/>
+    <path d="M0 200H1600"/>
+    <path d="M0 300H1600"/>
+    <path d="M0 400H1600"/>
+    <path d="M0 500H1600"/>
+    <path d="M0 600H1600"/>
+    <path d="M0 700H1600"/>
+    <path d="M0 800H1600"/>
+    <path d="M0 900H1600"/>
+    <path d="M100 0V1000"/>
+    <path d="M300 0V1000"/>
+    <path d="M500 0V1000"/>
+    <path d="M700 0V1000"/>
+    <path d="M900 0V1000"/>
+    <path d="M1100 0V1000"/>
+    <path d="M1300 0V1000"/>
+    <path d="M1500 0V1000"/>
+  </g>
+  <text x="124" y="150" fill="#F1F6FF" font-family="Arial, sans-serif" font-size="44" font-weight="700">AI TRADING DECISION PLATFORM</text>
+  <text x="124" y="202" fill="#7FC7FF" font-family="Arial, sans-serif" font-size="22" letter-spacing="3">MACHINE LEARNING / FINANCIAL SYSTEMS</text>
+
+  <rect x="140" y="270" width="300" height="180" rx="28" fill="#0D182A" stroke="#274265"/>
+  <rect x="650" y="270" width="300" height="180" rx="28" fill="#0D182A" stroke="#274265"/>
+  <rect x="1160" y="270" width="300" height="180" rx="28" fill="#0D182A" stroke="#274265"/>
+  <text x="190" y="340" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="42" font-weight="700">Signals</text>
+  <text x="190" y="385" fill="#9DB2D1" font-family="Arial, sans-serif" font-size="24">Market feeds and candidate events</text>
+  <text x="710" y="340" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="42" font-weight="700">Features</text>
+  <text x="710" y="385" fill="#9DB2D1" font-family="Arial, sans-serif" font-size="24">Normalized data pipeline</text>
+  <text x="1215" y="340" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="42" font-weight="700">Ranking</text>
+  <text x="1215" y="385" fill="#9DB2D1" font-family="Arial, sans-serif" font-size="24">ML scoring and decisions</text>
+
+  <path d="M440 360H650" stroke="url(#mint)" stroke-width="18" stroke-linecap="round"/>
+  <path d="M950 360H1160" stroke="url(#mint)" stroke-width="18" stroke-linecap="round"/>
+  <path d="M625 340L650 360L625 380" stroke="#63E6BE" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M1135 340L1160 360L1135 380" stroke="#63E6BE" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <rect x="150" y="560" width="1300" height="260" rx="32" fill="#0D1728" stroke="#21344F"/>
+  <text x="200" y="635" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="34" font-weight="700">Architecture Flow</text>
+  <text x="200" y="685" fill="#B9C7DD" font-family="Arial, sans-serif" font-size="24">Signal ingestion</text>
+  <text x="450" y="685" fill="#B9C7DD" font-family="Arial, sans-serif" font-size="24">Feature pipeline</text>
+  <text x="705" y="685" fill="#B9C7DD" font-family="Arial, sans-serif" font-size="24">ML scoring engine</text>
+  <text x="1000" y="685" fill="#B9C7DD" font-family="Arial, sans-serif" font-size="24">Trade ranking</text>
+  <text x="1230" y="685" fill="#B9C7DD" font-family="Arial, sans-serif" font-size="24">Performance tracking</text>
+
+  <path d="M215 740C285 690 330 760 395 715C460 670 520 780 590 725C660 670 720 770 785 710C850 650 920 760 995 705C1070 650 1130 785 1210 710C1270 655 1325 710 1385 665" stroke="url(#mint)" stroke-width="14" stroke-linecap="round"/>
+  <circle cx="395" cy="715" r="12" fill="#63E6BE"/>
+  <circle cx="785" cy="710" r="12" fill="#2B7CEE"/>
+  <circle cx="1210" cy="710" r="12" fill="#63E6BE"/>
+</svg>
