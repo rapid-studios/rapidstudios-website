@@ -5,7 +5,6 @@ import {
   Head,
   Hr,
   Html,
-  Img,
   Link,
   Preview,
   Row,
@@ -18,8 +17,6 @@ import type { ContactInquiry } from "@/lib/email/resend";
 type Props = {
   inquiry: ContactInquiry;
 };
-
-const BRAND_ICON_URL = "https://rapidstudios.dev/email-icon.png";
 
 const font =
   "'Space Grotesk',Manrope,Inter,ui-sans-serif,system-ui,-apple-system,sans-serif";
@@ -62,8 +59,8 @@ export function InternalNotification({ inquiry }: Props) {
                     <table role="presentation" cellPadding="0" cellSpacing="0">
                       <tbody>
                         <tr>
-                          <td style={{ verticalAlign: "middle", paddingRight: "9px", lineHeight: 0 }}>
-                            <Img src={BRAND_ICON_URL} width="18" height="18" alt="Rapid Studios" style={{ display: "block" }} />
+                          <td style={{ verticalAlign: "middle", paddingRight: "9px", fontSize: "16px", lineHeight: 1 }}>
+                            ⚡
                           </td>
                           <td style={{ verticalAlign: "middle" }}>
                             <span style={{ fontFamily: font, fontSize: "13px", fontWeight: 800, color: "#ffffff", letterSpacing: "0.09em", textTransform: "uppercase" as const, whiteSpace: "nowrap" as const }}>
