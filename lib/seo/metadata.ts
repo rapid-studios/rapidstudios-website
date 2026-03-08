@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { siteConfig } from "@/lib/site-data";
 
 const ogImage = {
-  url: `${siteConfig.url}/opengraph-image`,
+  url: `${siteConfig.url}/og-default.png`,
   width: 1200,
   height: 630,
   alt: "Rapid Studios -- Digital Products Designed to Ship",
