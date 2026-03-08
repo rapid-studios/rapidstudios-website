@@ -5,6 +5,7 @@ import {
   Head,
   Hr,
   Html,
+  Img,
   Link,
   Preview,
   Row,
@@ -59,8 +60,8 @@ export function InternalNotification({ inquiry }: Props) {
                     <table role="presentation" cellPadding="0" cellSpacing="0">
                       <tbody>
                         <tr>
-                          <td style={{ verticalAlign: "middle", paddingRight: "9px", fontSize: "16px", lineHeight: 1 }}>
-                            ⚡
+                          <td style={{ verticalAlign: "middle", paddingRight: "9px", lineHeight: 0 }}>
+                            <Img src="https://rapidstudios.dev/email-icon.png" width="18" height="18" alt="" style={{ display: "block" }} />
                           </td>
                           <td style={{ verticalAlign: "middle" }}>
                             <span style={{ fontFamily: font, fontSize: "13px", fontWeight: 800, color: "#ffffff", letterSpacing: "0.09em", textTransform: "uppercase" as const, whiteSpace: "nowrap" as const }}>
