@@ -27,7 +27,7 @@ export type SendResult = {
   error?: string;
 };
 
-const emailFrom = () => process.env.EMAIL_FROM ?? "Rapid Studios <hello@mail.rapidstudios.dev>";
+const emailFrom = () => (process.env.EMAIL_FROM ?? "Rapid Studios <noreply@mail.rapidstudios.dev>").replace(/^"|"$/g, "");
 const emailReplyTo = () => process.env.EMAIL_REPLY_TO ?? "hello@rapidstudios.dev";
 const emailNotify = () => process.env.EMAIL_NOTIFY ?? "hello@rapidstudios.dev";
 
