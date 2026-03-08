@@ -6,7 +6,7 @@ import { buildMetadata } from "@/lib/seo/metadata";
 
 export const metadata = buildMetadata({
   title: "Services",
-  description: "Premium product-studio services across strategy, design, and engineering.",
+  description: "Product design, marketing surfaces, and frontend implementation -- from positioning to production code.",
   pathname: "/services"
 });
 
@@ -25,7 +25,7 @@ export default function ServicesPage() {
           Our Services
         </h1>
         <p className="mx-auto mt-6 max-w-4xl text-2xl leading-relaxed text-[var(--color-text-secondary)]">
-          Premium product studio delivering strategy, design, and engineering excellence for category-defining startups.
+          From product strategy to production code, every engagement ends with something polished, credible, and ready to ship.
         </p>
       </section>
 
@@ -82,7 +82,7 @@ export default function ServicesPage() {
                     Outcome signal
                   </p>
                   <p className="mt-3 text-2xl font-black tracking-[-0.04em] text-[var(--color-brand-accent)]">
-                    {index === 0 ? "Sharper offer framing" : index === 1 ? "Premium launch-ready UI" : "Production-grade frontend"}
+                    {index === 0 ? "Sharper positioning, faster decisions" : index === 1 ? "Premium, launch-ready surfaces" : "Production-grade frontend delivery"}
                   </p>
                 </div>
               </div>
@@ -121,14 +121,19 @@ export default function ServicesPage() {
             <div className="absolute bottom-0 right-0 h-96 w-96 translate-x-1/2 translate-y-1/2 rounded-full bg-black blur-3xl"></div>
           </div>
           <div className="relative z-10">
-            <h2 className="text-4xl font-black tracking-[-0.05em] md:text-6xl">Ready to Start?</h2>
+            <h2 className="text-4xl font-black tracking-[-0.05em] md:text-6xl">Ready to Ship?</h2>
             <p className="mx-auto mt-6 max-w-3xl text-lg leading-relaxed text-white/82">
-              Bring the strategy, design, and engineering into one pass so the site feels coherent from the first frame through launch.
+              Strategy, design, and frontend in one pass -- so the product feels coherent from first impression through launch.
             </p>
-            <Link className="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 text-lg font-bold text-[var(--color-brand-primary)]" href="/contact">
-              Contact Us
-              <ArrowRight className="size-5" />
-            </Link>
+            <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+              <Link className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 text-lg font-bold text-[var(--color-brand-primary)]" href="/contact">
+                Contact Us
+                <ArrowRight className="size-5" />
+              </Link>
+              <Link className="inline-flex items-center gap-2 rounded-full border border-white/20 px-8 py-4 text-lg font-bold text-white transition-colors hover:bg-white/10" href="/work">
+                View Case Studies
+              </Link>
+            </div>
           </div>
         </div>
       </section>

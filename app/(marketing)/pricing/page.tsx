@@ -6,7 +6,7 @@ import { pricingPlans } from "@/lib/site-data";
 
 export const metadata = buildMetadata({
   title: "Pricing",
-  description: "Premium engagement models for Rapid Studios projects.",
+  description: "Transparent pricing for focused sprints, full website engagements, and ongoing studio partnerships.",
   pathname: "/pricing"
 });
 
@@ -51,7 +51,7 @@ export default function PricingPage() {
       <section className="px-4 pb-16 pt-24">
         <div className="mx-auto max-w-4xl text-center">
           <div className="inline-flex items-center gap-2 rounded-full border border-[var(--color-brand-primary)]/20 bg-[var(--color-brand-primary)]/10 px-4 py-2 text-xs font-black uppercase tracking-[0.22em] text-[var(--color-brand-primary)]">
-            <span className="h-2 w-2 rounded-full bg-[var(--color-brand-primary)] shadow-[0_0_14px_rgba(43,124,238,0.65)]" />
+            <span className="h-2 w-2 rounded-full bg-[var(--color-brand-primary)] shadow-[0_0_14px_rgba(59,138,240,0.65)]" />
             High-velocity product studio
           </div>
           <h1 className="mt-8 text-5xl font-black leading-[1.05] tracking-[-0.08em] text-[var(--color-text-primary)] md:text-7xl">
@@ -72,7 +72,7 @@ export default function PricingPage() {
               <article
                 className={`group relative flex h-full flex-col gap-6 rounded-[2rem] p-8 backdrop-blur-sm transition-all ${
                   featured
-                    ? "border-2 border-[var(--color-brand-primary)] bg-[rgba(8,18,32,0.98)] shadow-[0_0_40px_-12px_rgba(43,124,238,0.4)] md:scale-[1.03]"
+                    ? "border-2 border-[var(--color-brand-primary)] bg-[rgba(8,18,32,0.98)] shadow-[0_0_40px_-12px_rgba(59,138,240,0.4)] md:scale-[1.03]"
                     : "border border-[var(--color-line-subtle)] bg-[rgba(12,20,32,0.8)] hover:border-white/16"
                 }`}
                 key={plan.name}
@@ -97,7 +97,7 @@ export default function PricingPage() {
                 <Link
                   className={`flex h-12 items-center justify-center rounded-full text-sm font-bold transition-all ${
                     featured
-                      ? "bg-[var(--color-brand-primary)] text-white shadow-lg shadow-[rgba(43,124,238,0.24)] hover:scale-[1.02]"
+                      ? "bg-[var(--color-brand-primary)] text-white shadow-lg shadow-[rgba(59,138,240,0.24)] hover:scale-[1.02]"
                       : "bg-white/6 text-[var(--color-text-primary)] hover:bg-white/10"
                   }`}
                   href="/contact"
@@ -152,7 +152,7 @@ export default function PricingPage() {
             className="absolute inset-0 opacity-10"
             style={{
               backgroundImage:
-                "radial-gradient(circle at 2px 2px, rgba(43,124,238,0.5) 1px, transparent 0)",
+                "radial-gradient(circle at 2px 2px, rgba(59,138,240,0.5) 1px, transparent 0)",
               backgroundSize: "24px 24px"
             }}
           />

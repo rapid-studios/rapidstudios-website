@@ -26,19 +26,19 @@ export function SiteHeader() {
       >
         <nav className="flex w-full max-w-5xl items-center justify-between rounded-full border border-white/10 bg-[rgba(28,32,39,0.8)] px-6 py-3 shadow-[0_20px_60px_rgba(0,0,0,0.24)] backdrop-blur-[12px]">
           <Link className="flex items-center gap-2" href="/" onClick={() => setMenuOpen(false)}>
-            <BrandIcon className="size-8 text-[#2b7cee]" />
+            <BrandIcon className="size-8 text-[var(--color-brand-primary)]" />
             <span className="text-lg font-black uppercase tracking-[-0.03em] text-white md:text-xl">
               RAPID STUDIOS
             </span>
           </Link>
 
-          <div className="hidden items-center gap-8 text-sm font-medium text-slate-400 md:flex">
+          <div className="hidden items-center gap-8 text-sm font-medium text-[var(--color-text-secondary)] md:flex">
             {headerNavigation.map((item) => {
               const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
 
               return (
                 <Link
-                  className={cn("transition-colors hover:text-[#2b7cee]", isActive && "text-[#2b7cee]")}
+                  className={cn("transition-colors hover:text-[var(--color-brand-primary)]", isActive && "text-[var(--color-brand-primary)]")}
                   href={item.href}
                   key={item.href}
                   onClick={() => setMenuOpen(false)}
@@ -51,7 +51,7 @@ export function SiteHeader() {
 
           <div className="hidden md:flex">
             <Link
-              className="rounded-full bg-[#2b7cee] px-5 py-2 text-sm font-bold text-white transition-all hover:scale-105 hover:bg-[#236bd6]"
+              className="rounded-full bg-[var(--color-brand-primary)] px-5 py-2 text-sm font-bold text-white transition-all hover:scale-105 hover:bg-[var(--color-brand-primary-hover)]"
               href="/contact"
             >
               Start a Project
@@ -90,7 +90,7 @@ export function SiteHeader() {
                   <Link
                     className={cn(
                       "rounded-[1rem] px-4 py-3 text-base font-semibold text-white transition-colors hover:bg-white/5",
-                      (pathname === item.href || pathname.startsWith(`${item.href}/`)) && "text-[#2b7cee]"
+                      (pathname === item.href || pathname.startsWith(`${item.href}/`)) && "text-[var(--color-brand-primary)]"
                     )}
                     href={item.href}
                     key={item.href}
@@ -102,7 +102,7 @@ export function SiteHeader() {
               </nav>
               <div className="mt-5 grid gap-3">
                 <Link
-                  className="inline-flex h-12 items-center justify-center rounded-full bg-[#2b7cee] px-5 text-sm font-bold text-white transition-all hover:bg-[#236bd6]"
+                  className="inline-flex h-12 items-center justify-center rounded-full bg-[var(--color-brand-primary)] px-5 text-sm font-bold text-white transition-all hover:bg-[var(--color-brand-primary-hover)]"
                   href="/contact"
                   onClick={() => setMenuOpen(false)}
                 >

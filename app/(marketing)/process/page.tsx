@@ -5,7 +5,7 @@ import { buildMetadata } from "@/lib/seo/metadata";
 
 export const metadata = buildMetadata({
   title: "Process",
-  description: "High-velocity delivery from discovery to launch.",
+  description: "Research, design, and build in focused sprints -- how Rapid Studios ships polished products in weeks, not months.",
   pathname: "/process"
 });
 
@@ -88,9 +88,14 @@ export default function ProcessPage() {
           <p className="mx-auto mt-5 max-w-3xl text-lg leading-relaxed text-[var(--color-text-secondary)]">
             The process stays structured so direction, design, and build move with less drift and more confidence.
           </p>
-          <Link className="mt-8 inline-flex rounded-full bg-[var(--color-brand-primary)] px-8 py-4 text-lg font-bold text-white" href="/contact">
-            Get Started
-          </Link>
+          <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+            <Link className="inline-flex rounded-full bg-[var(--color-brand-primary)] px-8 py-4 text-lg font-bold text-white" href="/contact">
+              Get Started
+            </Link>
+            <Link className="inline-flex rounded-full border border-white/10 px-8 py-4 text-lg font-bold text-[var(--color-text-primary)] transition-colors hover:bg-white/5" href="/services">
+              Explore Services
+            </Link>
+          </div>
         </div>
       </section>
     </div>

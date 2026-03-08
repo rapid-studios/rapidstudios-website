@@ -17,7 +17,7 @@ export default function MarketingLayout({
     <>
       <SiteHeader />
       <main className={`relative overflow-x-clip ${isHome ? "" : "pt-28"}`}>{children}</main>
-      {isHome ? null : <SiteFooter />}
+      <SiteFooter />
     </>
   );
 }

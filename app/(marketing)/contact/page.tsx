@@ -6,14 +6,14 @@ import { siteConfig } from "@/lib/site-data";
 
 export const metadata = buildMetadata({
   title: "Contact",
-  description: "Start your next product with Rapid Studios.",
+  description: "Tell us about your project. Rapid Studios typically responds within 24 hours with a clear next step.",
   pathname: "/contact"
 });
 
 const proofStats = [
-  { value: "6-Week", label: "MVP Delivery" },
-  { value: "40+", label: "Launches" },
-  { value: "100%", label: "Satisfaction" }
+  { value: "<24hr", label: "Response Time" },
+  { value: "30 min", label: "Discovery Call" },
+  { value: "48hr", label: "Proposal Turnaround" }
 ] as const;
 
 export default function ContactPage() {

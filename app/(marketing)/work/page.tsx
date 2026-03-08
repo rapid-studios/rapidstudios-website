@@ -8,7 +8,7 @@ import { buildMetadata } from "@/lib/seo/metadata";
 
 export const metadata = buildMetadata({
   title: "Work",
-  description: "A curated portfolio of high-impact digital products and experiences built by Rapid Studios.",
+  description: "Selected case studies -- product design, marketing surfaces, and frontend delivery for SaaS, AI, and product teams.",
   pathname: "/work"
 });
 

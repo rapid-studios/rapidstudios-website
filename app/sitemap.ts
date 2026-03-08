@@ -4,7 +4,7 @@ import { getAllCaseStudies } from "@/lib/content/case-studies";
 import { siteConfig } from "@/lib/site-data";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const routes = ["", "/work", "/services", "/process", "/contact", "/pricing"].map((route) => ({
+  const routes = ["", "/work", "/services", "/process", "/about", "/contact", "/pricing"].map((route) => ({
     changeFrequency: "weekly" as const,
     lastModified: new Date(),
     priority: route === "" ? 1 : 0.8,

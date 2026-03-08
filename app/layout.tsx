@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Inter, Manrope, Space_Grotesk } from "next/font/google";
 
+import { Analytics } from "@vercel/analytics/next";
+
+import { getOrganizationSchema, getWebSiteSchema } from "@/lib/seo/json-ld";
 import { siteConfig } from "@/lib/site-data";
 
 import "../styles/globals.css";
@@ -22,24 +25,14 @@ const stitch = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
-  title: siteConfig.name,
-  description: siteConfig.description,
+  title: {
+    default: siteConfig.name,
+    template: `%s | ${siteConfig.name}`
+  },
   icons: {
     icon: [{ url: "/icon.svg", type: "image/svg+xml", sizes: "any" }],
     shortcut: [{ url: "/icon.svg", type: "image/svg+xml" }],
     apple: "/apple-icon.png"
-  },
-  openGraph: {
-    title: siteConfig.name,
-    description: siteConfig.description,
-    siteName: siteConfig.name,
-    type: "website",
-    url: siteConfig.url
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: siteConfig.name,
-    description: siteConfig.description
   }
 };
 
@@ -50,7 +43,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${display.variable} ${body.variable} ${stitch.variable} antialiased`}>{children}</body>
+      <body className={`${display.variable} ${body.variable} ${stitch.variable} antialiased`}>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify([getOrganizationSchema(), getWebSiteSchema()])
+          }}
+          type="application/ld+json"
+        />
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }

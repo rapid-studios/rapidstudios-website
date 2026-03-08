@@ -3,7 +3,7 @@ import type { NavItem, PricingPlan, ProcessStep } from "@/types/content";
 export const siteConfig = {
   name: "Rapid Studios",
   description:
-    "Rapid Studios designs and ships premium marketing surfaces for product teams that want sharper positioning, cleaner conversion paths, and fast frontend delivery.",
+    "Rapid Studios helps product teams design and launch polished digital products -- from positioning and UI to production frontend delivery.",
   url: "https://rapidstudios.dev",
   email: "hello@rapidstudios.dev"
 };
@@ -12,6 +12,8 @@ export const navigation: NavItem[] = [
   { href: "/work", label: "Work" },
   { href: "/services", label: "Services" },
   { href: "/process", label: "Process" },
+  { href: "/about", label: "About" },
+  { href: "/pricing", label: "Pricing" },
   { href: "/contact", label: "Contact" }
 ];
 
@@ -20,6 +22,7 @@ export const footerNavigation: NavItem[] = [
   { href: "/work", label: "Work" },
   { href: "/services", label: "Services" },
   { href: "/process", label: "Process" },
+  { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
   { href: "/pricing", label: "Pricing" }
 ];
