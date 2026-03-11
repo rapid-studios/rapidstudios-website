@@ -9,6 +9,7 @@ import { useState } from "react";
 import { motionTokens } from "@/lib/motion/tokens";
 import { navigation } from "@/lib/site-data";
 import { BrandIcon } from "@/components/ui/brand-icon";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const headerNavigation = navigation.filter((item) => item.href !== "/contact");
@@ -50,12 +51,9 @@ export function SiteHeader() {
           </div>
 
           <div className="hidden md:flex">
-            <Link
-              className="rounded-full bg-[var(--color-brand-primary)] px-5 py-2 text-sm font-bold text-white transition-all hover:scale-105 hover:bg-[var(--color-brand-primary-hover)]"
-              href="/contact"
-            >
-              Start a Project
-            </Link>
+            <Button asChild className="h-10 px-5 text-sm font-bold" size="sm">
+              <Link href="/contact">Start a Project</Link>
+            </Button>
           </div>
 
           <button
@@ -101,13 +99,9 @@ export function SiteHeader() {
                 ))}
               </nav>
               <div className="mt-5 grid gap-3">
-                <Link
-                  className="inline-flex h-12 items-center justify-center rounded-full bg-[var(--color-brand-primary)] px-5 text-sm font-bold text-white transition-all hover:bg-[var(--color-brand-primary-hover)]"
-                  href="/contact"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  Start a Project
-                </Link>
+                <Button asChild className="h-12 px-5 text-sm font-bold" onClick={() => setMenuOpen(false)}>
+                  <Link href="/contact">Start a Project</Link>
+                </Button>
               </div>
             </div>
           </motion.div>

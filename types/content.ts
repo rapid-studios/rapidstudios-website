@@ -48,6 +48,7 @@ export type ServiceMeta = {
   summary: string;
   deliverables: string[];
   outcomes: string[];
+  outcomeSignal: string;
   featured: boolean;
 };
 

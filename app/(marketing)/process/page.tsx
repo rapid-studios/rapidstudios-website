@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { Button } from "@/components/ui/button";
 import { collaborationPrinciples, processSteps } from "@/lib/site-data";
 import { buildMetadata } from "@/lib/seo/metadata";
 
@@ -89,12 +90,12 @@ export default function ProcessPage() {
             The process stays structured so direction, design, and build move with less drift and more confidence.
           </p>
           <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-            <Link className="inline-flex rounded-full bg-[var(--color-brand-primary)] px-8 py-4 text-lg font-bold text-white" href="/contact">
-              Get Started
-            </Link>
-            <Link className="inline-flex rounded-full border border-white/10 px-8 py-4 text-lg font-bold text-[var(--color-text-primary)] transition-colors hover:bg-white/5" href="/services">
-              Explore Services
-            </Link>
+            <Button asChild className="h-auto px-8 py-4 text-lg font-bold">
+              <Link href="/contact">Get Started</Link>
+            </Button>
+            <Button asChild className="h-auto px-8 py-4 text-lg font-bold" variant="secondary">
+              <Link href="/services">Explore Services</Link>
+            </Button>
           </div>
         </div>
       </section>

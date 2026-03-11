@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 
+import { Button } from "@/components/ui/button";
 import { getCaseStudyMedia } from "@/lib/content/case-study-media";
 import { getAllCaseStudies } from "@/lib/content/case-studies";
 import { buildMetadata } from "@/lib/seo/metadata";
@@ -128,12 +129,9 @@ export default function WorkPage() {
               <p className="mt-4 max-w-xl text-base leading-7 text-[var(--color-text-secondary)]">
                 The work page stays selective on purpose. Reach out if you want examples closer to your product category or launch stage.
               </p>
-              <Link
-                className="mt-6 inline-flex rounded-full bg-[var(--color-brand-primary)] px-5 py-3 text-sm font-bold text-white"
-                href="/contact"
-              >
-                Request relevant examples
-              </Link>
+              <Button asChild className="mt-6 px-5 text-sm font-bold">
+                <Link href="/contact">Request relevant examples</Link>
+              </Button>
             </div>
           ) : null}
         </div>
@@ -152,9 +150,12 @@ export default function WorkPage() {
             <p className="mx-auto mt-6 max-w-3xl text-lg leading-relaxed text-white/82">
               Rapid Studios structures proof so the best projects do the heavy lifting without turning the site into a noisy archive.
             </p>
-            <Link className="mt-8 inline-flex rounded-full bg-white px-8 py-4 text-lg font-bold text-[var(--color-brand-primary)]" href="/contact">
-              Start a Project
-            </Link>
+            <Button
+              asChild
+              className="mt-8 h-auto bg-white px-8 py-4 text-lg font-bold text-[var(--color-brand-primary)] hover:bg-[var(--color-brand-primary-hover)] hover:text-white"
+            >
+              <Link href="/contact">Start a Project</Link>
+            </Button>
           </div>
         </div>
       </section>

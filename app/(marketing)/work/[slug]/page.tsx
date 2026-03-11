@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
+import { Button } from "@/components/ui/button";
 import { getCaseStudyMedia } from "@/lib/content/case-study-media";
 import { getAllCaseStudies, getCaseStudyBySlug } from "@/lib/content/case-studies";
 import { buildMetadata } from "@/lib/seo/metadata";
@@ -267,13 +268,15 @@ export default async function CaseStudyPage({
           <div className="relative z-10 max-w-md">
             <p className="mb-2 text-xs font-bold uppercase tracking-[0.28em] text-white/55">Next Project</p>
             <h2 className="text-3xl font-bold text-white md:text-4xl">{nextStudy.title}</h2>
-            <Link
-              className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[var(--color-brand-primary)] px-8 py-4 text-base font-bold text-white transition-colors hover:bg-white hover:text-[var(--color-brand-primary)] sm:w-auto"
-              href={`/work/${nextStudy.slug}`}
+            <Button
+              asChild
+              className="mt-6 h-auto w-full px-8 py-4 text-base font-bold hover:bg-white hover:text-[var(--color-brand-primary)] sm:w-auto"
             >
-              Explore Case Study
-              <ArrowRight className="size-5" />
-            </Link>
+              <Link href={`/work/${nextStudy.slug}`}>
+                Explore Case Study
+                <ArrowRight className="size-5" />
+              </Link>
+            </Button>
           </div>
         </article>
       </section>

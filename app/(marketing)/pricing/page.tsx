@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
 
+import { Button } from "@/components/ui/button";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { pricingPlans } from "@/lib/site-data";
 
@@ -94,16 +95,17 @@ export default function PricingPage() {
                   </p>
                 </div>
 
-                <Link
-                  className={`flex h-12 items-center justify-center rounded-full text-sm font-bold transition-all ${
+                <Button
+                  asChild
+                  className={
                     featured
-                      ? "bg-[var(--color-brand-primary)] text-white shadow-lg shadow-[rgba(59,138,240,0.24)] hover:scale-[1.02]"
-                      : "bg-white/6 text-[var(--color-text-primary)] hover:bg-white/10"
-                  }`}
-                  href="/contact"
+                      ? "h-12 text-sm font-bold shadow-lg shadow-[rgba(59,138,240,0.24)]"
+                      : "h-12 bg-white/6 text-sm font-bold text-[var(--color-text-primary)] hover:bg-white/10 hover:text-[var(--color-text-primary)]"
+                  }
+                  variant={featured ? "primary" : "secondary"}
                 >
-                  {plan.cta}
-                </Link>
+                  <Link href="/contact">{plan.cta}</Link>
+                </Button>
 
                 <div className="flex flex-col gap-4 border-t border-white/8 pt-4">
                   {plan.details.map((item) => (
@@ -164,19 +166,15 @@ export default function PricingPage() {
               We can map the right engagement quickly if you share the launch goal, the pages in scope, and how fast you need to move.
             </p>
             <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
-              <Link
-                className="inline-flex h-14 items-center justify-center rounded-full bg-[var(--color-brand-primary)] px-8 text-base font-bold text-white transition-transform hover:scale-[1.02]"
-                href="/contact"
-              >
-                Let&apos;s talk
-              </Link>
-              <Link
-                className="inline-flex h-14 items-center justify-center gap-2 rounded-full border border-white/10 bg-transparent px-8 text-base font-bold text-[var(--color-text-primary)] transition-colors hover:bg-white/6"
-                href="/work"
-              >
-                View Case Studies
-                <ArrowRight className="size-5" />
-              </Link>
+              <Button asChild className="px-8 text-base font-bold" size="large">
+                <Link href="/contact">Let&apos;s talk</Link>
+              </Button>
+              <Button asChild className="px-8 text-base font-bold" size="large" variant="secondary">
+                <Link href="/work">
+                  View Case Studies
+                  <ArrowRight className="size-5" />
+                </Link>
+              </Button>
             </div>
           </div>
         </div>

@@ -1,16 +1,17 @@
 import Link from "next/link";
-import { ArrowRight, Brush, Code2, TrendingUp } from "lucide-react";
+import { ArrowRight, Bot, Brush, Code2, TrendingUp } from "lucide-react";
 
+import { Button } from "@/components/ui/button";
 import { getAllServices } from "@/lib/content/services";
 import { buildMetadata } from "@/lib/seo/metadata";
 
 export const metadata = buildMetadata({
   title: "Services",
-  description: "Product design, marketing surfaces, and frontend implementation -- from positioning to production code.",
+  description: "From positioning and launch surfaces to AI-powered workflows, we create digital systems that make businesses look sharper and run smoother.",
   pathname: "/services"
 });
 
-const serviceIcons = [TrendingUp, Brush, Code2] as const;
+const serviceIcons = [TrendingUp, Brush, Bot, Code2] as const;
 
 export default function ServicesPage() {
   const services = getAllServices();
@@ -25,7 +26,7 @@ export default function ServicesPage() {
           Our Services
         </h1>
         <p className="mx-auto mt-6 max-w-4xl text-2xl leading-relaxed text-[var(--color-text-secondary)]">
-          From product strategy to production code, every engagement ends with something polished, credible, and ready to ship.
+          From positioning and launch surfaces to AI-powered workflows, we create digital systems that make businesses look sharper and run smoother.
         </p>
       </section>
 
@@ -82,7 +83,7 @@ export default function ServicesPage() {
                     Outcome signal
                   </p>
                   <p className="mt-3 text-2xl font-black tracking-[-0.04em] text-[var(--color-brand-accent)]">
-                    {index === 0 ? "Sharper positioning, faster decisions" : index === 1 ? "Premium, launch-ready surfaces" : "Production-grade frontend delivery"}
+                    {service.outcomeSignal}
                   </p>
                 </div>
               </div>
@@ -99,16 +100,16 @@ export default function ServicesPage() {
               Project-based sprints
             </h2>
             <p className="mt-4 text-base leading-7 text-[var(--color-text-secondary)]">
-              Best when you need a homepage, core page system, or launch surface tightened and shipped quickly.
+              Best when you need a focused surface, launch-ready build, or high-impact system shipped quickly.
             </p>
           </article>
           <article className="surface-card p-8">
             <p className="text-sm uppercase tracking-[0.18em] text-[var(--color-text-secondary)]">Partnership</p>
             <h2 className="mt-4 text-3xl font-black tracking-[-0.05em] text-[var(--color-text-primary)]">
-              Monthly retainer
+              Ongoing retainer
             </h2>
             <p className="mt-4 text-base leading-7 text-[var(--color-text-secondary)]">
-              Better for ongoing launches, iterative product marketing, and teams that need a design-build partner on call.
+              Best for teams that need a design-and-build partner for continuous updates, workflow automation, and growth work.
             </p>
           </article>
         </div>
@@ -121,18 +122,23 @@ export default function ServicesPage() {
             <div className="absolute bottom-0 right-0 h-96 w-96 translate-x-1/2 translate-y-1/2 rounded-full bg-black blur-3xl"></div>
           </div>
           <div className="relative z-10">
-            <h2 className="text-4xl font-black tracking-[-0.05em] md:text-6xl">Ready to Ship?</h2>
+            <h2 className="text-4xl font-black tracking-[-0.05em] md:text-6xl">Ready to build?</h2>
             <p className="mx-auto mt-6 max-w-3xl text-lg leading-relaxed text-white/82">
-              Strategy, design, and frontend in one pass -- so the product feels coherent from first impression through launch.
+              Strategy, design, automation, and frontend in one streamlined process so your business launches with more clarity and less friction.
             </p>
             <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-              <Link className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 text-lg font-bold text-[var(--color-brand-primary)]" href="/contact">
-                Contact Us
-                <ArrowRight className="size-5" />
-              </Link>
-              <Link className="inline-flex items-center gap-2 rounded-full border border-white/20 px-8 py-4 text-lg font-bold text-white transition-colors hover:bg-white/10" href="/work">
-                View Case Studies
-              </Link>
+              <Button
+                asChild
+                className="h-auto bg-white px-8 py-4 text-lg font-bold text-[var(--color-brand-primary)] hover:bg-[var(--color-brand-primary-hover)] hover:text-white"
+              >
+                <Link href="/contact">
+                  Start a Project
+                  <ArrowRight className="size-5" />
+                </Link>
+              </Button>
+              <Button asChild className="h-auto border-white/20 px-8 py-4 text-lg font-bold text-white hover:border-white/24 hover:bg-white/10 hover:text-white" variant="secondary">
+                <Link href="/work">View Case Studies</Link>
+              </Button>
             </div>
           </div>
         </div>

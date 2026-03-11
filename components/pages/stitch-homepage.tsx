@@ -11,6 +11,7 @@ import {
   Palette
 } from "lucide-react";
 
+import { Button } from "@/components/ui/button";
 import { TrackedLink } from "@/components/ui/tracked-link";
 import { getCaseStudyMedia } from "@/lib/content/case-study-media";
 import { getFeaturedCaseStudies } from "@/lib/content/case-studies";
@@ -144,22 +145,16 @@ export function StitchHomepage() {
           Rapid Studios helps product teams design and launch polished digital products -- from positioning and UI to production frontend delivery.
         </p>
         <div className="flex flex-col gap-4 sm:flex-row">
-          <TrackedLink
-            className="rounded-full bg-[var(--color-brand-primary)] px-10 py-5 text-lg font-bold text-white shadow-[0_28px_70px_rgba(59,138,240,0.22)] transition-all hover:bg-[var(--color-brand-primary-hover)]"
-            href="/contact"
-            trackLocation="hero"
-            trackLabel="Book a Discovery Call"
-          >
-            Book a Discovery Call
-          </TrackedLink>
-          <TrackedLink
-            className="rounded-full border border-[var(--color-line-subtle)] bg-[var(--color-surface-soft)] px-10 py-5 text-lg font-bold text-white backdrop-blur-[12px] transition-all hover:bg-white/10"
-            href="/work"
-            trackLocation="hero"
-            trackLabel="View Our Work"
-          >
-            View Our Work
-          </TrackedLink>
+          <Button asChild className="h-auto px-10 py-5 text-lg font-bold shadow-[0_28px_70px_rgba(59,138,240,0.22)]">
+            <TrackedLink href="/contact" trackLabel="Book a Discovery Call" trackLocation="hero">
+              Book a Discovery Call
+            </TrackedLink>
+          </Button>
+          <Button asChild className="h-auto bg-[var(--color-surface-soft)] px-10 py-5 text-lg font-bold backdrop-blur-[12px]" variant="secondary">
+            <TrackedLink href="/work" trackLabel="View Our Work" trackLocation="hero">
+              View Our Work
+            </TrackedLink>
+          </Button>
         </div>
       </section>
 
@@ -334,7 +329,7 @@ export function StitchHomepage() {
           <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-brand-primary)]">Getting Started</p>
           <h2 className="mb-4 text-4xl font-black">What happens after you reach out.</h2>
           <p className="mx-auto max-w-xl text-[var(--color-text-secondary)]">
-            A short call to see if we're the right fit. No sales pressure, no commitment.
+            A short call to see if we&apos;re the right fit. No sales pressure, no commitment.
           </p>
         </div>
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
@@ -367,14 +362,14 @@ export function StitchHomepage() {
             <p className="mx-auto mb-8 max-w-lg text-lg text-white/80">
               Start with a 30-minute call. No pitch deck, no commitment.
             </p>
-            <TrackedLink
-              className="inline-flex rounded-full bg-white px-10 py-5 text-xl font-bold text-[var(--color-brand-primary)] shadow-xl transition-all hover:bg-slate-100"
-              href="/contact"
-              trackLocation="bottom_cta"
-              trackLabel="Book a Discovery Call"
+            <Button
+              asChild
+              className="h-auto bg-white px-10 py-5 text-xl font-bold text-[var(--color-brand-primary)] shadow-xl hover:bg-[var(--color-brand-primary-hover)] hover:text-white"
             >
-              Book a Discovery Call
-            </TrackedLink>
+              <TrackedLink href="/contact" trackLabel="Book a Discovery Call" trackLocation="bottom_cta">
+                Book a Discovery Call
+              </TrackedLink>
+            </Button>
           </div>
         </div>
       </section>

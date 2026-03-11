@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 
+import { CalendlyBadgeWidget } from "@/components/integrations/calendly";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 
@@ -18,6 +19,7 @@ export default function MarketingLayout({
       <SiteHeader />
       <main className={`relative overflow-x-clip ${isHome ? "" : "pt-28"}`}>{children}</main>
       <SiteFooter />
+      <CalendlyBadgeWidget />
     </>
   );
 }

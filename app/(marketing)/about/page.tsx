@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight, Code2, Layers, Lightbulb, Palette, Zap } from "lucide-react";
 
 import { BrandIcon } from "@/components/ui/brand-icon";
+import { Button } from "@/components/ui/button";
 import { buildMetadata } from "@/lib/seo/metadata";
 
 export const metadata = buildMetadata({
@@ -87,13 +88,13 @@ export default function AboutPage() {
           </div>
           <div className="space-y-6">
             <p className="text-lg leading-relaxed text-[var(--color-text-secondary)]">
-              Most product teams don't need a bigger agency. They need a smaller one that moves faster, makes sharper decisions, and delivers work that actually looks like the product deserves.
+              Most product teams don&apos;t need a bigger agency. They need a smaller one that moves faster, makes sharper decisions, and delivers work that actually looks like the product deserves.
             </p>
             <p className="text-lg leading-relaxed text-[var(--color-text-secondary)]">
               Every engagement at Rapid Studios runs through the same tight loop: understand the positioning, design the system, build it in production. Strategy, design, and code happen in one pass -- so the product feels coherent from the first impression through launch.
             </p>
             <p className="text-lg leading-relaxed text-[var(--color-text-secondary)]">
-              No decks for the sake of decks. No design that can't survive implementation. No handoff that creates drift. The output is the product.
+              No decks for the sake of decks. No design that can&apos;t survive implementation. No handoff that creates drift. The output is the product.
             </p>
           </div>
         </div>
@@ -207,22 +208,18 @@ export default function AboutPage() {
             Ready to ship something better?
           </h2>
           <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-[var(--color-text-secondary)]">
-            Start with a 30-minute call. No pitch deck, no commitment -- just a clear conversation about what you're building and how we can help.
+            Start with a 30-minute call. No pitch deck, no commitment -- just a clear conversation about what you&apos;re building and how we can help.
           </p>
           <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-            <Link
-              className="inline-flex items-center gap-2 rounded-full bg-[var(--color-brand-primary)] px-8 py-4 text-lg font-bold text-white transition-all hover:bg-[var(--color-brand-primary-hover)]"
-              href="/contact"
-            >
-              Book a Discovery Call
-              <ArrowRight className="size-5" />
-            </Link>
-            <Link
-              className="inline-flex items-center gap-2 rounded-full border border-white/10 px-8 py-4 text-lg font-bold text-[var(--color-text-primary)] transition-colors hover:bg-white/5"
-              href="/services"
-            >
-              View Services
-            </Link>
+            <Button asChild className="h-auto px-8 py-4 text-lg font-bold">
+              <Link href="/contact">
+                Book a Discovery Call
+                <ArrowRight className="size-5" />
+              </Link>
+            </Button>
+            <Button asChild className="h-auto px-8 py-4 text-lg font-bold" variant="secondary">
+              <Link href="/services">View Services</Link>
+            </Button>
           </div>
         </div>
       </section>

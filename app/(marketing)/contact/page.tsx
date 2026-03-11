@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { CalendlyRightMorphButton } from "@/components/integrations/calendly";
 import { ContactForm } from "@/components/sections/contact-form";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { siteConfig } from "@/lib/site-data";
@@ -29,6 +30,12 @@ export default function ContactPage() {
             <p className="mt-8 max-w-xl text-xl leading-relaxed text-[var(--color-text-secondary)]">
               We transform ambitious ideas into market-ready products in record time. Let&apos;s build something remarkable.
             </p>
+            <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
+              <CalendlyRightMorphButton label="Book a Free Call" location="contact_page_hero" />
+              <p className="max-w-sm text-sm leading-relaxed text-[var(--color-text-secondary)]">
+                Prefer to talk it through live? Pick a time instantly and we&apos;ll meet on the calendar instead of starting over email.
+              </p>
+            </div>
             <div className="mt-12 grid gap-4 sm:grid-cols-3">
               {proofStats.map((item) => (
                 <div className="rounded-[2rem] border border-[var(--color-line-subtle)] bg-white/4 px-6 py-7" key={item.label}>

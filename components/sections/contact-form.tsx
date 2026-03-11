@@ -24,6 +24,7 @@ type Payload = {
 const projectTypes = [
   "Product design",
   "Marketing / launch site",
+  "AI automations",
   "Frontend implementation",
   "Full engagement",
   "Something else"

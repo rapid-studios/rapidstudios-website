@@ -2,6 +2,7 @@ import Link from "next/link";
 import { AtSign, Globe } from "lucide-react";
 
 import { BrandIcon } from "@/components/ui/brand-icon";
+import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/lib/site-data";
 
 const studioLinks = [
@@ -68,12 +69,9 @@ export function SiteFooter() {
           <p className="mb-4 text-sm text-[var(--color-text-secondary)]">
             Have a project in mind? We typically respond within 24 hours.
           </p>
-          <Link
-            className="inline-flex h-10 items-center justify-center rounded-[var(--radius-pill)] bg-[var(--color-brand-primary)] px-5 text-sm font-bold text-white transition-all hover:bg-[var(--color-brand-primary-hover)]"
-            href="/contact"
-          >
-            Start a Project
-          </Link>
+          <Button asChild className="h-10 px-5 text-sm font-bold" size="sm">
+            <Link href="/contact">Start a Project</Link>
+          </Button>
         </div>
       </div>
       <div className="mx-auto mt-20 flex max-w-7xl flex-col items-center justify-between gap-4 border-t border-[var(--color-line-subtle)] px-4 pt-8 text-xs text-[var(--color-text-secondary)] md:flex-row">
