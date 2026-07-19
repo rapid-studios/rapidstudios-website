@@ -1,0 +1,19 @@
+{
+  "baseUrl": "https://rapidstudios.dev",
+  "workerId": "jaxon-desktop-01",
+  "dataDir": "C:\\Users\\Jaxon\\AppData\\Local\\RapidStudios\\cms-worker",
+  "secretFile": "C:\\Users\\Jaxon\\AppData\\Local\\RapidStudios\\cms-worker\\worker-secret.txt",
+  "secretEnv": "RAPIDSTUDIOS_CMS_WORKER_SECRET",
+  "codexExecutable": "C:\\Users\\Jaxon\\.codex\\plugins\\.plugin-appserver\\codex.exe",
+  "publish": {
+    "gitExecutable": "C:\\Program Files\\Git\\cmd\\git.exe",
+    "githubCliExecutable": "C:\\Program Files\\GitHub CLI\\gh.exe",
+    "npmExecutable": "C:\\Program Files\\nodejs\\npm.cmd"
+  },
+  "pollIntervalMs": 5000,
+  "workerHeartbeatMs": 30000,
+  "jobHeartbeatMs": 15000,
+  "requestTimeoutMs": 30000,
+  "codexTimeoutMs": 600000,
+  "publishTimeoutMs": 1200000
+}

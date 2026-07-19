@@ -13,3 +13,7 @@ output/
 
 # AI-CMS local filesystem store
 .cms-data/
+
+# Local worker credentials/state are installed under %LOCALAPPDATA%, never here.
+scripts/cms-worker/config.json
+scripts/cms-worker/worker-secret.txt

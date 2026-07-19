@@ -4,8 +4,9 @@
 // Commit + snapshot is a single atomic update. Use this in production / on
 // Vercel (the filesystem store can't persist on serverless).
 
-import { MongoClient, type Collection } from "mongodb";
+import type { Collection } from "mongodb";
 import { nanoid } from "./id";
+import { getCmsMongoClient } from "./mongo-client";
 import type { CmsStore, Site, Page, ContentMap, Snapshot, PendingEntry, ProposedChange, SiteSummary, OwnerAccount } from "../types";
 
 const MONGODB_URI = process.env.MONGODB_URI;
@@ -17,22 +18,13 @@ const OWNERS_COLLECTION = process.env.MONGODB_OWNERS_COLLECTION || "cms_owners";
 const globalForMongo = globalThis as unknown as {
   __cmsMongo?: Promise<Collection<Site>>;
   __cmsMongoOwners?: Promise<Collection<OwnerAccount>>;
-  __cmsMongoClient?: MongoClient;
 };
-
-async function client(): Promise<MongoClient> {
-  if (globalForMongo.__cmsMongoClient) return globalForMongo.__cmsMongoClient;
-  if (!MONGODB_URI) throw new Error("MONGODB_URI is not set");
-  const c = new MongoClient(MONGODB_URI, { ignoreUndefined: true });
-  await c.connect();
-  globalForMongo.__cmsMongoClient = c;
-  return c;
-}
 
 function coll(): Promise<Collection<Site>> {
   if (globalForMongo.__cmsMongo) return globalForMongo.__cmsMongo;
   globalForMongo.__cmsMongo = (async () => {
-    const c = (await client()).db(DB_NAME).collection<Site>(COLLECTION);
+    if (!MONGODB_URI) throw new Error("MONGODB_URI is not set");
+    const c = (await getCmsMongoClient()).db(DB_NAME).collection<Site>(COLLECTION);
     await c.createIndex({ id: 1 }, { unique: true });
     await c.createIndex({ "pages.id": 1 });
     return c;
@@ -43,7 +35,8 @@ function coll(): Promise<Collection<Site>> {
 function ownersColl(): Promise<Collection<OwnerAccount>> {
   if (globalForMongo.__cmsMongoOwners) return globalForMongo.__cmsMongoOwners;
   globalForMongo.__cmsMongoOwners = (async () => {
-    const c = (await client()).db(DB_NAME).collection<OwnerAccount>(OWNERS_COLLECTION);
+    if (!MONGODB_URI) throw new Error("MONGODB_URI is not set");
+    const c = (await getCmsMongoClient()).db(DB_NAME).collection<OwnerAccount>(OWNERS_COLLECTION);
     await c.createIndex({ email: 1 }, { unique: true });
     return c;
   })();

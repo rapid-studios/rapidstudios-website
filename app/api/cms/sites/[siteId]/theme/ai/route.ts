@@ -5,8 +5,9 @@
 
 import { NextResponse } from "next/server";
 import { requireOwner } from "@/lib/cms/auth/guard";
-import { DEFAULT_THEME, validateTheme } from "@/lib/cms/design/tokens";
-import { translateDesign } from "@/lib/cms/design/translator";
+import { composeDesignPrompt, getDesignStyleKit, getDesignTemplate } from "@/lib/cms/design/templates";
+import { enqueueThemeJob, workerHealth } from "@/lib/cms/jobs";
+import { jobErrorResponse } from "@/lib/cms/jobs/http";
 import { store } from "@/lib/cms/store";
 
 export const runtime = "nodejs";
@@ -20,7 +21,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ sit
   const site = await store.getSite(siteId);
   if (!site) return NextResponse.json({ error: "Site not found" }, { status: 404 });
 
-  let body: { instruction?: string; apply?: boolean };
+  let body: { instruction?: string; apply?: boolean; templateId?: string; styleKitId?: string };
   try {
     body = (await request.json()) as typeof body;
   } catch {
@@ -28,23 +29,36 @@ export async function POST(request: Request, { params }: { params: Promise<{ sit
   }
   if (!body.instruction) return NextResponse.json({ error: "instruction is required" }, { status: 400 });
 
-  // 1) AI proposes a token patch (never writes, never emits CSS).
-  const { provider, patch, presetId } = await translateDesign(site.theme ?? DEFAULT_THEME, body.instruction);
-  if (!patch || Object.keys(patch).length === 0) {
-    return NextResponse.json({ provider, accepted: false, reason: "No applicable theme changes were proposed." });
+  if (body.templateId && !getDesignTemplate(body.templateId)) {
+    return NextResponse.json({ error: "Choose a valid page goal." }, { status: 400 });
   }
-
-  // 2) The Design Guardian validates every token value.
-  const base = site.theme ?? DEFAULT_THEME;
-  const verdict = validateTheme(base, patch);
-  if (!verdict.accepted || !verdict.theme) {
-    return NextResponse.json({ provider, proposed: patch, accepted: false, reason: verdict.reason }, { status: 422 });
+  if (body.styleKitId && !getDesignStyleKit(body.styleKitId)) {
+    return NextResponse.json({ error: "Choose a valid visual direction." }, { status: 400 });
   }
-
-  // 3) Optionally apply.
-  if (body.apply) {
-    await store.setTheme(siteId, verdict.theme);
-    return NextResponse.json({ provider, presetId, proposed: patch, accepted: true, applied: true, theme: verdict.theme });
+  try {
+    const instruction = composeDesignPrompt({
+      instruction: body.instruction,
+      templateId: body.templateId,
+      styleKitId: body.styleKitId,
+    });
+    const job = await enqueueThemeJob({ siteId, instruction, templateId: body.templateId });
+    const online = (await workerHealth()).some((worker) => worker.online && worker.capabilities.includes("theme"));
+    const response = NextResponse.json({
+      provider: "local-codex-oauth",
+      queued: true,
+      accepted: true,
+      applied: false,
+      jobId: job.id,
+      status: job.status,
+      workerOnline: online,
+      approvalRequired: true,
+      templateId: body.templateId ?? null,
+      styleKitId: body.styleKitId ?? null,
+    }, { status: 202 });
+    response.headers.set("location", `/api/cms/jobs/${job.id}`);
+    response.headers.set("retry-after", "3");
+    return response;
+  } catch (error) {
+    return jobErrorResponse(error);
   }
-  return NextResponse.json({ provider, presetId, proposed: patch, accepted: true, applied: false, theme: verdict.theme });
 }

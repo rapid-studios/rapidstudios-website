@@ -1,8 +1,8 @@
 // app/api/cms/sites/[siteId]/pages/[pageId]/ai/route.ts
 import { NextResponse } from "next/server";
 import { requireSiteAccess, isOwner } from "@/lib/cms/auth/guard";
-import { validateBatch } from "@/lib/cms/guardian";
-import { translate } from "@/lib/cms/translator";
+import { enqueueContentJob, workerHealth } from "@/lib/cms/jobs";
+import { jobErrorResponse } from "@/lib/cms/jobs/http";
 import { store } from "@/lib/cms/store";
 
 export const runtime = "nodejs";
@@ -19,7 +19,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ sit
   const page = (site.pages || []).find((p) => p.id === pageId);
   if (!page) return NextResponse.json({ error: "Page not found" }, { status: 404 });
 
-  let body: { instruction?: string; apply?: boolean };
+  let body: { instruction?: string; apply?: boolean; templateId?: string };
   try {
     body = (await request.json()) as typeof body;
   } catch {
@@ -27,26 +27,29 @@ export async function POST(request: Request, { params }: { params: Promise<{ sit
   }
   if (!body.instruction) return NextResponse.json({ error: "instruction is required" }, { status: 400 });
 
-  // 1) AI proposes (never writes directly).
-  const { provider, changes } = await translate(page.contentMap, body.instruction);
-  if (changes.length === 0) {
-    return NextResponse.json({ provider, changes: [], accepted: false, reason: "No applicable slot changes were proposed." });
+  try {
+    const job = await enqueueContentJob({
+      siteId,
+      pageId,
+      instruction: body.instruction,
+      templateId: body.templateId,
+      createdByRole: isOwner(request) ? "owner" : "client",
+    });
+    const online = (await workerHealth()).some((worker) => worker.online && worker.capabilities.includes("content"));
+    const response = NextResponse.json({
+      provider: "local-codex-oauth",
+      queued: true,
+      accepted: true,
+      applied: false,
+      jobId: job.id,
+      status: job.status,
+      workerOnline: online,
+      approvalRequired: true,
+    }, { status: 202 });
+    response.headers.set("location", `/api/cms/jobs/${job.id}`);
+    response.headers.set("retry-after", "3");
+    return response;
+  } catch (error) {
+    return jobErrorResponse(error);
   }
-
-  // 2) Guardian validates every proposal.
-  const verdict = validateBatch(page.contentMap, changes);
-  if (!verdict.accepted) {
-    return NextResponse.json({ provider, proposed: changes, accepted: false, reason: verdict.reason, results: verdict.results }, { status: 422 });
-  }
-
-  // 3) Optionally apply, respecting the approval gate.
-  if (body.apply) {
-    if (site.requiresApproval && !isOwner(request)) {
-      const queued = await store.queueChanges(siteId, pageId, changes, "ai");
-      return NextResponse.json({ provider, proposed: changes, accepted: true, applied: false, queued: true, pendingId: queued.id, results: verdict.results });
-    }
-    const { snapshot } = await store.commitContent(siteId, pageId, verdict.contentMap);
-    return NextResponse.json({ provider, proposed: changes, accepted: true, applied: true, snapshotId: snapshot.id, results: verdict.results });
-  }
-  return NextResponse.json({ provider, proposed: changes, accepted: true, applied: false, results: verdict.results });
 }

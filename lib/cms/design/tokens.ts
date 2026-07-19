@@ -43,6 +43,12 @@ export interface ThemeVerdict {
   accepted: boolean;
   reason?: string;
   theme?: ThemeTokens;
+  contrast?: {
+    textOnBackground: number;
+    mutedOnBackground: number;
+    accentTextOnAccent: number;
+    accentOnBackground: number;
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -97,7 +103,117 @@ export function validateTheme(base: ThemeTokens, patch: ThemePatch): ThemeVerdic
   for (const key of keys) {
     (theme as unknown as Record<string, unknown>)[key] = String(patch[key]).trim();
   }
-  return { accepted: true, theme };
+  const contrast = validateThemeContrast(theme);
+  if (!contrast.accepted) return { accepted: false, reason: contrast.reason };
+  return { accepted: true, theme, contrast: contrast.metrics };
+}
+
+type Rgb = { r: number; g: number; b: number; a: number };
+
+function parseColor(value: string): Rgb | null {
+  const normalized = value.trim().toLowerCase();
+  if (normalized === "transparent") return { r: 0, g: 0, b: 0, a: 0 };
+
+  if (normalized.startsWith("#")) {
+    const raw = normalized.slice(1);
+    if (![3, 4, 6, 8].includes(raw.length)) return null;
+    const expanded = raw.length <= 4 ? raw.split("").map((part) => part + part).join("") : raw;
+    const n = Number.parseInt(expanded, 16);
+    if (!Number.isFinite(n)) return null;
+    if (expanded.length === 6) {
+      return { r: (n >> 16) & 255, g: (n >> 8) & 255, b: n & 255, a: 1 };
+    }
+    return { r: (n >> 24) & 255, g: (n >> 16) & 255, b: (n >> 8) & 255, a: (n & 255) / 255 };
+  }
+
+  const rgb = normalized.match(/^rgba?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})(?:\s*,\s*(0|1|0?\.\d+))?\s*\)$/);
+  if (rgb) {
+    const channels = rgb.slice(1, 4).map(Number);
+    const alpha = rgb[4] === undefined ? 1 : Number(rgb[4]);
+    if (channels.some((channel) => channel > 255) || alpha < 0 || alpha > 1) return null;
+    return { r: channels[0], g: channels[1], b: channels[2], a: alpha };
+  }
+
+  const hsl = normalized.match(/^hsl\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*\)$/);
+  if (!hsl) return null;
+  const hue = Number(hsl[1]);
+  const saturation = Number(hsl[2]) / 100;
+  const lightness = Number(hsl[3]) / 100;
+  if (hue > 360 || saturation > 1 || lightness > 1) return null;
+  const c = (1 - Math.abs(2 * lightness - 1)) * saturation;
+  const x = c * (1 - Math.abs(((hue / 60) % 2) - 1));
+  const m = lightness - c / 2;
+  const [rp, gp, bp] =
+    hue < 60 ? [c, x, 0] :
+    hue < 120 ? [x, c, 0] :
+    hue < 180 ? [0, c, x] :
+    hue < 240 ? [0, x, c] :
+    hue < 300 ? [x, 0, c] : [c, 0, x];
+  return { r: (rp + m) * 255, g: (gp + m) * 255, b: (bp + m) * 255, a: 1 };
+}
+
+function composite(foreground: Rgb, background: Rgb): Rgb | null {
+  if (background.a < 1) return null;
+  const inverse = 1 - foreground.a;
+  return {
+    r: foreground.r * foreground.a + background.r * inverse,
+    g: foreground.g * foreground.a + background.g * inverse,
+    b: foreground.b * foreground.a + background.b * inverse,
+    a: 1,
+  };
+}
+
+function luminance(color: Rgb): number {
+  const linear = [color.r, color.g, color.b].map((channel) => {
+    const value = channel / 255;
+    return value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+  });
+  return 0.2126 * linear[0] + 0.7152 * linear[1] + 0.0722 * linear[2];
+}
+
+export function contrastRatio(foregroundValue: string, backgroundValue: string): number | null {
+  const foreground = parseColor(foregroundValue);
+  const background = parseColor(backgroundValue);
+  if (!foreground || !background) return null;
+  const flattened = composite(foreground, background);
+  if (!flattened) return null;
+  const lighter = Math.max(luminance(flattened), luminance(background));
+  const darker = Math.min(luminance(flattened), luminance(background));
+  return (lighter + 0.05) / (darker + 0.05);
+}
+
+function validateThemeContrast(theme: ThemeTokens): {
+  accepted: boolean;
+  reason?: string;
+  metrics?: NonNullable<ThemeVerdict["contrast"]>;
+} {
+  const textOnBackground = contrastRatio(theme.text, theme.bg);
+  const mutedOnBackground = contrastRatio(theme.muted, theme.bg);
+  const accentTextOnAccent = contrastRatio(theme.accentText, theme.accent);
+  const accentOnBackground = contrastRatio(theme.accent, theme.bg);
+  const values = [textOnBackground, mutedOnBackground, accentTextOnAccent, accentOnBackground];
+  if (values.some((value) => value === null)) {
+    return { accepted: false, reason: "Theme colors must resolve to opaque pairs so contrast can be verified." };
+  }
+  const metrics = {
+    textOnBackground: textOnBackground as number,
+    mutedOnBackground: mutedOnBackground as number,
+    accentTextOnAccent: accentTextOnAccent as number,
+    accentOnBackground: accentOnBackground as number,
+  };
+  if (metrics.textOnBackground < 4.5) {
+    return { accepted: false, reason: `Primary text contrast is ${metrics.textOnBackground.toFixed(2)}:1; WCAG AA requires at least 4.5:1.` };
+  }
+  if (metrics.mutedOnBackground < 4.5) {
+    return { accepted: false, reason: `Secondary text contrast is ${metrics.mutedOnBackground.toFixed(2)}:1; body-sized text requires at least 4.5:1.` };
+  }
+  if (metrics.accentTextOnAccent < 4.5) {
+    return { accepted: false, reason: `Button text contrast is ${metrics.accentTextOnAccent.toFixed(2)}:1; WCAG AA requires at least 4.5:1.` };
+  }
+  if (metrics.accentOnBackground < 3) {
+    return { accepted: false, reason: `Accent contrast is ${metrics.accentOnBackground.toFixed(2)}:1; controls and focus indicators require at least 3:1.` };
+  }
+  return { accepted: true, metrics };
 }
 
 // ---------------------------------------------------------------------------

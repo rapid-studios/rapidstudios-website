@@ -3,6 +3,7 @@
 :root {
   --color-canvas: #101822;
   --color-canvas-tint: #0c1320;
+  --color-canvas-end: #0b1017;
   --color-surface: #121c2a;
   --color-surface-soft: rgba(18, 28, 42, 0.9);
   --color-surface-muted: #172233;
@@ -12,6 +13,8 @@
   --color-line-subtle: rgba(255, 255, 255, 0.08);
   --color-line-strong: rgba(255, 255, 255, 0.14);
   --color-brand-primary: #3b8af0;
+  --color-brand-on-primary: #07101f;
+  --color-brand-primary-rgb: 59 138 240;
   --color-brand-primary-hover: #2d7ae0;
   --color-brand-accent: #0bda5e;
   --color-focus-ring: rgba(59, 138, 240, 0.28);
@@ -57,9 +60,9 @@ html {
 body {
   min-height: 100vh;
   background:
-    radial-gradient(circle at top left, rgba(59, 138, 240, 0.12), transparent 24%),
+    radial-gradient(circle at top left, rgb(var(--color-brand-primary-rgb) / 0.12), transparent 24%),
     radial-gradient(circle at top right, rgba(11, 218, 94, 0.06), transparent 20%),
-    linear-gradient(180deg, #101822 0%, #0b1017 100%);
+    linear-gradient(180deg, var(--color-canvas) 0%, var(--color-canvas-end) 100%);
   color: var(--color-text-primary);
   font-family: var(--font-stitch), sans-serif;
 }
@@ -71,8 +74,13 @@ textarea {
   transition-timing-function: var(--ease-standard);
 }
 
+:focus-visible {
+  outline: 3px solid var(--color-brand-primary);
+  outline-offset: 3px;
+}
+
 ::selection {
-  background: rgba(59, 138, 240, 0.28);
+  background: rgb(var(--color-brand-primary-rgb) / 0.28);
   color: var(--color-text-inverse);
 }
 
@@ -103,7 +111,7 @@ textarea {
   background:
     radial-gradient(circle at top right, rgba(255, 255, 255, 0.12), transparent 22%),
     radial-gradient(circle at bottom left, rgba(0, 0, 0, 0.18), transparent 28%),
-    linear-gradient(180deg, rgba(59, 138, 240, 1) 0%, rgba(38, 107, 214, 1) 100%);
+    linear-gradient(180deg, var(--color-brand-primary) 0%, rgba(38, 107, 214, 1) 100%);
   box-shadow: var(--shadow-float);
 }
 

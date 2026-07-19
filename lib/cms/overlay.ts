@@ -12,29 +12,30 @@ export function injectOverlay(html: string, channelNonce: string): string {
   const overlay = `
 <style>
   [data-slot]{ outline:1px dashed transparent; transition:outline-color .12s; cursor:pointer; }
-  [data-slot]:hover{ outline-color:#6366f1; }
+  [data-slot]:hover,[data-slot]:focus-visible{ outline-color:#6366f1; outline-width:2px; }
   [data-slot].editing{ outline:2px solid #6366f1; background:rgba(99,102,241,.08); }
   #__cms_hint{ position:fixed; bottom:10px; left:10px; z-index:2147483647;
     font:12px system-ui,sans-serif; background:#111827; color:#fff;
     padding:6px 10px; border-radius:6px; opacity:.92; }
 </style>
-<div id="__cms_hint">Click any highlighted element to edit. Esc cancels, Enter/blur saves.</div>
+<div id="__cms_hint">Click a field, or focus it and press Enter, to edit. Esc cancels; Enter or blur saves.</div>
 <script nonce="${channelNonce}">
 (function(){
   var channelNonce = ${serializedChannelNonce};
   var parentOrigin = null;
   try { parentOrigin = new URL(document.referrer).origin; } catch (_) {}
-  function send(slotId, newValue){
+  function send(slotId, newValue, selectOnly){
     if (!parentOrigin) return;
-    parent.postMessage({ __cms:true, channelNonce:channelNonce, slotId:slotId, newValue:newValue }, parentOrigin);
+    parent.postMessage({ __cms:true, channelNonce:channelNonce, slotId:slotId, newValue:newValue, selectOnly:selectOnly===true }, parentOrigin);
   }
   document.querySelectorAll("[data-slot]").forEach(function(el){
     var slotId = el.getAttribute("data-slot");
-    el.addEventListener("click", function(ev){
+    if (!el.hasAttribute("tabindex")) el.setAttribute("tabindex", "0");
+    if (!el.hasAttribute("aria-label")) el.setAttribute("aria-label", "Edit this page field");
+    function beginEdit(ev){
       ev.preventDefault(); ev.stopPropagation();
       if (el.tagName === "IMG"){
-        var url = window.prompt("New image URL:", el.getAttribute("src")||"");
-        if (url !== null) send(slotId, url);
+        send(slotId, el.getAttribute("src")||"", true);
         return;
       }
       if (el.classList.contains("editing")) return;
@@ -58,7 +59,11 @@ export function injectOverlay(html: string, channelNonce: string): string {
       function onBlur(){ done(true); }
       el.addEventListener("keydown", onKey);
       el.addEventListener("blur", onBlur);
-    }, true);
+    }
+    el.addEventListener("click", beginEdit, true);
+    el.addEventListener("keydown", function(ev){
+      if (!el.classList.contains("editing") && (ev.key === "Enter" || ev.key === " ")) beginEdit(ev);
+    });
   });
 })();
 </script>`;
