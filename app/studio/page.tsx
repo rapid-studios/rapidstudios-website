@@ -3,7 +3,7 @@
 // Owner console: login -> manage sites -> ingest -> edit/approve/publish.
 
 import { useCallback, useEffect, useState } from "react";
-import { cms, type SiteSummary } from "./_lib/cms-client";
+import { cms, type DesignStyleKitView, type DesignTemplateView, type SiteSummary } from "./_lib/cms-client";
 import { Editor } from "./_components/Editor";
 
 export default function StudioPage() {
@@ -26,6 +26,11 @@ export default function StudioPage() {
   const [newSiteName, setNewSiteName] = useState("");
   const [ingestUrl, setIngestUrl] = useState("");
   const [ingestRoute, setIngestRoute] = useState("/");
+  const [designTemplates, setDesignTemplates] = useState<DesignTemplateView[]>([]);
+  const [designStyleKits, setDesignStyleKits] = useState<DesignStyleKitView[]>([]);
+  const [newPageTemplateId, setNewPageTemplateId] = useState("agency-proof");
+  const [newPageStyleKitId, setNewPageStyleKitId] = useState("dark-cinematic");
+  const [newPageRoute, setNewPageRoute] = useState("/");
   const [clientPw, setClientPw] = useState("");
   const [notice, setNotice] = useState("");
 
@@ -45,6 +50,11 @@ export default function StudioPage() {
       return;
     }
     if (res.ok) setSites(res.data);
+    const library = await cms.listDesignLibrary(token);
+    if (library.ok) {
+      setDesignTemplates(library.data.templates);
+      setDesignStyleKits(library.data.styleKits);
+    }
     const o = await cms.listOwners(token);
     if (o.ok) setOwners(o.data.owners.map(({ id, email }) => ({ id, email })));
   }, [token]);
@@ -60,7 +70,9 @@ export default function StudioPage() {
       if (token === null) return;
       const res = await cms.getSite(token, id);
       if (res.ok) {
-        setPages(res.data.pages.map((p) => ({ id: p.id, route: p.route })));
+        const loadedPages = res.data.pages.map((p) => ({ id: p.id, route: p.route }));
+        setPages(loadedPages);
+        setNewPageRoute(loadedPages.length === 0 ? "/" : "/new-page");
         setRequiresApproval(res.data.requiresApproval);
         setPageId(res.data.pages[0]?.id ?? null);
       }
@@ -121,7 +133,10 @@ export default function StudioPage() {
   async function pickSite(id: string) {
     setSiteId(id);
     setPageId(null);
+    setPages([]);
+    setNotice("Loading site...");
     await loadSite(id);
+    setNotice("");
   }
 
   async function doIngest() {
@@ -135,6 +150,27 @@ export default function StudioPage() {
       setPageId(res.data.pageId);
     } else {
       setNotice(`Ingest failed: ${res.data.error ?? "error"}`);
+    }
+  }
+
+  async function createTemplatePage() {
+    if (token === null || !siteId) return;
+    setNotice("Creating a guided page draft...");
+    const res = await cms.createPageFromTemplate(token, siteId, {
+      templateId: newPageTemplateId,
+      styleKitId: newPageStyleKitId,
+      route: newPageRoute.trim() || "/",
+    });
+    if (res.ok && res.data.pageId) {
+      setNotice(
+        res.data.themeApplied
+          ? "Page draft created with the selected site style. Replace the clearly marked placeholders, then review it."
+          : "Page draft created using this site's existing visual style. Replace the clearly marked placeholders, then review it."
+      );
+      await loadSite(siteId);
+      setPageId(res.data.pageId);
+    } else {
+      setNotice(`Could not create page: ${res.data.error ?? "error"}`);
     }
   }
 
@@ -165,34 +201,43 @@ export default function StudioPage() {
           </p>
           {loginMode === "account" ? (
             <>
-              <input
-                type="email"
-                className="mb-3 w-full rounded-lg border border-[var(--color-line-subtle)] bg-black/30 px-3 py-2 text-sm text-white placeholder:text-[var(--color-text-secondary)]/60"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <input
-                type="password"
-                className="mb-3 w-full rounded-lg border border-[var(--color-line-subtle)] bg-black/30 px-3 py-2 text-sm text-white placeholder:text-[var(--color-text-secondary)]/60"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && doLogin()}
-              />
+              <label className="mb-3 block text-sm text-white/90">
+                Email
+                <input
+                  type="email"
+                  autoComplete="email"
+                  className="mt-1 min-h-11 w-full rounded-lg border border-[var(--color-line-subtle)] bg-black/30 px-3 py-2 text-sm text-white placeholder:text-[var(--color-text-secondary)]"
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </label>
+              <label className="mb-3 block text-sm text-white/90">
+                Password
+                <input
+                  type="password"
+                  autoComplete="current-password"
+                  className="mt-1 min-h-11 w-full rounded-lg border border-[var(--color-line-subtle)] bg-black/30 px-3 py-2 text-sm text-white"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && doLogin()}
+                />
+              </label>
             </>
           ) : (
-            <input
-              type="password"
-              className="mb-3 w-full rounded-lg border border-[var(--color-line-subtle)] bg-black/30 px-3 py-2 text-sm text-white placeholder:text-[var(--color-text-secondary)]/60"
-              placeholder="Master key"
-              value={masterKey}
-              onChange={(e) => setMasterKey(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && doLogin()}
-            />
+            <label className="mb-3 block text-sm text-white/90">
+              Master key
+              <input
+                type="password"
+                className="mt-1 min-h-11 w-full rounded-lg border border-[var(--color-line-subtle)] bg-black/30 px-3 py-2 text-sm text-white"
+                value={masterKey}
+                onChange={(e) => setMasterKey(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && doLogin()}
+              />
+            </label>
           )}
-          {loginError && <p className="mb-3 text-sm text-rose-300">{loginError}</p>}
-          <button onClick={doLogin} className="w-full rounded-lg bg-[var(--color-brand-primary)] px-3 py-2 text-sm font-medium text-white hover:bg-[var(--color-brand-primary-hover)]">
+          {loginError && <p role="alert" className="mb-3 text-sm text-rose-300">{loginError}</p>}
+          <button onClick={doLogin} className="min-h-11 w-full rounded-lg bg-[var(--color-brand-primary)] px-3 py-2 text-sm font-medium text-[var(--color-brand-on-primary)] hover:bg-[var(--color-brand-primary-hover)]">
             Sign in
           </button>
           <button
@@ -201,7 +246,7 @@ export default function StudioPage() {
           >
             {loginMode === "account" ? "Use master key instead" : "Use email and password instead"}
           </button>
-          <p className="mt-4 text-center text-xs text-white/30">
+          <p className="mt-4 text-center text-xs text-[var(--color-text-secondary)]">
             Client editor at <code className="text-[var(--color-text-secondary)]">/studio/client</code>
           </p>
         </div>
@@ -218,12 +263,12 @@ export default function StudioPage() {
             <h1 className="font-display text-lg font-semibold">Rapid Studios — CMS</h1>
             <p className="text-sm text-[var(--color-text-secondary)]">Owner console</p>
           </div>
-          <button onClick={logout} className="rounded-lg border border-[var(--color-line-strong)] px-3 py-1.5 text-sm text-[var(--color-text-secondary)] hover:bg-white/5">
+          <button onClick={logout} className="min-h-11 rounded-lg border border-[var(--color-line-strong)] px-3 py-2 text-sm text-[var(--color-text-secondary)] hover:bg-white/5">
             Sign out
           </button>
         </header>
 
-        {notice && <div className="mb-4 rounded-lg bg-[var(--color-focus-ring)] px-3 py-2 text-sm text-[var(--color-text-primary)]">{notice}</div>}
+        {notice && <div role="status" aria-live="polite" className="mb-4 rounded-lg bg-[var(--color-focus-ring)] px-3 py-2 text-sm text-[var(--color-text-primary)]">{notice}</div>}
 
         <div className="grid gap-4 lg:grid-cols-[280px_1fr]">
           {/* Sidebar: sites */}
@@ -235,25 +280,29 @@ export default function StudioPage() {
                   <button
                     key={s.id}
                     onClick={() => pickSite(s.id)}
-                    className={`flex w-full items-center justify-between rounded-md px-2 py-1.5 text-left text-sm ${
+                    aria-pressed={siteId === s.id}
+                    className={`flex min-h-11 w-full items-center justify-between rounded-md px-3 py-2 text-left text-sm ${
                       siteId === s.id ? "bg-[var(--color-focus-ring)] text-white" : "text-[var(--color-text-secondary)] hover:bg-white/5"
                     }`}
                   >
                     <span className="truncate">{s.name}</span>
-                    <span className="text-xs text-[var(--color-text-secondary)]">{s.pages}p</span>
+                    <span className="text-xs text-[var(--color-text-secondary)]">{s.pages} {s.pages === 1 ? "page" : "pages"}</span>
                   </button>
                 ))}
                 {sites.length === 0 && <p className="text-xs text-[var(--color-text-secondary)]">No sites yet.</p>}
               </div>
               <div className="flex gap-2">
-                <input
-                  className="min-w-0 flex-1 rounded-lg border border-[var(--color-line-subtle)] bg-black/30 px-2 py-1.5 text-sm text-white placeholder:text-[var(--color-text-secondary)]/60"
-                  placeholder="New site name"
-                  value={newSiteName}
-                  onChange={(e) => setNewSiteName(e.target.value)}
-                />
-                <button onClick={createSite} className="rounded-lg bg-[var(--color-brand-primary)] px-3 text-sm font-medium text-white hover:bg-[var(--color-brand-primary-hover)]">
-                  +
+                <label className="min-w-0 flex-1 text-xs text-white/90">
+                  New site name
+                  <input
+                    className="mt-1 min-h-11 w-full rounded-lg border border-[var(--color-line-subtle)] bg-black/30 px-2 py-2 text-sm text-white placeholder:text-[var(--color-text-secondary)]"
+                    placeholder="Acme Studio"
+                    value={newSiteName}
+                    onChange={(e) => setNewSiteName(e.target.value)}
+                  />
+                </label>
+                <button onClick={createSite} className="min-h-11 self-end rounded-lg bg-[var(--color-brand-primary)] px-3 text-sm font-medium text-[var(--color-brand-on-primary)] hover:bg-[var(--color-brand-primary-hover)]">
+                  Create
                 </button>
               </div>
             </section>
@@ -266,14 +315,16 @@ export default function StudioPage() {
                   Require approval (managed tier)
                 </label>
                 <div className="space-y-2">
-                  <input
-                    type="password"
-                    className="w-full rounded-lg border border-[var(--color-line-subtle)] bg-black/30 px-2 py-1.5 text-sm text-white placeholder:text-[var(--color-text-secondary)]/60"
-                    placeholder="Set client password"
-                    value={clientPw}
-                    onChange={(e) => setClientPw(e.target.value)}
-                  />
-                  <button onClick={setClientPassword} className="w-full rounded-lg border border-[var(--color-line-strong)] px-2 py-1.5 text-sm text-white/80 hover:bg-white/5">
+                  <label className="block text-xs text-white/90">
+                    Client password
+                    <input
+                      type="password"
+                      className="mt-1 min-h-11 w-full rounded-lg border border-[var(--color-line-subtle)] bg-black/30 px-2 py-2 text-sm text-white"
+                      value={clientPw}
+                      onChange={(e) => setClientPw(e.target.value)}
+                    />
+                  </label>
+                  <button onClick={setClientPassword} className="min-h-11 w-full rounded-lg border border-[var(--color-line-strong)] px-2 py-2 text-sm text-white/80 hover:bg-white/5">
                     Save client password
                   </button>
                 </div>
@@ -290,21 +341,26 @@ export default function StudioPage() {
                 {owners.length === 0 && <p className="text-xs text-[var(--color-text-secondary)]">No owner accounts yet. Master key only.</p>}
               </div>
               <div className="space-y-2">
-                <input
-                  type="email"
-                  className="w-full rounded-lg border border-[var(--color-line-subtle)] bg-black/30 px-2 py-1.5 text-sm text-white placeholder:text-[var(--color-text-secondary)]/60"
-                  placeholder="teammate@rapidstudios.dev"
-                  value={newOwnerEmail}
-                  onChange={(e) => setNewOwnerEmail(e.target.value)}
-                />
-                <input
-                  type="password"
-                  className="w-full rounded-lg border border-[var(--color-line-subtle)] bg-black/30 px-2 py-1.5 text-sm text-white placeholder:text-[var(--color-text-secondary)]/60"
-                  placeholder="Password (10+ chars)"
-                  value={newOwnerPw}
-                  onChange={(e) => setNewOwnerPw(e.target.value)}
-                />
-                <button onClick={addOwner} className="w-full rounded-lg border border-[var(--color-line-strong)] px-2 py-1.5 text-sm text-[var(--color-text-secondary)] hover:bg-white/5">
+                  <label className="block text-xs text-white/90">
+                    Teammate email
+                    <input
+                      type="email"
+                      className="mt-1 min-h-11 w-full rounded-lg border border-[var(--color-line-subtle)] bg-black/30 px-2 py-2 text-sm text-white placeholder:text-[var(--color-text-secondary)]"
+                      placeholder="teammate@rapidstudios.dev"
+                      value={newOwnerEmail}
+                      onChange={(e) => setNewOwnerEmail(e.target.value)}
+                    />
+                  </label>
+                  <label className="block text-xs text-white/90">
+                    Temporary password (10+ characters)
+                    <input
+                      type="password"
+                      className="mt-1 min-h-11 w-full rounded-lg border border-[var(--color-line-subtle)] bg-black/30 px-2 py-2 text-sm text-white"
+                      value={newOwnerPw}
+                      onChange={(e) => setNewOwnerPw(e.target.value)}
+                    />
+                  </label>
+                  <button onClick={addOwner} className="min-h-11 w-full rounded-lg border border-[var(--color-line-strong)] px-2 py-2 text-sm text-[var(--color-text-secondary)] hover:bg-white/5">
                   Add owner account
                 </button>
               </div>
@@ -316,31 +372,92 @@ export default function StudioPage() {
             {siteId ? (
               <>
                 <section className="rounded-[var(--radius-md)] border border-[var(--color-line-subtle)] bg-[var(--color-surface-soft)] p-4">
-                  <h2 className="mb-3 text-sm font-semibold">Ingest a page</h2>
-                  <div className="flex flex-wrap gap-2">
-                    <input
-                      className="min-w-0 flex-1 rounded-lg border border-[var(--color-line-subtle)] bg-black/30 px-3 py-2 text-sm text-white placeholder:text-[var(--color-text-secondary)]/60"
-                      placeholder="https://example.com"
-                      value={ingestUrl}
-                      onChange={(e) => setIngestUrl(e.target.value)}
-                    />
-                    <input
-                      className="w-28 rounded-lg border border-[var(--color-line-subtle)] bg-black/30 px-3 py-2 text-sm text-white placeholder:text-[var(--color-text-secondary)]/60"
-                      placeholder="/route"
-                      value={ingestRoute}
-                      onChange={(e) => setIngestRoute(e.target.value)}
-                    />
-                    <button onClick={doIngest} className="rounded-lg bg-[var(--color-brand-primary)] px-4 py-2 text-sm font-medium text-white hover:bg-[var(--color-brand-primary-hover)]">
-                      Ingest
+                  <h2 className="text-sm font-semibold">Add a page</h2>
+                  <p className="mb-4 mt-1 text-xs leading-relaxed text-[var(--color-text-secondary)]">
+                    Start with a guided, accessible draft. You can also import an existing page below.
+                  </p>
+                  <div className={`grid gap-3 ${pages.length === 0 ? "sm:grid-cols-2" : ""}`}>
+                    <label className="text-xs font-medium text-white/90">
+                      Page goal
+                      <select
+                        className="mt-1 min-h-11 w-full rounded-lg border border-[var(--color-line-subtle)] bg-[#0b1017] px-3 py-2 text-sm text-white"
+                        value={newPageTemplateId}
+                        onChange={(event) => setNewPageTemplateId(event.target.value)}
+                      >
+                        {designTemplates.map((template) => (
+                          <option key={template.id} value={template.id}>{template.name}</option>
+                        ))}
+                      </select>
+                    </label>
+                    {pages.length === 0 ? (
+                      <label className="text-xs font-medium text-white/90">
+                        Site visual direction
+                        <select
+                          className="mt-1 min-h-11 w-full rounded-lg border border-[var(--color-line-subtle)] bg-[#0b1017] px-3 py-2 text-sm text-white"
+                          value={newPageStyleKitId}
+                          onChange={(event) => setNewPageStyleKitId(event.target.value)}
+                        >
+                          {designStyleKits.map((kit) => (
+                            <option key={kit.id} value={kit.id}>{kit.name}</option>
+                          ))}
+                        </select>
+                      </label>
+                    ) : (
+                      <p className="self-end rounded-lg bg-black/20 p-3 text-xs leading-relaxed text-[var(--color-text-secondary)]">
+                        This new page will use the site&apos;s existing visual style, so other pages will not change unexpectedly.
+                      </p>
+                    )}
+                  </div>
+                  <div className="mt-3 flex flex-col gap-2 sm:flex-row">
+                    <label className="min-w-0 flex-1 text-xs font-medium text-white/90">
+                      Page address
+                      <input
+                        className="mt-1 min-h-11 w-full rounded-lg border border-[var(--color-line-subtle)] bg-black/30 px-3 py-2 text-sm text-white placeholder:text-[var(--color-text-secondary)]"
+                        placeholder="/"
+                        value={newPageRoute}
+                        onChange={(event) => setNewPageRoute(event.target.value)}
+                      />
+                    </label>
+                    <button
+                      onClick={createTemplatePage}
+                      disabled={designTemplates.length === 0 || designStyleKits.length === 0}
+                      className="min-h-11 self-end rounded-lg bg-[var(--color-brand-primary)] px-4 py-2 text-sm font-medium text-[var(--color-brand-on-primary)] hover:bg-[var(--color-brand-primary-hover)] disabled:opacity-40"
+                    >
+                      Create guided draft
                     </button>
                   </div>
+                  <p className="mt-3 rounded-lg bg-black/20 p-3 text-xs leading-relaxed text-[var(--color-text-secondary)]">
+                    {designTemplates.find((template) => template.id === newPageTemplateId)?.description ?? "Choose a page goal."}
+                  </p>
+                  <details className="mt-3 text-xs text-[var(--color-text-secondary)]">
+                    <summary className="min-h-11 cursor-pointer py-3 text-white/75">Import an existing webpage instead</summary>
+                    <div className="flex flex-col gap-2 sm:flex-row">
+                      <input
+                        className="min-h-11 min-w-0 flex-1 rounded-lg border border-[var(--color-line-subtle)] bg-black/30 px-3 py-2 text-sm text-white placeholder:text-[var(--color-text-secondary)]"
+                        placeholder="https://example.com"
+                        value={ingestUrl}
+                        onChange={(event) => setIngestUrl(event.target.value)}
+                      />
+                      <input
+                        aria-label="Imported page route"
+                        className="min-h-11 w-full rounded-lg border border-[var(--color-line-subtle)] bg-black/30 px-3 py-2 text-sm text-white placeholder:text-[var(--color-text-secondary)] sm:w-28"
+                        placeholder="/route"
+                        value={ingestRoute}
+                        onChange={(event) => setIngestRoute(event.target.value)}
+                      />
+                      <button onClick={doIngest} className="min-h-11 rounded-lg border border-[var(--color-line-strong)] px-4 py-2 text-sm font-medium text-white hover:bg-white/5">
+                        Import
+                      </button>
+                    </div>
+                  </details>
                   {pages.length > 0 && (
                     <div className="mt-3 flex flex-wrap gap-2">
                       {pages.map((p) => (
                         <button
                           key={p.id}
                           onClick={() => setPageId(p.id)}
-                          className={`rounded-md px-2 py-1 text-xs ${
+                          aria-current={pageId === p.id ? "page" : undefined}
+                          className={`min-h-11 rounded-md px-3 py-2 text-xs ${
                             pageId === p.id ? "bg-[var(--color-focus-ring)] text-white" : "bg-white/5 text-white/60 hover:bg-white/10"
                           }`}
                         >
@@ -352,10 +469,10 @@ export default function StudioPage() {
                 </section>
 
                 {pageId ? (
-                  <Editor token={token} siteId={siteId} pageId={pageId} role="owner" />
+                  <Editor key={`${siteId}:${pageId}`} token={token} siteId={siteId} pageId={pageId} role="owner" />
                 ) : (
                   <p className="rounded-xl border border-dashed border-[var(--color-line-subtle)] p-8 text-center text-sm text-[var(--color-text-secondary)]">
-                    Ingest a page to start editing.
+                    Create a guided draft or import a page to start editing.
                   </p>
                 )}
               </>

@@ -6,7 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test:cms:security": "node --test scripts/cms/security-hardening.test.mjs",
+    "test:cms:worker": "node --test scripts/cms-worker/tests/worker.test.mjs",
+    "test:cms:pipeline": "node --no-warnings --loader ./scripts/cms/tests/typescript-resolver.mjs --test ./scripts/cms/security-hardening.test.mjs ./scripts/cms/tests/pipeline-contracts.test.mjs",
+    "test:cms": "npm run test:cms:pipeline && npm run test:cms:worker",
+    "cms:worker": "node scripts/cms-worker/worker.mjs"
   },
   "dependencies": {
     "@mdx-js/loader": "3.1.1",

@@ -15,11 +15,14 @@
 - `ux-figma-code-pipeline`: Orchestrate the end-to-end human-in-the-loop UI pipeline across research, decision boards, token lock, Stitch prototypes, Figma review, implementation, style guide generation, and drift checks. Use as the default coordinator for new design work in this repository whenever the task spans multiple design phases. (file: `.codex/skills/ux-figma-code-pipeline/SKILL.md`)
 - `saas-dashboard-layouts`: Recommend reusable SaaS dashboard structures, KPI and table layouts, density models, and wireframe starting points. Use during research or spec work for analytics, admin, ops, or reporting surfaces. (file: `.codex/skills/saas-dashboard-layouts/SKILL.md`)
 - `app-onboarding-patterns`: Design onboarding flows with clear step structure, permission timing, personalization choices, motion guidance, and activation criteria. Use during research or spec work for first-run experiences on web, iOS, or Android products. (file: `.codex/skills/app-onboarding-patterns/SKILL.md`)
+- `impeccable`: Production frontend design vocabulary, critique, accessibility, responsive, typography, layout, motion, UX-writing, hardening, and deterministic anti-pattern detection. Use it for scoped UI evaluation and refinement after the repo coordinator has established the approved direction. (file: `.agents/skills/impeccable/SKILL.md`)
 
 ### Repo workflow
 - Use `ux-figma-code-pipeline` as the top-level coordinator for design work in this repo.
 - Store all artifacts under `design/`, using the expanded phase folders and the templates in `design/templates/`.
 - Pair repo-local skills with the global `figma`, `figma-implement-design`, and `playwright` skills when a phase needs MCP access, Figma automation, or browser automation.
+- For Studio and other product UI, optimize first for a new user completing the main task without training: familiar controls, plain labels, guided defaults, visible system status, forgiving errors, and progressive disclosure of advanced controls.
+- Use `impeccable` as the implementation-quality and anti-pattern layer. It does not replace the human approval gates or the Design Guardian.
 
 ### Usage rules
 - Read only the relevant `SKILL.md` first, then load extra files or templates as needed.

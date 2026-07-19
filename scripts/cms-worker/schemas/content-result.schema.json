@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Rapid Studios constrained content proposal",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["changes", "summary"],
+  "properties": {
+    "changes": {
+      "type": "array",
+      "maxItems": 100,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["slotId", "newValue"],
+        "properties": {
+          "slotId": { "type": "string", "minLength": 1, "maxLength": 160 },
+          "newValue": { "type": "string", "maxLength": 20000 }
+        }
+      }
+    },
+    "summary": { "type": "string", "minLength": 1, "maxLength": 500 }
+  }
+}

@@ -1,10 +1,12 @@
 import { StitchHomepage } from "@/components/pages/stitch-homepage";
+import { getManagedHomepageCopy } from "@/lib/content/managed-site";
 import { buildMetadata } from "@/lib/seo/metadata";
 
+const managedCopy = getManagedHomepageCopy();
+
 export const metadata = buildMetadata({
-  title: "Digital Products Designed to Ship",
-  description:
-    "Rapid Studios helps product teams design and launch polished digital products -- from positioning and UI to production frontend delivery.",
+  title: managedCopy["home.meta.title"],
+  description: managedCopy["home.meta.description"],
   pathname: "/"
 });
 

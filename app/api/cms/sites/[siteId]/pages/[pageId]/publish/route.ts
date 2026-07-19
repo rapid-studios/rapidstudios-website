@@ -1,7 +1,8 @@
 // app/api/cms/sites/[siteId]/pages/[pageId]/publish/route.ts
 import { NextResponse } from "next/server";
 import { requireOwner } from "@/lib/cms/auth/guard";
-import { publishToVercel } from "@/lib/cms/publish";
+import { enqueuePublishJob, workerHealth } from "@/lib/cms/jobs";
+import { jobErrorResponse } from "@/lib/cms/jobs/http";
 import { store } from "@/lib/cms/store";
 
 export const runtime = "nodejs";
@@ -18,23 +19,22 @@ export async function POST(request: Request, { params }: { params: Promise<{ sit
   const page = (site.pages || []).find((p) => p.id === pageId);
   if (!page) return NextResponse.json({ error: "Page not found" }, { status: 404 });
 
-  const projectName =
-    (site.domain || site.name || site.id)
-      .toString()
-      .toLowerCase()
-      .replace(/[^a-z0-9-]/g, "-")
-      .replace(/-+/g, "-")
-      .slice(0, 60) || "rapidstudios-site";
   try {
-    const result = await publishToVercel(page, { projectName, theme: site.theme });
-    return NextResponse.json({
-      published: true,
-      dryRun: result.dryRun,
-      url: result.url,
-      deploymentId: result.deploymentId,
-      bytes: result.bytes,
-    });
-  } catch (e) {
-    return NextResponse.json({ error: (e as Error).message }, { status: 502 });
+    const job = await enqueuePublishJob({ siteId, pageId });
+    const online = (await workerHealth()).some((worker) => worker.online && worker.capabilities.includes("publish"));
+    const response = NextResponse.json({
+      published: false,
+      queued: true,
+      jobId: job.id,
+      status: job.status,
+      workerOnline: online,
+      reviewRequired: true,
+      productionChangesAfterMerge: true,
+    }, { status: 202 });
+    response.headers.set("location", `/api/cms/jobs/${job.id}`);
+    response.headers.set("retry-after", "3");
+    return response;
+  } catch (error) {
+    return jobErrorResponse(error);
   }
 }
