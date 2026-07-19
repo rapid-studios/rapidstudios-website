@@ -409,10 +409,15 @@ async function git(config, cwd, args, signal, deadline) {
 }
 
 async function gh(config, cwd, args, signal, deadline) {
+  const options = commandOptions(cwd, signal, deadline, "publish_failed");
+  // `gh pr create` invokes Git internally even though gh itself is started by
+  // absolute path. The scheduled task has a deliberately small PATH, so make
+  // only the configured Git directory discoverable to that child process.
+  options.env = executableEnvironment(options.env, config.publish.gitExecutable);
   const result = await runProcess(
     config.publish.githubCliExecutable,
     args,
-    commandOptions(cwd, signal, deadline, "publish_failed"),
+    options,
   );
   if (result.code !== 0) {
     throw new WorkerError("publish_failed", `GitHub CLI command failed with code ${result.code}.`, {
@@ -488,6 +493,14 @@ export function npmEnvironment(
   nodeExecutable,
   platform = process.platform,
 ) {
+  return executableEnvironment(baseEnv, nodeExecutable, platform);
+}
+
+export function executableEnvironment(
+  baseEnv,
+  executable,
+  platform = process.platform,
+) {
   const pathApi = platform === "win32" ? path.win32 : path.posix;
   const pathKey = platform === "win32" ? "Path" : "PATH";
   const existingEntry = Object.entries(baseEnv).find(
@@ -497,7 +510,7 @@ export function npmEnvironment(
   for (const key of Object.keys(result)) {
     if (key.toLowerCase() === "path") delete result[key];
   }
-  result[pathKey] = [pathApi.dirname(nodeExecutable), existingEntry?.[1]]
+  result[pathKey] = [pathApi.dirname(executable), existingEntry?.[1]]
     .filter(Boolean)
     .join(pathApi.delimiter);
   return result;

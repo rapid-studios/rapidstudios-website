@@ -14,6 +14,7 @@ import {
 } from "../lib/contracts.mjs";
 import { canonicalRequest, signRequest, verifySignature } from "../lib/hmac.mjs";
 import {
+  executableEnvironment,
   npmEnvironment,
   npmInvocation,
   publicationCloneArgs,
@@ -108,6 +109,20 @@ test("publication clones preserve canonical LF snapshot bytes on Windows", () =>
     "https://github.com/rapid-studios/rapidstudios-website.git",
     "C:\\worker\\repo",
   ]);
+});
+
+test("GitHub publishing exposes only the configured Git directory on PATH", () => {
+  assert.deepEqual(
+    executableEnvironment(
+      { PATH: "C:\\Windows\\System32", TEMP: "C:\\Temp" },
+      "C:\\RapidStudios\\runtime\\Git\\cmd\\git.exe",
+      "win32",
+    ),
+    {
+      Path: "C:\\RapidStudios\\runtime\\Git\\cmd;C:\\Windows\\System32",
+      TEMP: "C:\\Temp",
+    },
+  );
 });
 
 test("HMAC canonical request exactly matches the server v1 protocol", () => {
