@@ -295,8 +295,12 @@ test("Codex output schemas are closed at every model-controlled object boundary"
   assert.equal(contentSchema.properties.changes.items.additionalProperties, false);
   assert.deepEqual(contentSchema.properties.changes.items.required, ["slotId", "newValue"]);
   assert.equal(themeSchema.additionalProperties, false);
-  assert.deepEqual(themeSchema.required, ["patch", "summary"]);
-  assert.equal(themeSchema.properties.patch.additionalProperties, false);
+  assert.deepEqual(themeSchema.required, ["theme", "summary"]);
+  assert.equal(themeSchema.properties.theme.additionalProperties, false);
+  assert.deepEqual(
+    [...themeSchema.properties.theme.required].sort(),
+    Object.keys(themeSchema.properties.theme.properties).sort()
+  );
 });
 
 test("design templates and style kits form a complete, internally valid library", () => {

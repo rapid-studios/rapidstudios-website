@@ -415,16 +415,83 @@ async function gh(config, cwd, args, signal, deadline) {
 }
 
 async function npm(config, cwd, args, signal, deadline) {
+  const invocation = npmInvocation(config.publish.npmExecutable, args);
+  if (invocation.npmCliPath) {
+    const stats = await lstat(invocation.npmCliPath).catch(() => null);
+    if (!stats?.isFile() || stats.isSymbolicLink()) {
+      throw new WorkerError("publish_failed", "The bundled npm CLI entry point is missing or unsafe.", {
+        retryable: false,
+      });
+    }
+  }
+  const options = commandOptions(
+    cwd,
+    signal,
+    deadline,
+    "publish_failed",
+    8 * 1024 * 1024,
+  );
+  if (invocation.npmCliPath) {
+    options.env = npmEnvironment(options.env, invocation.executable);
+  }
   const result = await runProcess(
-    config.publish.npmExecutable,
-    args,
-    commandOptions(cwd, signal, deadline, "publish_failed", 8 * 1024 * 1024),
+    invocation.executable,
+    invocation.args,
+    options,
   );
   if (result.code !== 0) {
     throw new WorkerError("publish_failed", `Validation command failed with code ${result.code}.`, {
       retryable: false,
     });
   }
+  return result;
+}
+
+export function npmInvocation(
+  npmExecutable,
+  args,
+  platform = process.platform,
+  nodeExecutable = process.execPath,
+) {
+  const pathApi = platform === "win32" ? path.win32 : path;
+  if (platform === "win32" && pathApi.extname(npmExecutable).toLowerCase() === ".cmd") {
+    const npmCliPath = pathApi.join(
+      pathApi.dirname(npmExecutable),
+      "node_modules",
+      "npm",
+      "bin",
+      "npm-cli.js",
+    );
+    return Object.freeze({
+      executable: nodeExecutable,
+      args: Object.freeze([npmCliPath, ...args]),
+      npmCliPath,
+    });
+  }
+  return Object.freeze({
+    executable: npmExecutable,
+    args: Object.freeze([...args]),
+    npmCliPath: null,
+  });
+}
+
+export function npmEnvironment(
+  baseEnv,
+  nodeExecutable,
+  platform = process.platform,
+) {
+  const pathApi = platform === "win32" ? path.win32 : path.posix;
+  const pathKey = platform === "win32" ? "Path" : "PATH";
+  const existingEntry = Object.entries(baseEnv).find(
+    ([key]) => key.toLowerCase() === "path",
+  );
+  const result = { ...baseEnv };
+  for (const key of Object.keys(result)) {
+    if (key.toLowerCase() === "path") delete result[key];
+  }
+  result[pathKey] = [pathApi.dirname(nodeExecutable), existingEntry?.[1]]
+    .filter(Boolean)
+    .join(pathApi.delimiter);
   return result;
 }
 

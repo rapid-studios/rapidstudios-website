@@ -3,11 +3,24 @@
   "title": "Rapid Studios constrained theme proposal",
   "type": "object",
   "additionalProperties": false,
-  "required": ["patch", "summary"],
+  "required": ["theme", "summary"],
   "properties": {
-    "patch": {
+    "theme": {
       "type": "object",
       "additionalProperties": false,
+      "required": [
+        "bg",
+        "surface",
+        "text",
+        "muted",
+        "accent",
+        "accentText",
+        "headingFont",
+        "bodyFont",
+        "radius",
+        "shadow",
+        "intensity"
+      ],
       "properties": {
         "bg": { "$ref": "#/$defs/color" },
         "surface": { "$ref": "#/$defs/color" },

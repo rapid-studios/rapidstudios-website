@@ -31,13 +31,24 @@ export async function runProcess(executable, args, options = {}) {
     const stdout = [];
     const stderr = [];
 
-    const child = spawn(executable, args, {
-      cwd,
-      env,
-      shell: false,
-      windowsHide: true,
-      stdio: ["pipe", "pipe", "pipe"],
-    });
+    let child;
+    try {
+      child = spawn(executable, args, {
+        cwd,
+        env,
+        shell: false,
+        windowsHide: true,
+        stdio: ["pipe", "pipe", "pipe"],
+      });
+    } catch (error) {
+      reject(
+        new WorkerError(failureCode, "The child process could not be started.", {
+          cause: error,
+          retryable: false,
+        }),
+      );
+      return;
+    }
 
     const finish = (fn, value) => {
       if (settled) return;

@@ -131,20 +131,30 @@ export function validateContentModelResult(raw, slots) {
   });
 }
 
-export function validateThemeModelResult(raw) {
-  const value = exactObject(raw, "theme result", ["patch", "summary"]);
-  const patchInput = plainObject(value.patch, "patch");
-  const unknown = Object.keys(patchInput).filter((key) => !THEME_KEYS.has(key));
-  if (unknown.length) invalid(`Theme result has unknown keys: ${unknown.join(", ")}.`);
+export function validateThemeModelResult(raw, currentTheme) {
+  const value = exactObject(raw, "theme result", ["theme", "summary"]);
+  const proposedTheme = validateFullTheme(value.theme, "theme result theme");
+  const normalizedCurrentTheme = validateFullTheme(currentTheme, "current theme");
   const patch = {};
-  for (const [key, candidate] of Object.entries(patchInput)) {
-    patch[key] = validateThemeValue(key, candidate);
+  for (const key of THEME_KEYS) {
+    if (proposedTheme[key] !== normalizedCurrentTheme[key]) {
+      patch[key] = proposedTheme[key];
+    }
   }
   return Object.freeze({
     kind: "theme",
     patch: Object.freeze(patch),
     summary: boundedString(value.summary, "summary", 1, 500),
   });
+}
+
+function validateFullTheme(value, label) {
+  const theme = exactObject(value, label, [...THEME_KEYS]);
+  const validated = {};
+  for (const key of THEME_KEYS) {
+    validated[key] = validateThemeValue(key, theme[key]);
+  }
+  return Object.freeze(validated);
 }
 
 function kindToCapability(kind) {
