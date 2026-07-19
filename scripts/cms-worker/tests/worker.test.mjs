@@ -13,8 +13,23 @@ import {
   validateThemeModelResult,
 } from "../lib/contracts.mjs";
 import { canonicalRequest, signRequest, verifySignature } from "../lib/hmac.mjs";
+import { npmEnvironment, npmInvocation } from "../lib/publisher.mjs";
 
 const testDir = path.dirname(fileURLToPath(import.meta.url));
+
+const CURRENT_THEME = Object.freeze({
+  bg: "#101822",
+  surface: "#121c2a",
+  text: "#f3f7ff",
+  muted: "#8fa8c9",
+  accent: "#3b8af0",
+  accentText: "#101822",
+  headingFont: "Inter, ui-sans-serif, system-ui, sans-serif",
+  bodyFont: "Inter, ui-sans-serif, system-ui, sans-serif",
+  radius: "24px",
+  shadow: "lg",
+  intensity: "tokens",
+});
 
 test("worker sleep keeps the process alive until the next queue poll", () => {
   const processModule = pathToFileURL(path.resolve(testDir, "../lib/process.mjs")).href;
@@ -29,6 +44,44 @@ test("worker sleep keeps the process alive until the next queue poll", () => {
   );
   assert.equal(child.status, 0, child.stderr);
   assert.equal(child.stdout, "done");
+});
+
+test("Windows publishing invokes npm through node without a command shell", () => {
+  const invocation = npmInvocation(
+    "C:\\RapidStudios\\runtime\\node\\npm.cmd",
+    ["run", "build"],
+    "win32",
+    "C:\\RapidStudios\\runtime\\node\\node.exe",
+  );
+  assert.equal(invocation.executable, "C:\\RapidStudios\\runtime\\node\\node.exe");
+  assert.deepEqual(invocation.args, [
+    "C:\\RapidStudios\\runtime\\node\\node_modules\\npm\\bin\\npm-cli.js",
+    "run",
+    "build",
+  ]);
+  assert.equal(
+    invocation.npmCliPath,
+    "C:\\RapidStudios\\runtime\\node\\node_modules\\npm\\bin\\npm-cli.js",
+  );
+
+  const unixInvocation = npmInvocation("/usr/bin/npm", ["ci"], "linux", "/usr/bin/node");
+  assert.deepEqual(unixInvocation, {
+    executable: "/usr/bin/npm",
+    args: ["ci"],
+    npmCliPath: null,
+  });
+
+  assert.deepEqual(
+    npmEnvironment(
+      { Path: "C:\\Windows\\System32", PATH: "ignored-duplicate", TEMP: "C:\\Temp" },
+      "C:\\RapidStudios\\runtime\\node\\node.exe",
+      "win32",
+    ),
+    {
+      Path: "C:\\RapidStudios\\runtime\\node;C:\\Windows\\System32",
+      TEMP: "C:\\Temp",
+    },
+  );
 });
 
 test("HMAC canonical request exactly matches the server v1 protocol", () => {
@@ -89,17 +142,41 @@ test("content compatibility normalization produces a server result envelope", ()
 });
 
 test("theme result remains inside the closed Design Guardian token set", () => {
-  const result = validateThemeModelResult({
-    patch: { bg: "#101820", accent: "#3b82f6", shadow: "md" },
-    summary: "Improved hierarchy with a high-contrast restrained theme.",
-  });
+  const result = validateThemeModelResult(
+    {
+      theme: {
+        ...CURRENT_THEME,
+        bg: "#101820",
+        accent: "#3b82f6",
+        shadow: "md",
+      },
+      summary: "Improved hierarchy with a high-contrast restrained theme.",
+    },
+    CURRENT_THEME,
+  );
   assert.equal(result.kind, "theme");
-  assert.equal(result.patch.shadow, "md");
+  assert.deepEqual(result.patch, {
+    bg: "#101820",
+    accent: "#3b82f6",
+    shadow: "md",
+  });
   assert.throws(() =>
-    validateThemeModelResult({
-      patch: { arbitraryCss: "body { display: none }" },
-      summary: "Unsafe",
-    }),
+    validateThemeModelResult(
+      {
+        theme: { ...CURRENT_THEME, arbitraryCss: "body { display: none }" },
+        summary: "Unsafe",
+      },
+      CURRENT_THEME,
+    ),
+  );
+  assert.throws(() =>
+    validateThemeModelResult(
+      {
+        theme: { ...CURRENT_THEME, bg: undefined },
+        summary: "Missing a required token",
+      },
+      CURRENT_THEME,
+    ),
   );
 });
 
@@ -116,7 +193,10 @@ test("safe no-op proposals complete with an operator-facing summary", () => {
     },
   );
   assert.deepEqual(
-    validateThemeModelResult({ patch: {}, summary: "No safe token change was needed." }),
+    validateThemeModelResult(
+      { theme: { ...CURRENT_THEME }, summary: "No safe token change was needed." },
+      CURRENT_THEME,
+    ),
     {
       kind: "theme",
       patch: {},
@@ -178,6 +258,13 @@ test("result schemas are valid JSON and canonical JSON sorts object keys", async
     const text = await readFile(path.resolve(testDir, "..", "schemas", name), "utf8");
     assert.equal(typeof JSON.parse(text), "object");
   }
+  const themeSchema = JSON.parse(
+    await readFile(path.resolve(testDir, "..", "schemas", "theme-result.schema.json"), "utf8"),
+  );
+  assert.deepEqual(
+    [...themeSchema.properties.theme.required].sort(),
+    Object.keys(themeSchema.properties.theme.properties).sort(),
+  );
   assert.equal(stableJson({ z: 1, a: { y: 2, b: 3 } }), '{\n  "a": {\n    "b": 3,\n    "y": 2\n  },\n  "z": 1\n}\n');
 });
 
