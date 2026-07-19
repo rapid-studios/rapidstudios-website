@@ -8,6 +8,15 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
+  CircleCheck,
+  FileText,
+  Monitor,
+  Palette,
+  RefreshCw,
+  ShieldCheck,
+  Smartphone,
+} from "lucide-react";
+import {
   cms,
   type CmsJobView,
   type ContentMap,
@@ -16,6 +25,7 @@ import {
   type PageView,
   type PendingEntry,
 } from "../_lib/cms-client";
+import styles from "../studio.module.css";
 
 type Verdict = { kind: "ok" | "bad"; text: string } | null;
 
@@ -53,11 +63,25 @@ export function Editor({
   const [workerOnline, setWorkerOnline] = useState<boolean | null>(null);
   const [activeJob, setActiveJob] = useState<CmsJobView | null>(null);
   const [dismissedJobId, setDismissedJobId] = useState<string | null>(null);
+  const [activePanel, setActivePanel] = useState<"content" | "look">("content");
+  const [previewMode, setPreviewMode] = useState<"desktop" | "mobile">("desktop");
   const [channelNonce] = useState(createEditorChannelNonce);
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const advancedEditorRef = useRef<HTMLDetailsElement | null>(null);
+  const contentPanelButtonRef = useRef<HTMLButtonElement | null>(null);
+  const lookPanelButtonRef = useRef<HTMLButtonElement | null>(null);
 
   const contentMap: ContentMap = page?.contentMap ?? {};
+
+  function showContentPanel() {
+    setActivePanel("content");
+    window.requestAnimationFrame(() => contentPanelButtonRef.current?.focus());
+  }
+
+  function showLookPanel() {
+    setActivePanel("look");
+    window.requestAnimationFrame(() => lookPanelButtonRef.current?.focus());
+  }
 
   const refreshPreview = useCallback(async () => {
     const html = await cms.editPreviewHtml(token, siteId, pageId, channelNonce);
@@ -119,6 +143,7 @@ export function Editor({
     });
     setBusy(false);
     if (res.ok && res.data.jobId) {
+      setActivePanel("content");
       setActiveJob({
         id: res.data.jobId,
         kind: "theme",
@@ -139,6 +164,7 @@ export function Editor({
   }
 
   async function resetTheme() {
+    if (!window.confirm("Restore the site's original visual style? You can create a new proposal afterward.")) return;
     setBusy(true);
     const res = await cms.clearTheme(token, siteId);
     setBusy(false);
@@ -272,6 +298,7 @@ export function Editor({
     const res = await cms.postAi(token, siteId, pageId, instruction.trim(), apply);
     setBusy(false);
     if (res.ok && res.data.jobId) {
+      setActivePanel("content");
       setActiveJob({
         id: res.data.jobId,
         kind: "content",
@@ -301,6 +328,7 @@ export function Editor({
   }
 
   async function doRollback(snapshotId: string) {
+    if (!window.confirm("Restore this earlier version? A new rollback point will be saved.")) return;
     const res = await cms.rollback(token, siteId, pageId, snapshotId);
     if (res.ok) {
       setVerdict({ kind: "ok", text: `Rolled back to ${snapshotId}` });
@@ -325,6 +353,7 @@ export function Editor({
   }
 
   async function doPublish() {
+    setActivePanel("content");
     setBusy(true);
     const res = await cms.publish(token, siteId, pageId);
     setBusy(false);
@@ -369,9 +398,80 @@ export function Editor({
   const jobInProgress = Boolean(activeJob && ["queued", "leased", "applying"].includes(activeJob.status));
 
   return (
-    <div className="grid min-w-0 gap-4 lg:grid-cols-2">
-      {/* Left column: editing controls */}
-      <div className="min-w-0 space-y-4">
+    <div className={styles.editorGrid} data-testid="studio-editor-workspace">
+      <section className={styles.previewPane} aria-labelledby="live-preview-title">
+        <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+          <div className="min-w-0">
+            <div className="flex items-center gap-2">
+              <h2 id="live-preview-title" className="text-sm font-semibold text-white">Live page preview</h2>
+              <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-emerald-300">
+                <CircleCheck size={12} aria-hidden="true" /> Live
+              </span>
+            </div>
+            <p className="mt-1 text-xs text-[#93a9c5]">Click a field in the page, or use Tab and Enter, to edit it.</p>
+          </div>
+          <div className="flex items-center gap-1" role="group" aria-label="Preview size">
+            <button
+              onClick={() => setPreviewMode("desktop")}
+              aria-pressed={previewMode === "desktop"}
+              className={`grid h-11 w-11 place-items-center rounded-lg ${previewMode === "desktop" ? "bg-[#18345a] text-white" : "text-[#93a9c5] hover:bg-white/5 hover:text-white"}`}
+              title="Desktop preview"
+            >
+              <Monitor size={17} aria-hidden="true" />
+            </button>
+            <button
+              onClick={() => setPreviewMode("mobile")}
+              aria-pressed={previewMode === "mobile"}
+              className={`grid h-11 w-11 place-items-center rounded-lg ${previewMode === "mobile" ? "bg-[#18345a] text-white" : "text-[#93a9c5] hover:bg-white/5 hover:text-white"}`}
+              title="Mobile preview"
+            >
+              <Smartphone size={17} aria-hidden="true" />
+            </button>
+            <button onClick={refreshPreview} className="grid h-11 w-11 place-items-center rounded-lg text-[#93a9c5] hover:bg-white/5 hover:text-white" title="Refresh preview">
+              <RefreshCw size={17} aria-hidden="true" />
+            </button>
+          </div>
+        </div>
+        <div className={`${styles.previewViewport} ${previewMode === "mobile" ? styles.previewViewportMobile : ""}`} data-testid="studio-preview-frame">
+          <iframe
+            ref={iframeRef}
+            title="Editable page preview"
+            sandbox="allow-scripts"
+            referrerPolicy="same-origin"
+            className={styles.previewIframe}
+          />
+        </div>
+        <p className="mt-3 flex items-center gap-2 text-xs text-[#6f87a7]">
+          <ShieldCheck size={15} className="shrink-0 text-[#438eff]" aria-hidden="true" />
+          Every change is checked before it can reach the live site.
+        </p>
+      </section>
+
+      <aside
+        className={`${styles.inspector} ${activePanel === "content" ? "" : "hidden"}`}
+        aria-label="Content editing tools"
+      >
+        <div className={`${styles.stickyInspector} space-y-4`}>
+          {role === "owner" && (
+            <div className="flex min-h-11 rounded-lg bg-[#07111f] p-1" role="group" aria-label="Editing mode">
+              <button
+                ref={contentPanelButtonRef}
+                aria-pressed={activePanel === "content"}
+                onClick={showContentPanel}
+                className="flex min-h-9 flex-1 items-center justify-center gap-2 rounded-md bg-[#18345a] px-3 text-xs font-semibold text-white"
+              >
+                <FileText size={15} aria-hidden="true" /> Content
+              </button>
+              <button
+                aria-label="Look, review, and publish"
+                aria-pressed={activePanel === "look"}
+                onClick={showLookPanel}
+                className="flex min-h-9 flex-1 items-center justify-center gap-2 rounded-md px-3 text-xs font-semibold text-[#93a9c5] hover:text-white"
+              >
+                <Palette size={15} aria-hidden="true" /> Look
+              </button>
+            </div>
+          )}
         {verdict && (
           <div
             role={verdict.kind === "bad" ? "alert" : "status"}
@@ -514,6 +614,49 @@ export function Editor({
           </section>
         )}
 
+        <section className="rounded-[var(--radius-md)] border border-[var(--color-line-subtle)] bg-[var(--color-surface-soft)] p-4">
+          <h3 className="mb-1 text-sm font-semibold text-white">Describe the change you want</h3>
+          <p className="mb-3 text-xs text-[var(--color-text-secondary)]">Explain how the page should read. Codex can edit only the fields already on this page.</p>
+          <textarea
+            className="mb-2 min-h-28 w-full resize-y rounded-lg border border-[var(--color-line-subtle)] bg-black/30 px-3 py-3 text-sm leading-5 text-white placeholder:text-[var(--color-text-secondary)]"
+            placeholder='For example: "Make the headline clearer for SaaS founders"'
+            value={instruction}
+            onChange={(e) => setInstruction(e.target.value)}
+          />
+          <div>
+            <button
+              onClick={() => runAi(false)}
+              disabled={busy || jobInProgress}
+              className="min-h-11 w-full rounded-lg bg-[var(--color-brand-primary)] px-3 py-2 text-sm font-medium text-[var(--color-brand-on-primary)] hover:bg-[var(--color-brand-primary-hover)] disabled:opacity-40"
+            >
+              Generate proposal
+            </button>
+          </div>
+          <p className="mt-3 text-xs leading-5 text-[var(--color-text-secondary)]">Codex drafts the change. You review and approve it before anything reaches the live site.</p>
+        </section>
+
+        <section className="rounded-[var(--radius-md)] border border-[var(--color-line-subtle)] bg-[var(--color-surface-soft)] p-4">
+          <div className="mb-3 flex items-center justify-between">
+            <h3 className="text-sm font-semibold text-white">Editable page content</h3>
+            <span className="text-xs text-[var(--color-text-secondary)]">{slotEntries.length} editable</span>
+          </div>
+          <div className="max-h-64 space-y-1 overflow-auto">
+            {slotEntries.map(([id, s]) => (
+              <button
+                key={id}
+                onClick={() => {
+                  setSlotId(id);
+                  setValue(typeof s.value === "string" ? s.value : "");
+                }}
+                className="flex min-h-11 w-full items-center gap-2 rounded-md px-2 py-2 text-left text-xs hover:bg-white/5"
+              >
+                <span className="shrink-0 rounded bg-white/10 px-1.5 py-0.5 uppercase text-[var(--color-text-secondary)]">{s.type}</span>
+                <span className="truncate text-[var(--color-text-secondary)]">{String(s.value).slice(0, 70)}</span>
+              </button>
+            ))}
+          </div>
+        </section>
+
         <details ref={advancedEditorRef} className="rounded-[var(--radius-md)] border border-[var(--color-line-subtle)] bg-[var(--color-surface-soft)] p-4">
           <summary className="min-h-11 cursor-pointer py-2 text-sm font-semibold text-white">Advanced: edit a field by its slot ID</summary>
           <div className="mt-3 space-y-2">
@@ -547,70 +690,33 @@ export function Editor({
             </div>
           </div>
         </details>
+        </div>
+      </aside>
 
-        <section className="rounded-[var(--radius-md)] border border-[var(--color-line-subtle)] bg-[var(--color-surface-soft)] p-4">
-          <h3 className="mb-1 text-sm font-semibold text-white">Change page copy</h3>
-          <p className="mb-3 text-xs text-[var(--color-text-secondary)]">Describe the outcome. Codex can edit only the fields already on this page.</p>
-          <input
-            className="mb-2 min-h-11 w-full rounded-lg border border-[var(--color-line-subtle)] bg-black/30 px-3 py-2 text-sm text-white placeholder:text-[var(--color-text-secondary)]"
-            placeholder='For example: "Make the headline clearer for SaaS founders"'
-            value={instruction}
-            onChange={(e) => setInstruction(e.target.value)}
-          />
-          <div>
-            <button
-              onClick={() => runAi(false)}
-              disabled={busy || jobInProgress}
-              className="min-h-11 w-full rounded-lg bg-[var(--color-brand-primary)] px-3 py-2 text-sm font-medium text-[var(--color-brand-on-primary)] hover:bg-[var(--color-brand-primary-hover)] disabled:opacity-40"
-            >
-              Create copy proposal
-            </button>
-          </div>
-        </section>
-
-        <section className="rounded-[var(--radius-md)] border border-[var(--color-line-subtle)] bg-[var(--color-surface-soft)] p-4">
-          <div className="mb-3 flex items-center justify-between">
-            <h3 className="text-sm font-semibold text-white">Slots</h3>
-            <span className="text-xs text-[var(--color-text-secondary)]">{slotEntries.length} editable</span>
-          </div>
-          <div className="max-h-64 space-y-1 overflow-auto">
-            {slotEntries.map(([id, s]) => (
-              <button
-                key={id}
-                onClick={() => {
-                  setSlotId(id);
-                  setValue(typeof s.value === "string" ? s.value : "");
-                }}
-                className="flex min-h-11 w-full items-center gap-2 rounded-md px-2 py-2 text-left text-xs hover:bg-white/5"
-              >
-                <span className="shrink-0 rounded bg-white/10 px-1.5 py-0.5 uppercase text-[var(--color-text-secondary)]">{s.type}</span>
-                <span className="truncate text-[var(--color-text-secondary)]">{String(s.value).slice(0, 70)}</span>
-              </button>
-            ))}
-          </div>
-        </section>
-      </div>
-
-      {/* Right column: preview + owner tools */}
-      <div className="min-w-0 space-y-4">
-        <section className="rounded-[var(--radius-md)] border border-[var(--color-line-subtle)] bg-[var(--color-surface-soft)] p-4">
-          <div className="mb-3 flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between">
-            <h3 className="min-w-0 text-sm font-semibold text-white">Live preview — click a field or use Tab and Enter to edit</h3>
-            <button onClick={refreshPreview} className="min-h-11 shrink-0 rounded-lg border border-[var(--color-line-strong)] px-3 py-2 text-xs text-[var(--color-text-secondary)] hover:bg-white/5">
-              Refresh
-            </button>
-          </div>
-          <iframe
-            ref={iframeRef}
-            title="preview"
-            sandbox="allow-scripts"
-            referrerPolicy="same-origin"
-            className="h-[360px] w-full rounded-lg border border-[var(--color-line-subtle)] bg-white"
-          />
-        </section>
-
-        {role === "owner" && (
-          <>
+      {role === "owner" && (
+          <aside
+            className={`${styles.inspector} ${activePanel === "look" ? "" : "hidden"}`}
+            aria-label="Design and publishing tools"
+          >
+            <div className={`${styles.stickyInspector} space-y-4`}>
+              <div className="flex min-h-11 rounded-lg bg-[#07111f] p-1" role="group" aria-label="Editing mode">
+                <button
+                  aria-pressed={activePanel === "content"}
+                  onClick={showContentPanel}
+                  className="flex min-h-9 flex-1 items-center justify-center gap-2 rounded-md px-3 text-xs font-semibold text-[#93a9c5] hover:text-white"
+                >
+                  <FileText size={15} aria-hidden="true" /> Content
+                </button>
+                <button
+                  ref={lookPanelButtonRef}
+                  aria-label="Look, review, and publish"
+                  aria-pressed={activePanel === "look"}
+                  onClick={showLookPanel}
+                  className="flex min-h-9 flex-1 items-center justify-center gap-2 rounded-md bg-[#18345a] px-3 text-xs font-semibold text-white"
+                >
+                  <Palette size={15} aria-hidden="true" /> Look
+                </button>
+              </div>
             <section className="rounded-[var(--radius-md)] border border-[var(--color-line-subtle)] bg-[var(--color-surface-soft)] p-4">
               <div className="mb-3 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div className="min-w-0">
@@ -762,9 +868,9 @@ export function Editor({
                 ))}
               </div>
             </section>
-          </>
-        )}
-      </div>
+            </div>
+          </aside>
+      )}
     </div>
   );
 }
