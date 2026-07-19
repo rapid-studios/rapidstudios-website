@@ -20,8 +20,20 @@ $codexOAuth = "Not checked"
 $githubAccount = "Not checked"
 if ($Deep -and $config) {
   if (Test-Path -LiteralPath ([string]$config.codexExecutable) -PathType Leaf) {
-    $codexResult = & ([string]$config.codexExecutable) login status 2>&1 | Out-String
-    $codexOAuth = if ($codexResult -match "Logged in using ChatGPT") { "Ready (ChatGPT OAuth)" } else { "Not ready" }
+    # codex.exe reports its successful login status on stderr. Windows
+    # PowerShell 5.1 promotes native stderr to an error record when the script
+    # preference is Stop, so capture it under Continue and restore the caller's
+    # preference immediately afterward.
+    $previousErrorActionPreference = $ErrorActionPreference
+    $codexResult = ""
+    try {
+      $ErrorActionPreference = "Continue"
+      $codexResult = & ([string]$config.codexExecutable) login status 2>&1 | Out-String
+      $codexExitCode = $LASTEXITCODE
+    } finally {
+      $ErrorActionPreference = $previousErrorActionPreference
+    }
+    $codexOAuth = if ($codexExitCode -eq 0 -and $codexResult -match "Logged in using ChatGPT") { "Ready (ChatGPT OAuth)" } else { "Not ready" }
   } else {
     $codexOAuth = "Codex executable missing"
   }
