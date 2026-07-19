@@ -54,7 +54,10 @@ $requiredExecutables = @(
   [string]$config.publish.npmExecutable
 )
 foreach ($executable in $requiredExecutables) {
-  if (-not [IO.Path]::IsPathFullyQualified($executable) -or -not (Test-Path -LiteralPath $executable -PathType Leaf)) {
+  # Windows PowerShell 5.1 runs on .NET Framework, which does not expose
+  # IsPathFullyQualified. IsPathRooted provides the same guard for the
+  # drive-qualified Windows paths accepted by this installer.
+  if (-not [IO.Path]::IsPathRooted($executable) -or -not (Test-Path -LiteralPath $executable -PathType Leaf)) {
     throw "Every executable path in config.json must be absolute and point to an existing file."
   }
 }

@@ -1,9 +1,10 @@
 import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
 import { createHash, createHmac } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 import {
   normalizeJob,
@@ -14,6 +15,21 @@ import {
 import { canonicalRequest, signRequest, verifySignature } from "../lib/hmac.mjs";
 
 const testDir = path.dirname(fileURLToPath(import.meta.url));
+
+test("worker sleep keeps the process alive until the next queue poll", () => {
+  const processModule = pathToFileURL(path.resolve(testDir, "../lib/process.mjs")).href;
+  const child = spawnSync(
+    process.execPath,
+    [
+      "--input-type=module",
+      "--eval",
+      `import { sleep } from ${JSON.stringify(processModule)}; await sleep(25); process.stdout.write("done");`,
+    ],
+    { encoding: "utf8", timeout: 2_000 },
+  );
+  assert.equal(child.status, 0, child.stderr);
+  assert.equal(child.stdout, "done");
+});
 
 test("HMAC canonical request exactly matches the server v1 protocol", () => {
   const fields = {

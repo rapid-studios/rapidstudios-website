@@ -140,6 +140,5 @@ export async function sleep(ms, signal) {
       reject(new WorkerError("aborted", "Sleep cancelled."));
     };
     signal?.addEventListener("abort", onAbort, { once: true });
-    timer.unref?.();
   });
 }
