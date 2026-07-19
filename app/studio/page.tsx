@@ -256,8 +256,8 @@ export default function StudioPage() {
 
   // --- Console ---
   return (
-    <main className="min-h-screen px-4 py-6 text-white">
-      <div className="mx-auto max-w-6xl">
+    <main className="min-h-screen overflow-x-clip px-4 py-6 text-white">
+      <div className="mx-auto min-w-0 max-w-6xl">
         <header className="mb-6 flex items-center justify-between">
           <div>
             <h1 className="font-display text-lg font-semibold">Rapid Studios — CMS</h1>
@@ -270,9 +270,9 @@ export default function StudioPage() {
 
         {notice && <div role="status" aria-live="polite" className="mb-4 rounded-lg bg-[var(--color-focus-ring)] px-3 py-2 text-sm text-[var(--color-text-primary)]">{notice}</div>}
 
-        <div className="grid gap-4 lg:grid-cols-[280px_1fr]">
+        <div className="grid min-w-0 gap-4 lg:grid-cols-[280px_1fr]">
           {/* Sidebar: sites */}
-          <aside className="space-y-4">
+          <aside className="min-w-0 space-y-4">
             <section className="rounded-[var(--radius-md)] border border-[var(--color-line-subtle)] bg-[var(--color-surface-soft)] p-4">
               <h2 className="mb-3 text-sm font-semibold">Sites</h2>
               <div className="mb-3 space-y-1">
@@ -285,8 +285,8 @@ export default function StudioPage() {
                       siteId === s.id ? "bg-[var(--color-focus-ring)] text-white" : "text-[var(--color-text-secondary)] hover:bg-white/5"
                     }`}
                   >
-                    <span className="truncate">{s.name}</span>
-                    <span className="text-xs text-[var(--color-text-secondary)]">{s.pages} {s.pages === 1 ? "page" : "pages"}</span>
+                    <span className="min-w-0 truncate">{s.name}</span>
+                    <span className="shrink-0 text-xs text-[var(--color-text-secondary)]">{s.pages} {s.pages === 1 ? "page" : "pages"}</span>
                   </button>
                 ))}
                 {sites.length === 0 && <p className="text-xs text-[var(--color-text-secondary)]">No sites yet.</p>}
@@ -368,7 +368,7 @@ export default function StudioPage() {
           </aside>
 
           {/* Main: ingest + pages + editor */}
-          <div className="space-y-4">
+          <div className="min-w-0 space-y-4">
             {siteId ? (
               <>
                 <section className="rounded-[var(--radius-md)] border border-[var(--color-line-subtle)] bg-[var(--color-surface-soft)] p-4">

@@ -369,9 +369,9 @@ export function Editor({
   const jobInProgress = Boolean(activeJob && ["queued", "leased", "applying"].includes(activeJob.status));
 
   return (
-    <div className="grid gap-4 lg:grid-cols-2">
+    <div className="grid min-w-0 gap-4 lg:grid-cols-2">
       {/* Left column: editing controls */}
-      <div className="space-y-4">
+      <div className="min-w-0 space-y-4">
         {verdict && (
           <div
             role={verdict.kind === "bad" ? "alert" : "status"}
@@ -388,8 +388,8 @@ export function Editor({
             aria-live="polite"
             className="rounded-[var(--radius-md)] border border-[var(--color-line-strong)] bg-[var(--color-surface-soft)] p-4"
           >
-            <div className="flex items-start justify-between gap-3">
-              <div>
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <div className="min-w-0 flex-1">
                 <h3 className="text-sm font-semibold text-white">
                   {activeJob.kind === "publish"
                     ? "Publishing preview"
@@ -592,11 +592,11 @@ export function Editor({
       </div>
 
       {/* Right column: preview + owner tools */}
-      <div className="space-y-4">
+      <div className="min-w-0 space-y-4">
         <section className="rounded-[var(--radius-md)] border border-[var(--color-line-subtle)] bg-[var(--color-surface-soft)] p-4">
-          <div className="mb-3 flex items-center justify-between">
-            <h3 className="text-sm font-semibold text-white">Live preview — click a field or use Tab and Enter to edit</h3>
-            <button onClick={refreshPreview} className="min-h-11 rounded-lg border border-[var(--color-line-strong)] px-3 py-2 text-xs text-[var(--color-text-secondary)] hover:bg-white/5">
+          <div className="mb-3 flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <h3 className="min-w-0 text-sm font-semibold text-white">Live preview — click a field or use Tab and Enter to edit</h3>
+            <button onClick={refreshPreview} className="min-h-11 shrink-0 rounded-lg border border-[var(--color-line-strong)] px-3 py-2 text-xs text-[var(--color-text-secondary)] hover:bg-white/5">
               Refresh
             </button>
           </div>
@@ -612,12 +612,12 @@ export function Editor({
         {role === "owner" && (
           <>
             <section className="rounded-[var(--radius-md)] border border-[var(--color-line-subtle)] bg-[var(--color-surface-soft)] p-4">
-              <div className="mb-3 flex items-center justify-between">
-                <div>
+              <div className="mb-3 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div className="min-w-0">
                   <h3 className="text-sm font-semibold text-white">Change the site&apos;s design</h3>
                   <p className="mt-1 text-xs text-[var(--color-text-secondary)]">Visual changes apply consistently across every page in this site.</p>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2">
                   {activeTheme && (
                     <button onClick={resetTheme} disabled={busy || jobInProgress} className="min-h-11 rounded-lg border border-[var(--color-line-strong)] px-3 py-2 text-xs text-[var(--color-text-secondary)] hover:bg-white/5 disabled:opacity-40">
                       Restore original
@@ -704,7 +704,7 @@ export function Editor({
             </section>
 
             <section className="rounded-[var(--radius-md)] border border-[var(--color-line-subtle)] bg-[var(--color-surface-soft)] p-4">
-              <div className="mb-3 flex items-center justify-between">
+              <div className="mb-3 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <h3 className="text-sm font-semibold text-white">Pending approval</h3>
                 <span className="text-xs text-[var(--color-text-secondary)]">{pending.length} waiting</span>
               </div>
@@ -735,7 +735,7 @@ export function Editor({
             </section>
 
             <section className="rounded-[var(--radius-md)] border border-[var(--color-line-subtle)] bg-[var(--color-surface-soft)] p-4">
-              <div className="mb-3 flex items-center justify-between">
+              <div className="mb-3 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <h3 className="text-sm font-semibold text-white">Version history</h3>
                 {canPublishManagedHomepage && (
                   <button
@@ -749,13 +749,13 @@ export function Editor({
               </div>
               <div className="max-h-48 space-y-1 overflow-auto">
                 {(page?.versions ?? []).map((v, i, arr) => (
-                  <div key={v.id} className="flex items-center gap-2 border-b border-white/5 py-1.5 text-xs">
-                    <code className="text-[var(--color-brand-primary)]">{v.id}</code>
-                    <span className="flex-1 text-[var(--color-text-secondary)]">
+                  <div key={v.id} className="flex flex-wrap items-center gap-2 border-b border-white/5 py-1.5 text-xs">
+                    <code className="min-w-0 break-all text-[var(--color-brand-primary)]">{v.id}</code>
+                    <span className="min-w-0 flex-1 text-[var(--color-text-secondary)]">
                       {new Date(v.createdAt).toLocaleString()}
                       {i === arr.length - 1 ? " · latest" : i === 0 ? " · ingest" : ""}
                     </span>
-                    <button onClick={() => doRollback(v.id)} className="min-h-11 rounded-md border border-[var(--color-line-strong)] px-3 py-2 text-[var(--color-text-secondary)] hover:bg-white/5">
+                    <button onClick={() => doRollback(v.id)} className="min-h-11 shrink-0 rounded-md border border-[var(--color-line-strong)] px-3 py-2 text-[var(--color-text-secondary)] hover:bg-white/5">
                       Restore
                     </button>
                   </div>
