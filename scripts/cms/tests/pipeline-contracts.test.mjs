@@ -351,7 +351,26 @@ test("checked-in managed snapshot validates, hashes deterministically, and uses 
   const snapshot = validateManagedSnapshot(rawSnapshot);
   assert.deepEqual(snapshot.publishTarget, MANAGED_HOMEPAGE_PUBLISH_TARGET);
   assert.deepEqual(getManagedHomepageSnapshot(), snapshot);
-  assert.equal(isManagedHomepagePlaceholder(snapshot), true);
+  assert.equal(isManagedHomepagePlaceholder(snapshot), false);
+  assert.equal(snapshot.provenance.source, "local-codex-worker");
+  assert.ok(snapshot.provenance.jobId);
+
+  const bootstrapSnapshot = exportManagedSnapshot({
+    schemaVersion: 1,
+    publishTarget: MANAGED_HOMEPAGE_PUBLISH_TARGET,
+    provenance: {
+      source: "bootstrap",
+      snapshotId: "rapidstudios-homepage-bootstrap-test",
+      jobId: null,
+      publishedAt: "2026-07-19T00:00:00.000Z",
+      publishedBy: "rapidstudios-cms-bootstrap",
+    },
+    theme: snapshot.theme,
+    slots: Object.fromEntries(
+      MANAGED_HOMEPAGE_MANIFEST.map(({ key, defaultValue }) => [key, defaultValue])
+    ),
+  });
+  assert.equal(isManagedHomepagePlaceholder(bootstrapSnapshot), true);
 
   const exported = {
     schemaVersion: snapshot.schemaVersion,
@@ -398,7 +417,7 @@ test("managed homepage projection is a closed manifest with immutable slot const
     provenance,
     theme: snapshot.theme,
   });
-  assert.equal(projected.slots[MANAGED_HOMEPAGE_MANIFEST[0].key], MANAGED_HOMEPAGE_MANIFEST[0].defaultValue);
+  assert.deepEqual(projected.slots, snapshot.slots);
   assert.deepEqual(projected.publishTarget, MANAGED_HOMEPAGE_PUBLISH_TARGET);
 
   const withUnknownSlot = structuredClone(contentMap);
