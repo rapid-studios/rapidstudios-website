@@ -13,7 +13,11 @@ import {
   validateThemeModelResult,
 } from "../lib/contracts.mjs";
 import { canonicalRequest, signRequest, verifySignature } from "../lib/hmac.mjs";
-import { npmEnvironment, npmInvocation } from "../lib/publisher.mjs";
+import {
+  npmEnvironment,
+  npmInvocation,
+  publicationCloneArgs,
+} from "../lib/publisher.mjs";
 
 const testDir = path.dirname(fileURLToPath(import.meta.url));
 
@@ -82,6 +86,28 @@ test("Windows publishing invokes npm through node without a command shell", () =
       TEMP: "C:\\Temp",
     },
   );
+});
+
+test("publication clones preserve canonical LF snapshot bytes on Windows", () => {
+  const args = publicationCloneArgs(
+    "C:\\worker\\empty-hooks",
+    "cms/job_publish123",
+    "C:\\worker\\repo",
+  );
+  assert.deepEqual(args.slice(0, 6), [
+    "-c",
+    "core.hooksPath=C:\\worker\\empty-hooks",
+    "-c",
+    "core.autocrlf=false",
+    "-c",
+    "core.eol=lf",
+  ]);
+  assert.deepEqual(args.slice(-4), [
+    "--branch",
+    "cms/job_publish123",
+    "https://github.com/rapid-studios/rapidstudios-website.git",
+    "C:\\worker\\repo",
+  ]);
 });
 
 test("HMAC canonical request exactly matches the server v1 protocol", () => {

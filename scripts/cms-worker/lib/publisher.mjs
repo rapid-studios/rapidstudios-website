@@ -166,18 +166,7 @@ async function remoteBranch(config, branch, cwd, signal, deadline) {
 async function cloneBranch(config, cloneDir, emptyHooksDir, branch, signal, deadline) {
   const result = await runProcess(
     config.publish.gitExecutable,
-    [
-      "-c",
-      `core.hooksPath=${emptyHooksDir}`,
-      "clone",
-      "--filter=blob:none",
-      "--no-tags",
-      "--single-branch",
-      "--branch",
-      branch,
-      GITHUB_REPOSITORY_URL,
-      cloneDir,
-    ],
+    publicationCloneArgs(emptyHooksDir, branch, cloneDir),
     commandOptions(path.dirname(cloneDir), signal, deadline, "publish_failed", 4 * 1024 * 1024),
   );
   if (result.code !== 0) {
@@ -185,6 +174,25 @@ async function cloneBranch(config, cloneDir, emptyHooksDir, branch, signal, dead
       retryable: true,
     });
   }
+}
+
+export function publicationCloneArgs(emptyHooksDir, branch, cloneDir) {
+  return Object.freeze([
+    "-c",
+    `core.hooksPath=${emptyHooksDir}`,
+    "-c",
+    "core.autocrlf=false",
+    "-c",
+    "core.eol=lf",
+    "clone",
+    "--filter=blob:none",
+    "--no-tags",
+    "--single-branch",
+    "--branch",
+    branch,
+    GITHUB_REPOSITORY_URL,
+    cloneDir,
+  ]);
 }
 
 async function verifyClone(config, cloneDir, branch, signal, deadline) {
