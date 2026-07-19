@@ -1,8 +1,15 @@
 node_modules
 .next
+.vercel
 .turbo
 dist
 coverage
 *.log
+*.tsbuildinfo
+.env*
+!.env.example
 output/
 .playwright-cli/
+
+# AI-CMS local filesystem store
+.cms-data/
