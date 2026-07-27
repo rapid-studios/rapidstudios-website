@@ -11,6 +11,8 @@ import {
   Palette
 } from "lucide-react";
 
+import { Reveal } from "@/components/motion/reveal";
+import { CmsSizzleReel } from "@/components/sections/cms-sizzle-reel";
 import { Button } from "@/components/ui/button";
 import { TrackedLink } from "@/components/ui/tracked-link";
 import { getCaseStudyMedia } from "@/lib/content/case-study-media";
@@ -65,271 +67,379 @@ export function StitchHomepage() {
   return (
     <>
       <style>{getManagedHomepageThemeCss(snapshot.theme)}</style>
-    <div
-      className="bg-[var(--color-canvas)] text-[var(--color-text-primary)]"
-      data-managed-homepage="rapidstudios"
-      style={{ fontFamily: "var(--font-stitch), sans-serif" }}
-    >
-      {/* Hero */}
-      <section className="mx-auto flex max-w-7xl flex-col items-center px-4 pb-20 pt-40 text-center">
-        <div className="mb-8 inline-flex items-center gap-2 rounded-full bg-[var(--color-brand-primary)]/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.28em] text-[var(--color-brand-primary)]">
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--color-brand-primary)] opacity-75"></span>
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--color-brand-primary)]"></span>
-          </span>
-          {copy["home.hero.eyebrow"]}
-        </div>
-        <h1 className="mb-8 max-w-5xl text-5xl font-black leading-[1.1] tracking-tight md:text-8xl">
-          {copy["home.hero.headlinePrefix"]}{" "}
-          <span className="italic text-[var(--color-brand-primary)]">{copy["home.hero.headlineEmphasis"]}</span>
-        </h1>
-        <p className="mb-12 max-w-2xl text-lg text-[var(--color-text-secondary)] md:text-xl">
-          {copy["home.hero.description"]}
-        </p>
-        <div className="flex flex-col gap-4 sm:flex-row">
-          <Button asChild className="h-auto px-10 py-5 text-lg font-bold shadow-[0_28px_70px_rgba(59,138,240,0.22)]">
-            <TrackedLink href="/contact" trackLabel={copy["home.hero.primaryCta"]} trackLocation="hero">
-              {copy["home.hero.primaryCta"]}
-            </TrackedLink>
-          </Button>
-          <Button asChild className="h-auto bg-[var(--color-surface-soft)] px-10 py-5 text-lg font-bold backdrop-blur-[12px]" variant="secondary">
-            <TrackedLink href="/work" trackLabel={copy["home.hero.secondaryCta"]} trackLocation="hero">
-              {copy["home.hero.secondaryCta"]}
-            </TrackedLink>
-          </Button>
-        </div>
-      </section>
-
-      {/* Audience Pills */}
-      <section className="border-y border-[var(--color-line-subtle)] py-8">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-x-8 gap-y-3 px-4">
-          <span className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-text-secondary)]">
-            {copy["home.audience.label"]}
-          </span>
-          {audiencePills.map((label) => (
-            <span
-              className="rounded-full border border-[var(--color-line-subtle)] px-4 py-1.5 text-sm font-medium text-[var(--color-text-secondary)]"
-              key={label}
-            >
-              {label}
-            </span>
-          ))}
-        </div>
-      </section>
-
-      {/* Differentiators */}
-      <section className="py-20">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-4 sm:grid-cols-2 md:grid-cols-4">
-          {differentiators.map(({ title, description }) => (
-            <div
-              className="rounded-xl border border-[var(--color-line-subtle)] bg-[var(--color-canvas)] p-6"
-              key={title}
-            >
-              <p className="mb-2 text-lg font-bold text-[var(--color-text-primary)]">{title}</p>
-              <p className="text-sm leading-relaxed text-[var(--color-text-secondary)]">{description}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Services */}
-      <section className="mx-auto max-w-7xl px-4 py-24">
-        <div className="mb-16 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-          <div>
-            <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-brand-primary)]">
-              {copy["home.services.eyebrow"]}
-            </p>
-            <h2 className="mb-4 text-4xl font-black">{copy["home.services.title"]}</h2>
-            <p className="max-w-xl text-[var(--color-text-secondary)]">
-              {copy["home.services.description"]}
-            </p>
-          </div>
-          <Link className="group flex items-center gap-2 font-bold text-[var(--color-brand-primary)]" href="/services">
-            {copy["home.services.linkLabel"]}
-            <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-          </Link>
-        </div>
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-          {services.map(({ title, kicker, description, icon: Icon }) => (
-            <div
-              className="group rounded-xl border border-[var(--color-line-subtle)] bg-[var(--color-canvas)]/40 p-8 transition-all hover:border-[var(--color-brand-primary)]/50"
-              key={title}
-            >
-              <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-full bg-[var(--color-brand-primary)]/10 text-[var(--color-brand-primary)] transition-transform group-hover:scale-110">
-                <Icon className="size-6" />
-              </div>
-              <p className="mb-1 text-xs font-bold uppercase tracking-[0.15em] text-[var(--color-brand-primary)]">{kicker}</p>
-              <h3 className="mb-3 text-xl font-bold">{title}</h3>
-              <p className="text-sm leading-relaxed text-[var(--color-text-secondary)]">{description}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Selected Work */}
-      <section className="bg-[var(--color-canvas)] py-24">
-        <div className="mx-auto max-w-7xl px-4">
-          <div className="mb-16 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-            <div>
-              <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-brand-primary)]">
-                {copy["home.portfolio.eyebrow"]}
-              </p>
-              <h2 className="mb-4 text-4xl font-black">{copy["home.portfolio.title"]}</h2>
-              <p className="text-[var(--color-text-secondary)]">{copy["home.portfolio.description"]}</p>
-            </div>
-            <Link className="group flex items-center gap-2 font-bold text-[var(--color-brand-primary)]" href="/work">
-              {copy["home.portfolio.linkLabel"]}
-              <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-            </Link>
-          </div>
-          <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
-            {featuredStudies.map((study, studyIndex) => (
-              <Link className="group block" href={`/work/${study.slug}`} key={study.slug}>
-                {(() => {
-                  const visuals = getCaseStudyMedia(study.slug);
-                  const featuredImage =
-                    study.slug === "codeverified" ? visuals.gallery[2] ?? visuals.cover : visuals.cover;
-
-                  return (
-                    <div className="relative mb-6 aspect-[4/3] overflow-hidden rounded-xl bg-[var(--color-surface)]">
-                      <Image
-                        alt={study.imageAlt}
-                        className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-                        fill
-                        priority={studyIndex === 0}
-                        sizes="(min-width: 768px) 33vw, 100vw"
-                        src={featuredImage}
-                      />
-                    </div>
-                  );
-                })()}
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-[var(--color-brand-primary)]">
-                      {study.tag}
-                    </p>
-                    <h3 className="mb-2 text-2xl font-bold">{study.title}</h3>
-                    <p className="text-[var(--color-text-secondary)]">{study.summary}</p>
-                  </div>
-                  <ArrowUpRight className="mt-1 size-5 shrink-0 text-[var(--color-text-secondary)]" />
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Why Teams Bring Us In */}
-      <section className="bg-[var(--color-surface)]/30 py-24">
-        <div className="mx-auto max-w-7xl px-4">
-          <div className="mb-16 text-center">
-            <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-brand-primary)]">
-              {copy["home.reasons.eyebrow"]}
-            </p>
-            <h2 className="text-4xl font-black">{copy["home.reasons.title"]}</h2>
-          </div>
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-            {clientReasons.map((item) => (
-              <article
-                className="rounded-[1.25rem] border border-[var(--color-line-subtle)] bg-[var(--color-canvas)] p-8"
-                key={item.title}
-              >
-                <h3 className="mb-4 text-lg font-bold leading-snug text-[var(--color-text-primary)]">{item.title}</h3>
-                <p className="text-sm leading-relaxed text-[var(--color-text-secondary)]">{item.description}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Process */}
-      <section className="mx-auto max-w-7xl overflow-hidden px-4 py-24">
-        <div className="mb-20 text-center">
-          <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-brand-primary)]">
-            {copy["home.process.eyebrow"]}
-          </p>
-          <h2 className="text-4xl font-black">{copy["home.process.title"]}</h2>
-        </div>
-        <div className="relative">
-          <div className="absolute left-0 top-1/2 hidden h-px w-full -translate-y-1/2 bg-[var(--color-line-subtle)] md:block"></div>
-          <div className="relative grid grid-cols-1 gap-12 md:grid-cols-3">
-            {processSteps.map((step) => (
-              <div
-                className="relative z-10 flex flex-col items-center rounded-xl border border-[var(--color-line-subtle)] bg-[var(--color-canvas)] p-8 text-center"
-                key={step.step}
-              >
-                <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-full bg-[var(--color-brand-primary)] text-xl font-black text-white shadow-[0_18px_44px_rgba(59,138,240,0.22)]">
-                  {step.step}
-                </div>
-                <h3 className="mb-3 text-xl font-bold">{step.title}</h3>
-                <p className="text-sm text-[var(--color-text-secondary)]">{step.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="mt-12 text-center">
-          <Link className="group inline-flex items-center gap-2 font-bold text-[var(--color-brand-primary)]" href="/process">
-            {copy["home.process.linkLabel"]}
-            <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-          </Link>
-        </div>
-      </section>
-
-      {/* What Happens After You Reach Out */}
-      <section className="mx-auto max-w-7xl px-4 py-24">
-        <div className="mb-16 text-center">
-          <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-brand-primary)]">
-            {copy["home.nextSteps.eyebrow"]}
-          </p>
-          <h2 className="mb-4 text-4xl font-black">{copy["home.nextSteps.title"]}</h2>
-          <p className="mx-auto max-w-xl text-[var(--color-text-secondary)]">
-            {copy["home.nextSteps.description"]}
-          </p>
-        </div>
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-          {nextSteps.map(({ step, title, description, icon: Icon }) => (
-            <div className="flex gap-5" key={step}>
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[var(--color-brand-primary)]/10 text-[var(--color-brand-primary)]">
-                <Icon className="size-5" />
-              </div>
+      <div
+        className="bg-[var(--color-canvas)] pb-24 text-[var(--color-text-primary)]"
+        data-managed-homepage="rapidstudios"
+        style={{ fontFamily: "var(--font-stitch), sans-serif" }}
+      >
+        <Reveal>
+          <section className="mx-auto max-w-7xl px-4 pb-18 pt-32 md:px-6 lg:px-8">
+            <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
               <div>
-                <p className="mb-1 text-sm font-bold text-[var(--color-brand-primary)]">
-                  {copy["home.nextSteps.stepLabel"]} {step}
+                <span className="protocol-label">{copy["home.hero.eyebrow"]}</span>
+                <h1 className="mt-8 text-[clamp(3.8rem,8vw,7.4rem)] font-black uppercase leading-[0.9] tracking-[-0.08em] text-[var(--color-text-primary)]">
+                  {copy["home.hero.headlinePrefix"]}{" "}
+                  <span className="text-[var(--color-brand-primary-strong)]">
+                    {copy["home.hero.headlineEmphasis"]}
+                  </span>
+                </h1>
+                <p className="mt-8 max-w-2xl text-xl leading-relaxed text-[var(--color-text-secondary)]">
+                  {copy["home.hero.description"]}
                 </p>
-                <h3 className="mb-2 text-lg font-bold">{title}</h3>
-                <p className="text-sm leading-relaxed text-[var(--color-text-secondary)]">{description}</p>
+                <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+                  <Button asChild size="large">
+                    <TrackedLink
+                      href="/contact"
+                      trackLabel={copy["home.hero.primaryCta"]}
+                      trackLocation="hero"
+                    >
+                      {copy["home.hero.primaryCta"]}
+                    </TrackedLink>
+                  </Button>
+                  <Button asChild size="large" variant="secondary">
+                    <TrackedLink
+                      href="/work"
+                      trackLabel={copy["home.hero.secondaryCta"]}
+                      trackLocation="hero"
+                    >
+                      {copy["home.hero.secondaryCta"]}
+                    </TrackedLink>
+                  </Button>
+                </div>
+                <div className="mt-10">
+                  <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--color-text-muted)]">
+                    {copy["home.audience.label"]}
+                  </p>
+                  <div className="flex flex-wrap gap-3">
+                    {audiencePills.map((label, index) => (
+                      <Reveal delay={0.08 + index * 0.04} key={label}>
+                        <span className="data-chip">{label}</span>
+                      </Reveal>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <Reveal delay={0.08} from="right">
+                <aside className="surface-card p-7 sm:p-8">
+                  <div className="border-b border-[var(--color-line-subtle)] pb-4">
+                    <span className="protocol-label">{copy["home.process.eyebrow"]}</span>
+                  </div>
+                  <div className="mt-6 space-y-6">
+                    <div>
+                      <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--color-brand-primary-strong)]">
+                        {copy["home.services.eyebrow"]}
+                      </p>
+                      <h2 className="mt-3 text-3xl font-black uppercase tracking-[-0.06em] text-[var(--color-text-primary)]">
+                        {differentiators[0].title}
+                      </h2>
+                      <p className="mt-4 text-base leading-7 text-[var(--color-text-secondary)]">
+                        {differentiators[0].description}
+                      </p>
+                    </div>
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      {differentiators.slice(1, 3).map((item, index) => (
+                        <Reveal delay={0.14 + index * 0.04} key={item.title}>
+                          <div className="dossier-tape dossier-tape--tight h-full border border-[var(--color-line-subtle)] bg-[var(--color-surface)] p-4">
+                            <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-[var(--color-text-muted)]">
+                              {item.title}
+                            </p>
+                            <p className="mt-3 text-3xl font-black uppercase tracking-[-0.06em] text-[var(--color-brand-accent)]">
+                              0{index + 2}
+                            </p>
+                          </div>
+                        </Reveal>
+                      ))}
+                    </div>
+                    <Reveal delay={0.22}>
+                      <div className="dossier-tape dossier-tape--tight border border-[var(--color-line-subtle)] bg-[var(--color-surface)] p-5">
+                        <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--color-brand-primary-strong)]">
+                          {copy["home.process.title"]}
+                        </p>
+                        <ul className="mt-4 space-y-3 text-sm leading-7 text-[var(--color-text-secondary)]">
+                          {processSteps.map((step) => (
+                            <li key={step.step}>
+                              {step.step}. {step.title}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </Reveal>
+                  </div>
+                </aside>
+              </Reveal>
+            </div>
+          </section>
+        </Reveal>
+
+        <Reveal delay={0.02}>
+          <section
+            aria-label={copy["home.services.title"]}
+            className="mx-auto w-full max-w-[1120px] px-4 pb-18 md:px-6"
+          >
+            <CmsSizzleReel />
+          </section>
+        </Reveal>
+
+        <Reveal delay={0.04}>
+          <section className="mx-auto max-w-7xl px-4 pb-18 md:px-6 lg:px-8">
+            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+              {differentiators.map(({ title, description }, index) => (
+                <Reveal delay={0.06 + index * 0.04} key={title}>
+                  <article className="surface-card interactive-card p-6">
+                    <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--color-brand-primary-strong)]">
+                      0{index + 1}
+                    </p>
+                    <h2 className="mt-4 text-2xl font-black uppercase tracking-[-0.05em] text-[var(--color-text-primary)]">
+                      {title}
+                    </h2>
+                    <p className="mt-4 text-base leading-7 text-[var(--color-text-secondary)]">
+                      {description}
+                    </p>
+                  </article>
+                </Reveal>
+              ))}
+            </div>
+          </section>
+        </Reveal>
+
+        <Reveal delay={0.06}>
+          <section className="mx-auto max-w-7xl px-4 py-18 md:px-6 lg:px-8">
+            <div className="mb-12 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+              <div>
+                <span className="protocol-label">{copy["home.services.eyebrow"]}</span>
+                <h2 className="mt-6 text-5xl font-black uppercase tracking-[-0.07em] text-[var(--color-text-primary)]">
+                  {copy["home.services.title"]}
+                </h2>
+                <p className="mt-5 max-w-2xl text-base leading-7 text-[var(--color-text-secondary)]">
+                  {copy["home.services.description"]}
+                </p>
+              </div>
+              <Link className="annotation-tag" href="/services">
+                {copy["home.services.linkLabel"]}
+                <ArrowRight aria-hidden="true" className="size-4" />
+              </Link>
+            </div>
+
+            <div className="grid gap-6 lg:grid-cols-3">
+              {services.map(({ title, kicker, description, icon: Icon }, index) => (
+                <Reveal delay={0.1 + index * 0.05} key={title}>
+                  <article className="surface-card interactive-card p-7">
+                    <div className="flex items-start justify-between gap-4 border-b border-[var(--color-line-subtle)] pb-5">
+                      <div>
+                        <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--color-brand-primary-strong)]">
+                          0{index + 1} / {kicker}
+                        </p>
+                        <h3 className="mt-4 text-3xl font-black uppercase tracking-[-0.06em] text-[var(--color-text-primary)]">
+                          {title}
+                        </h3>
+                      </div>
+                      <div className="inline-flex size-12 shrink-0 items-center justify-center border border-[var(--color-line-subtle)] bg-[var(--color-surface)] text-[var(--color-brand-accent)]">
+                        <Icon aria-hidden="true" className="size-6" />
+                      </div>
+                    </div>
+                    <p className="mt-6 text-base leading-7 text-[var(--color-text-secondary)]">{description}</p>
+                  </article>
+                </Reveal>
+              ))}
+            </div>
+          </section>
+        </Reveal>
+
+        <Reveal delay={0.08}>
+          <section className="mx-auto max-w-7xl px-4 py-18 md:px-6 lg:px-8">
+            <div className="mb-12 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+              <div>
+                <span className="protocol-label">{copy["home.portfolio.eyebrow"]}</span>
+                <h2 className="mt-6 text-5xl font-black uppercase tracking-[-0.07em] text-[var(--color-text-primary)]">
+                  {copy["home.portfolio.title"]}
+                </h2>
+                <p className="mt-5 text-base leading-7 text-[var(--color-text-secondary)]">
+                  {copy["home.portfolio.description"]}
+                </p>
+              </div>
+              <Link className="annotation-tag" href="/work">
+                {copy["home.portfolio.linkLabel"]}
+                <ArrowRight aria-hidden="true" className="size-4" />
+              </Link>
+            </div>
+
+            <div className="grid gap-8 md:grid-cols-3">
+              {featuredStudies.map((study, studyIndex) => (
+                <Reveal delay={0.12 + studyIndex * 0.06} key={study.slug}>
+                  <Link className="media-link group" href={`/work/${study.slug}`}>
+                    {(() => {
+                      const visuals = getCaseStudyMedia(study.slug);
+                      const featuredImage =
+                        study.slug === "codeverified" ? visuals.gallery[2] ?? visuals.cover : visuals.cover;
+
+                      return (
+                        <article className="surface-card interactive-card media-card overflow-hidden">
+                          <div className="media-frame aspect-[4/3] border-b border-[var(--color-line-subtle)] bg-[var(--color-surface)]">
+                            <Image
+                              alt={study.imageAlt}
+                              className="media-asset object-cover"
+                              fill
+                              priority={studyIndex === 0}
+                              sizes="(min-width: 768px) 33vw, 100vw"
+                              src={featuredImage}
+                            />
+                          </div>
+                          <div className="flex items-start justify-between gap-4 p-6">
+                            <div>
+                              <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--color-brand-primary-strong)]">
+                                {study.tag}
+                              </p>
+                              <h3 className="mt-4 text-3xl font-black uppercase tracking-[-0.06em] text-[var(--color-text-primary)]">
+                                {study.title}
+                              </h3>
+                              <p className="mt-4 text-base leading-7 text-[var(--color-text-secondary)]">
+                                {study.summary}
+                              </p>
+                            </div>
+                            <ArrowUpRight
+                              aria-hidden="true"
+                              className="mt-1 size-5 shrink-0 text-[var(--color-brand-accent)]"
+                            />
+                          </div>
+                        </article>
+                      );
+                    })()}
+                  </Link>
+                </Reveal>
+              ))}
+            </div>
+          </section>
+        </Reveal>
+
+        <Reveal delay={0.1}>
+          <section className="mx-auto max-w-7xl px-4 py-18 md:px-6 lg:px-8">
+            <div className="mb-12 text-center">
+              <span className="protocol-label justify-center">{copy["home.reasons.eyebrow"]}</span>
+              <h2 className="mt-6 text-5xl font-black uppercase tracking-[-0.07em] text-[var(--color-text-primary)]">
+                {copy["home.reasons.title"]}
+              </h2>
+            </div>
+            <div className="grid gap-6 md:grid-cols-3">
+              {clientReasons.map((item, index) => (
+                <Reveal delay={0.12 + index * 0.05} key={item.title}>
+                  <article className="surface-card p-7">
+                    <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--color-brand-primary-strong)]">
+                      0{index + 1}
+                    </p>
+                    <h3 className="mt-4 text-2xl font-black uppercase tracking-[-0.05em] text-[var(--color-text-primary)]">
+                      {item.title}
+                    </h3>
+                    <p className="mt-4 text-base leading-7 text-[var(--color-text-secondary)]">
+                      {item.description}
+                    </p>
+                  </article>
+                </Reveal>
+              ))}
+            </div>
+          </section>
+        </Reveal>
+
+        <Reveal delay={0.12}>
+          <section className="mx-auto max-w-7xl px-4 py-18 md:px-6 lg:px-8">
+            <div className="mb-12 text-center">
+              <span className="protocol-label justify-center">{copy["home.process.eyebrow"]}</span>
+              <h2 className="mt-6 text-5xl font-black uppercase tracking-[-0.07em] text-[var(--color-text-primary)]">
+                {copy["home.process.title"]}
+              </h2>
+            </div>
+            <div className="grid gap-6 lg:grid-cols-3">
+              {processSteps.map((step, index) => (
+                <Reveal delay={0.14 + index * 0.05} key={step.step}>
+                  <article className="surface-card p-7">
+                    <div className="border-b border-[var(--color-line-subtle)] pb-5">
+                      <p className="text-5xl font-black uppercase tracking-[-0.08em] text-[var(--color-brand-accent)]">
+                        {step.step}
+                      </p>
+                    </div>
+                    <h3 className="mt-6 text-3xl font-black uppercase tracking-[-0.05em] text-[var(--color-text-primary)]">
+                      {step.title}
+                    </h3>
+                    <p className="mt-4 text-base leading-7 text-[var(--color-text-secondary)]">
+                      {step.description}
+                    </p>
+                  </article>
+                </Reveal>
+              ))}
+            </div>
+            <div className="mt-10 text-center">
+              <Link className="annotation-tag" href="/process">
+                {copy["home.process.linkLabel"]}
+                <ArrowRight aria-hidden="true" className="size-4" />
+              </Link>
+            </div>
+          </section>
+        </Reveal>
+
+        <Reveal delay={0.14}>
+          <section className="mx-auto max-w-7xl px-4 py-18 md:px-6 lg:px-8">
+            <div className="mb-12 text-center">
+              <span className="protocol-label justify-center">{copy["home.nextSteps.eyebrow"]}</span>
+              <h2 className="mt-6 text-5xl font-black uppercase tracking-[-0.07em] text-[var(--color-text-primary)]">
+                {copy["home.nextSteps.title"]}
+              </h2>
+              <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-[var(--color-text-secondary)]">
+                {copy["home.nextSteps.description"]}
+              </p>
+            </div>
+            <div className="grid gap-6 md:grid-cols-3">
+              {nextSteps.map(({ step, title, description, icon: Icon }, index) => (
+                <Reveal delay={0.16 + index * 0.05} key={step}>
+                  <article className="surface-card p-7">
+                    <div className="flex items-center gap-4 border-b border-[var(--color-line-subtle)] pb-5">
+                      <div className="inline-flex size-12 items-center justify-center border border-[var(--color-line-subtle)] bg-[var(--color-surface)] text-[var(--color-brand-primary-strong)]">
+                        <Icon aria-hidden="true" className="size-5" />
+                      </div>
+                      <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--color-brand-primary-strong)]">
+                        {copy["home.nextSteps.stepLabel"]} {step}
+                      </p>
+                    </div>
+                    <h3 className="mt-6 text-2xl font-black uppercase tracking-[-0.05em] text-[var(--color-text-primary)]">
+                      {title}
+                    </h3>
+                    <p className="mt-4 text-base leading-7 text-[var(--color-text-secondary)]">
+                      {description}
+                    </p>
+                  </article>
+                </Reveal>
+              ))}
+            </div>
+          </section>
+        </Reveal>
+
+        <Reveal delay={0.16}>
+          <section className="px-4 py-18 md:px-6 lg:px-8">
+            <div className="cta-shell mx-auto max-w-7xl p-10 text-center md:p-16">
+              <span className="protocol-label justify-center">{copy["home.cta.button"]}</span>
+              <h2 className="mt-6 text-5xl font-black uppercase tracking-[-0.07em] text-[var(--color-text-primary)] md:text-6xl">
+                {copy["home.cta.title"]}
+              </h2>
+              <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-[var(--color-text-secondary)]">
+                {copy["home.cta.description"]}
+              </p>
+              <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+                <Button asChild size="large">
+                  <TrackedLink
+                    href="/contact"
+                    trackLabel={copy["home.cta.button"]}
+                    trackLocation="bottom_cta"
+                  >
+                    {copy["home.cta.button"]}
+                  </TrackedLink>
+                </Button>
+                <Button asChild size="large" variant="secondary">
+                  <Link href="/work">{copy["home.portfolio.linkLabel"]}</Link>
+                </Button>
               </div>
             </div>
-          ))}
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="px-4 py-24">
-        <div className="cta-shell relative mx-auto max-w-7xl overflow-hidden p-12 text-center text-white md:p-24">
-          <div className="pointer-events-none absolute inset-0 opacity-10">
-            <div className="absolute left-0 top-0 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white blur-3xl"></div>
-            <div className="absolute bottom-0 right-0 h-96 w-96 translate-x-1/2 translate-y-1/2 rounded-full bg-black blur-3xl"></div>
-          </div>
-          <div className="relative z-10">
-            <h2 className="mb-4 text-4xl font-black leading-tight md:text-6xl">
-              {copy["home.cta.title"]}
-            </h2>
-            <p className="mx-auto mb-8 max-w-lg text-lg text-white/80">
-              {copy["home.cta.description"]}
-            </p>
-            <Button
-              asChild
-              className="h-auto bg-white px-10 py-5 text-xl font-bold text-[var(--color-brand-primary)] shadow-xl hover:bg-[var(--color-brand-primary-hover)] hover:text-white"
-            >
-              <TrackedLink href="/contact" trackLabel={copy["home.cta.button"]} trackLocation="bottom_cta">
-                {copy["home.cta.button"]}
-              </TrackedLink>
-            </Button>
-          </div>
-        </div>
-      </section>
-    </div>
+          </section>
+        </Reveal>
+      </div>
     </>
   );
 }

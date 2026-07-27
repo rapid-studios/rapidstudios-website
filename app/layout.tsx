@@ -1,19 +1,21 @@
 import type { Metadata } from "next";
-import { Inter, Manrope, Space_Grotesk } from "next/font/google";
+import { Inter, Space_Grotesk } from "next/font/google";
 
 import { Analytics } from "@vercel/analytics/next";
 
 import { getOrganizationSchema, getWebSiteSchema } from "@/lib/seo/json-ld";
 import { siteConfig } from "@/lib/site-data";
+import { getThemeInitScript } from "@/lib/theme";
 
 import "../styles/globals.css";
+import "../styles/liquid-glass.css";
 
 const display = Space_Grotesk({
   subsets: ["latin"],
   variable: "--font-display"
 });
 
-const body = Manrope({
+const body = Inter({
   subsets: ["latin"],
   variable: "--font-body"
 });
@@ -42,8 +44,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html data-theme="dark" lang="en" suppressHydrationWarning>
       <body className={`${display.variable} ${body.variable} ${stitch.variable} antialiased`}>
+        <script dangerouslySetInnerHTML={{ __html: getThemeInitScript() }} />
         <script
           dangerouslySetInnerHTML={{
             __html: JSON.stringify([getOrganizationSchema(), getWebSiteSchema()])

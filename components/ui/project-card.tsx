@@ -12,10 +12,15 @@ type ProjectCardProps = {
 
 export function ProjectCard({ study, variant = "grid" }: ProjectCardProps) {
   return (
-    <article className={cn("interactive-card surface-card overflow-hidden p-5 sm:p-6", variant === "featured" && "lg:p-7")}>
+    <article
+      className={cn(
+        "interactive-card media-card surface-card overflow-hidden p-5 sm:p-6",
+        variant === "featured" && "lg:p-7"
+      )}
+    >
       <div
         className={cn(
-          "relative overflow-hidden rounded-[var(--radius-lg)] border border-white/40",
+          "media-frame relative rounded-[var(--radius-lg)] border border-white/40",
           variant === "featured" ? "h-64 sm:h-72" : "h-56"
         )}
         style={{

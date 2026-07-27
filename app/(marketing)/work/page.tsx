@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 
+import { Reveal } from "@/components/motion/reveal";
 import { Button } from "@/components/ui/button";
 import { getCaseStudyMedia } from "@/lib/content/case-study-media";
 import { getAllCaseStudies } from "@/lib/content/case-studies";
@@ -20,145 +21,144 @@ export default function WorkPage() {
   const [featured, ...rest] = studies;
 
   return (
-    <div className="pb-24 pt-16" style={{ fontFamily: "var(--font-stitch), sans-serif" }}>
-      <section className="mx-auto max-w-7xl px-4 pb-12 pt-20">
-        <h1 className="text-6xl font-black tracking-[-0.08em] text-[var(--color-text-primary)] md:text-[7rem]">
-          Our Work
-        </h1>
-        <p className="mt-5 max-w-3xl text-xl leading-relaxed text-[var(--color-text-secondary)]">
-          A curated portfolio of high-impact digital products and experiences built for global brands and ambitious startups.
-        </p>
-        <div className="mt-14 flex flex-wrap gap-3">
-          {filters.map((filter, index) => (
-            <span
-              className={`rounded-full px-6 py-3 text-lg font-semibold ${
-                index === 0
-                  ? "bg-[var(--color-brand-primary)] text-white"
-                  : "border border-[var(--color-line-subtle)] bg-white/4 text-[var(--color-text-primary)]"
-              }`}
-              key={filter}
-            >
-              {filter}
-            </span>
-          ))}
-        </div>
-      </section>
-
-      {featured ? (
-        <section className="mx-auto max-w-7xl px-4 pb-8">
-          <Link className="group block" href={`/work/${featured.slug}`}>
-            <article className="overflow-hidden rounded-[2.2rem] border border-[var(--color-line-subtle)] bg-[rgba(18,28,42,0.86)] shadow-[var(--shadow-float)]">
-              <div className="relative aspect-[16/9] bg-[linear-gradient(135deg,#274f70,#406f76)]">
-                <Image
-                  alt={featured.highlight}
-                  className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-                  fill
-                  sizes="100vw"
-                  src={getCaseStudyMedia(featured.slug).cover}
-                />
-              </div>
-              <div className="grid gap-6 px-8 py-8 md:grid-cols-[1fr_auto] md:items-end">
-                <div>
-                  <p className="text-sm uppercase tracking-[0.18em] text-[var(--color-text-secondary)]">Featured project</p>
-                  <h2 className="mt-4 text-4xl font-black tracking-[-0.05em] text-[var(--color-text-primary)]">
-                    {featured.title}
-                  </h2>
-                  <p className="mt-4 max-w-3xl text-lg leading-relaxed text-[var(--color-text-secondary)]">
-                    {featured.summary}
-                  </p>
-                  <div className="mt-6 flex flex-wrap gap-3">
-                    {featured.metrics.map((metric) => (
-                      <div
-                        className="rounded-full border border-[var(--color-line-subtle)] bg-white/4 px-4 py-2 text-sm text-[var(--color-text-primary)]"
-                        key={metric.label}
-                      >
-                        <span className="font-semibold text-[var(--color-brand-accent)]">{metric.value}</span> {metric.label}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <div className="inline-flex items-center gap-2 rounded-full bg-[var(--color-brand-primary)] px-6 py-3 text-sm font-bold text-white">
-                  View Case Study
-                  <ArrowRight className="size-4" />
-                </div>
-              </div>
-            </article>
-          </Link>
+    <div className="liquid-page pb-24">
+      <Reveal>
+        <section className="liquid-hero mx-auto max-w-[1180px] px-4 pb-14 pt-16 sm:px-6 sm:pb-16 sm:pt-20 lg:px-8 lg:pt-[120px]">
+          <span className="protocol-label">Artifact Archive</span>
+          <h1 className="liquid-h1 mx-auto mt-6 max-w-[900px] text-[var(--color-text-primary)]">
+            Our work
+          </h1>
+          <p className="liquid-lead mt-6 max-w-[680px] text-[var(--color-text-secondary)]">
+            A curated portfolio of high-impact digital products and experiences built for global brands and ambitious startups.
+          </p>
+          <div aria-label="Project categories" className="mt-9 flex flex-wrap gap-3">
+            {filters.map((filter, index) => (
+              <Reveal delay={0.06 + index * 0.03} key={filter}>
+                <span className={index === 0 ? "annotation-tag" : "data-chip"}>{filter}</span>
+              </Reveal>
+            ))}
+          </div>
         </section>
-      ) : null}
+      </Reveal>
 
-      <section className="mx-auto max-w-7xl px-4 py-8">
-        <div className="grid gap-8 md:grid-cols-2">
-          {(rest.length > 0 ? rest : studies).map((study) => (
-            <Link className="group block" href={`/work/${study.slug}`} key={study.slug}>
-              <article className="overflow-hidden rounded-[2rem] border border-[var(--color-line-subtle)] bg-[rgba(18,28,42,0.82)] shadow-[var(--shadow-soft)] transition-transform duration-200 group-hover:-translate-y-1">
-                <div className="relative aspect-[4/3] overflow-hidden bg-slate-900">
-                  <Image
-                    alt={study.highlight}
-                    className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-                    fill
-                    sizes="(min-width: 768px) 50vw, 100vw"
-                    src={getCaseStudyMedia(study.slug).cover}
-                  />
-                </div>
-                <div className="flex items-start justify-between gap-6 px-7 py-7">
-                  <div>
-                    <p className="text-sm uppercase tracking-[0.16em] text-[var(--color-text-secondary)]">
-                      {study.client} / {study.year}
-                    </p>
-                    <h3 className="mt-3 text-3xl font-black tracking-[-0.05em] text-[var(--color-text-primary)]">
-                      {study.title}
-                    </h3>
-                    <p className="mt-2 text-sm font-semibold uppercase tracking-[0.16em] text-[var(--color-brand-primary)]">
-                      {study.tag}
-                    </p>
-                    <p className="mt-4 text-base leading-7 text-[var(--color-text-secondary)]">{study.summary}</p>
-                  </div>
-                  <ArrowUpRight className="mt-1 size-5 text-slate-600 transition-colors group-hover:text-[var(--color-brand-primary)]" />
-                </div>
-              </article>
-            </Link>
-          ))}
+      <section className="mx-auto max-w-[1180px] px-4 py-8 sm:px-6 lg:px-8">
+        <div className="grid gap-6 md:grid-cols-2 lg:gap-8">
+          {studies.map((study, index) => {
+            const isFeatured = featured?.slug === study.slug;
+
+            return (
+              <Reveal className="h-full" delay={0.08 + index * 0.05} key={study.slug}>
+                <Link
+                  aria-label={`View ${study.title} case study`}
+                  className="media-link group block h-full rounded-[var(--radius-xl)] outline-none focus-visible:ring-4 focus-visible:ring-[var(--color-focus-ring)]"
+                  href={`/work/${study.slug}`}
+                >
+                  <article className="surface-card interactive-card media-card flex h-full flex-col overflow-hidden transition-transform duration-300 motion-safe:group-hover:-translate-y-1">
+                    <div className="media-frame aspect-[16/10] w-full border-b border-[var(--color-line-subtle)] bg-[var(--color-surface)]">
+                      <Image
+                        alt={study.highlight}
+                        className="media-asset object-cover"
+                        fill
+                        sizes="(min-width: 768px) 50vw, 100vw"
+                        src={getCaseStudyMedia(study.slug).cover}
+                      />
+                    </div>
+                    <div className="flex flex-1 flex-col p-6 sm:p-8">
+                      <div className="flex flex-wrap items-center justify-between gap-3">
+                        {isFeatured ? <span className="annotation-tag">Featured project</span> : null}
+                        <span className="ml-auto inline-flex items-center gap-2 text-xs font-semibold text-[var(--color-brand-primary-strong)]">
+                          View Case Study
+                          <ArrowUpRight
+                            aria-hidden="true"
+                            className="size-4 transition-transform duration-300 motion-safe:group-hover:translate-x-0.5 motion-safe:group-hover:-translate-y-0.5"
+                          />
+                        </span>
+                      </div>
+
+                      <p className="font-display mt-6 text-lg font-bold tracking-[-0.02em] text-[var(--color-text-primary)]">
+                        {study.client}
+                        <span className="ml-3 font-sans text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--color-text-muted)]">
+                          {study.year}
+                        </span>
+                      </p>
+                      <h2 className="font-display mt-3 text-3xl font-bold leading-tight tracking-[-0.03em] text-[var(--color-text-primary)]">
+                        {study.title}
+                      </h2>
+                      <p className="mt-3 text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--color-brand-primary-strong)]">
+                        {study.tag}
+                      </p>
+                      <p className="mt-4 line-clamp-2 text-[15px] leading-6 text-[var(--color-text-secondary)]">
+                        {study.summary}
+                      </p>
+
+                      <div className="mt-6 border-t border-[var(--color-line-subtle)] pt-5">
+                        <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-[var(--color-text-muted)]">
+                          Result
+                        </p>
+                        <p className="mt-2 line-clamp-1 text-sm font-medium text-[var(--color-text-primary)]">
+                          {study.highlight}
+                        </p>
+                      </div>
+
+                      <dl className="mt-auto grid gap-4 pt-7 sm:grid-cols-3" aria-label={`${study.title} outcomes`}>
+                        {study.metrics.map((metric) => (
+                          <div className="border-t border-[var(--color-line-subtle)] pt-4" key={metric.label}>
+                            <dt className="text-[9px] font-bold uppercase tracking-[0.2em] text-[var(--color-text-muted)]">
+                              {metric.label}
+                            </dt>
+                            <dd className="font-display mt-2 text-xl font-bold tracking-[-0.03em] text-[var(--color-brand-primary-strong)]">
+                              {metric.value}
+                            </dd>
+                          </div>
+                        ))}
+                      </dl>
+                    </div>
+                  </article>
+                </Link>
+              </Reveal>
+            );
+          })}
 
           {rest.length < 2 ? (
-            <div className="rounded-[2rem] border border-dashed border-[var(--color-line-subtle)] bg-white/3 p-8">
-              <p className="text-sm uppercase tracking-[0.18em] text-[var(--color-text-secondary)]">More proof</p>
-              <h3 className="mt-4 text-3xl font-black tracking-[-0.05em] text-[var(--color-text-primary)]">
-                Additional case studies are being prepared.
-              </h3>
-              <p className="mt-4 max-w-xl text-base leading-7 text-[var(--color-text-secondary)]">
-                The work page stays selective on purpose. Reach out if you want examples closer to your product category or launch stage.
-              </p>
-              <Button asChild className="mt-6 px-5 text-sm font-bold">
-                <Link href="/contact">Request relevant examples</Link>
-              </Button>
-            </div>
+            <Reveal className="h-full" delay={0.2}>
+              <div className="surface-card flex h-full flex-col p-8">
+                <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-[var(--color-brand-primary-strong)]">
+                  More proof
+                </p>
+                <h3 className="font-display mt-4 text-3xl font-bold tracking-[-0.03em] text-[var(--color-text-primary)]">
+                  Additional case studies are being prepared.
+                </h3>
+                <p className="mt-4 max-w-xl text-base leading-7 text-[var(--color-text-secondary)]">
+                  The work page stays selective on purpose. Reach out if you want examples closer to your product category or launch stage.
+                </p>
+                <Button asChild className="mt-auto self-start">
+                  <Link href="/contact">Request relevant examples</Link>
+                </Button>
+              </div>
+            </Reveal>
           ) : null}
         </div>
       </section>
 
-      <section className="px-4 pt-16">
-        <div className="cta-shell relative mx-auto max-w-7xl overflow-hidden p-12 text-center text-white md:p-20">
-          <div className="pointer-events-none absolute inset-0 opacity-10">
-            <div className="absolute left-0 top-0 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white blur-3xl"></div>
-            <div className="absolute bottom-0 right-0 h-96 w-96 translate-x-1/2 translate-y-1/2 rounded-full bg-black blur-3xl"></div>
-          </div>
-          <div className="relative z-10">
-            <h2 className="text-4xl font-black tracking-[-0.05em] md:text-6xl">
+      <Reveal delay={0.12}>
+        <section className="px-4 pt-16 sm:px-6 lg:px-8 lg:pt-24">
+          <div className="cta-shell mx-auto max-w-[1180px] p-8 text-center sm:p-12 md:p-16">
+            <span className="protocol-label justify-center">Portfolio protocol</span>
+            <h2 className="font-display mx-auto mt-6 max-w-[900px] text-4xl font-bold leading-tight tracking-[-0.03em] text-[var(--color-text-primary)] md:text-5xl">
               Want a portfolio that sells the work before the call?
             </h2>
-            <p className="mx-auto mt-6 max-w-3xl text-lg leading-relaxed text-white/82">
+            <p className="mx-auto mt-6 max-w-[680px] text-lg leading-relaxed text-[var(--color-text-secondary)]">
               Rapid Studios structures proof so the best projects do the heavy lifting without turning the site into a noisy archive.
             </p>
-            <Button
-              asChild
-              className="mt-8 h-auto bg-white px-8 py-4 text-lg font-bold text-[var(--color-brand-primary)] hover:bg-[var(--color-brand-primary-hover)] hover:text-white"
-            >
-              <Link href="/contact">Start a Project</Link>
+            <Button asChild className="mt-8" size="large">
+              <Link href="/contact">
+                Start a Project
+                <ArrowRight aria-hidden="true" className="size-4" />
+              </Link>
             </Button>
           </div>
-        </div>
-      </section>
+        </section>
+      </Reveal>
     </div>
   );
 }
