@@ -1,5 +1,5 @@
 {
-  "contentHash": "sha256:57f9f495cd07aa2d361b61b847b06a57b7210b51b38df38fbe1a2356a68584da",
+  "contentHash": "sha256:10fd504555eb30da2fcd0af2e39ac499c5e55a80f18dd541e82944a276609757",
   "provenance": {
     "jobId": "job_ndOhcrQuauu5t12u",
     "publishedAt": "2026-07-19T08:53:02.989Z",
@@ -47,7 +47,7 @@
     "home.nextSteps.eyebrow": "Getting Started",
     "home.nextSteps.item1.description": "A 30-minute conversation about your product, goals, and what good looks like for your team.",
     "home.nextSteps.item1.title": "Discovery Call",
-    "home.nextSteps.item2.description": "A clear scope with deliverables, timeline, and pricing -- typically within 48 hours.",
+    "home.nextSteps.item2.description": "A clear scope with deliverables, timeline, and next steps -- typically within 48 hours.",
     "home.nextSteps.item2.title": "Proposal",
     "home.nextSteps.item3.description": "Research begins immediately. You see real direction within the first week.",
     "home.nextSteps.item3.title": "Kickoff",

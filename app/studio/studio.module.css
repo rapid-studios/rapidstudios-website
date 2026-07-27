@@ -1,18 +1,78 @@
+.studioRoute,
 .studioRoot {
-  --studio-bg: #07111f;
-  --studio-bg-deep: #040b14;
-  --studio-panel: #0b1727;
-  --studio-panel-raised: #0f1d30;
-  --studio-panel-soft: #13243a;
-  --studio-line: rgba(148, 177, 217, 0.14);
-  --studio-line-strong: rgba(148, 177, 217, 0.24);
-  --studio-text: #f6f9ff;
-  --studio-muted: #93a9c5;
-  --studio-blue: #438eff;
-  --studio-blue-hover: #5c9dff;
+  --studio-bg: var(--color-canvas, #0b1017);
+  --studio-bg-deep: #070c13;
+  --studio-panel: rgba(16, 26, 44, 0.72);
+  --studio-panel-raised: rgba(20, 32, 52, 0.74);
+  --studio-panel-soft: rgba(24, 38, 64, 0.6);
+  --studio-line: var(--color-line-subtle, rgba(185, 210, 255, 0.18));
+  --studio-line-strong: var(--color-line-strong, rgba(185, 210, 255, 0.32));
+  --studio-text: var(--color-text-heading, #f6f9ff);
+  --studio-muted: var(--color-text-secondary, #8fa8c9);
+  --studio-blue: var(--color-brand-primary-strong, #3b8af0);
+  --studio-blue-hover: var(--color-brand-primary, #7fb6ff);
+  --studio-gradient:
+    radial-gradient(900px 620px at 5% -10%, rgba(59, 138, 240, 0.28), transparent 58%),
+    radial-gradient(760px 560px at 100% 10%, rgba(11, 218, 94, 0.1), transparent 55%),
+    linear-gradient(180deg, #0c1320 0%, #0b1017 62%, #080d14 100%);
+}
+
+.studioRoute {
   min-height: 100vh;
-  background: linear-gradient(145deg, var(--studio-bg) 0%, var(--studio-bg-deep) 100%);
+  background: var(--studio-gradient);
   color: var(--studio-text);
+  color-scheme: dark;
+  font-family: var(--font-body), Inter, ui-sans-serif, system-ui, sans-serif;
+  isolation: isolate;
+}
+
+.studioRoot {
+  min-height: 100vh;
+  background: transparent;
+  color: var(--studio-text);
+}
+
+.studioRoute ::selection {
+  background: rgba(59, 138, 240, 0.42);
+  color: #fff;
+}
+
+.studioRoute :is(button, a, input, select, textarea, summary):focus-visible {
+  outline: 2px solid var(--color-brand-primary, #7fb6ff);
+  outline-offset: 2px;
+}
+
+.studioRoute :is(input, select, textarea) {
+  color-scheme: dark;
+}
+
+.studioRoute [class~="bg-[var(--color-surface-soft)]"] {
+  background:
+    linear-gradient(165deg, rgba(120, 170, 255, 0.11), rgba(120, 170, 255, 0.025)),
+    rgba(16, 26, 44, 0.56);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 18px 42px rgba(1, 4, 12, 0.28);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.studioRoute [class~="bg-[var(--color-brand-primary)]"] {
+  border: 1px solid rgba(185, 210, 255, 0.22);
+  background: var(--gradient-primary, linear-gradient(180deg, #7db8ff 0%, #3273e8 55%, #2258c4 100%));
+  color: #fff;
+  box-shadow:
+    0 12px 28px rgba(59, 138, 240, 0.34),
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.55);
+}
+
+.studioRoute [class~="bg-[var(--color-brand-primary)]"]:hover {
+  filter: brightness(1.07);
+}
+
+.studioRoute [class~="bg-black/30"] {
+  background: var(--color-input-fill, rgba(11, 18, 32, 0.6));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.045);
 }
 
 .studioShell {
@@ -29,7 +89,12 @@
   gap: 16px;
   padding: 10px 20px;
   border-bottom: 1px solid var(--studio-line);
-  background: rgba(6, 15, 27, 0.94);
+  background: linear-gradient(180deg, rgba(20, 30, 48, 0.78), rgba(12, 20, 34, 0.62));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 12px 32px rgba(1, 4, 12, 0.22);
+  backdrop-filter: blur(22px) saturate(1.35);
+  -webkit-backdrop-filter: blur(22px) saturate(1.35);
 }
 
 .workspace {
@@ -43,14 +108,17 @@
   min-width: 0;
   padding: 18px 12px;
   border-right: 1px solid var(--studio-line);
-  background: rgba(8, 19, 33, 0.88);
+  background: linear-gradient(180deg, rgba(16, 26, 44, 0.7), rgba(11, 18, 32, 0.56));
+  box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.025);
+  backdrop-filter: blur(18px) saturate(1.25);
+  -webkit-backdrop-filter: blur(18px) saturate(1.25);
 }
 
 .editorGrid {
   min-width: 0;
   display: grid;
   grid-template-columns: minmax(420px, 1fr) minmax(320px, 368px);
-  background: var(--studio-bg-deep);
+  background: rgba(7, 12, 19, 0.72);
 }
 
 .previewPane {
@@ -59,7 +127,9 @@
   min-width: 0;
   padding: 16px;
   border-right: 1px solid var(--studio-line);
-  background: #07111f;
+  background:
+    radial-gradient(circle at 30% 0%, rgba(59, 138, 240, 0.08), transparent 38%),
+    rgba(7, 12, 19, 0.62);
 }
 
 .inspector {
@@ -67,7 +137,9 @@
   grid-row: 1;
   min-width: 0;
   padding: 16px;
-  background: var(--studio-panel);
+  background: linear-gradient(180deg, rgba(16, 26, 44, 0.78), rgba(11, 18, 32, 0.68));
+  backdrop-filter: blur(18px) saturate(1.2);
+  -webkit-backdrop-filter: blur(18px) saturate(1.2);
 }
 
 .stickyInspector {
@@ -85,9 +157,11 @@
   height: calc(100vh - 150px);
   overflow: hidden;
   border: 1px solid var(--studio-line-strong);
-  border-radius: 12px;
+  border-radius: var(--radius-md, 14px);
   background: white;
-  box-shadow: 0 18px 54px rgba(0, 0, 0, 0.32);
+  box-shadow:
+    0 24px 64px rgba(1, 4, 12, 0.46),
+    0 0 0 1px rgba(255, 255, 255, 0.035);
 }
 
 .previewViewportMobile {
@@ -106,50 +180,98 @@
 
 .panel {
   border: 1px solid var(--studio-line);
-  border-radius: 12px;
-  background: var(--studio-panel-raised);
+  border-radius: var(--radius-md, 14px);
+  background: linear-gradient(165deg, rgba(120, 170, 255, 0.11), rgba(20, 32, 52, 0.72));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 18px 42px rgba(1, 4, 12, 0.24);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
 }
 
 .subtlePanel {
   border: 1px solid var(--studio-line);
-  border-radius: 10px;
-  background: rgba(4, 11, 20, 0.38);
+  border-radius: var(--radius-sm, 10px);
+  background: rgba(11, 18, 32, 0.52);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .input {
   width: 100%;
   min-height: 44px;
   border: 1px solid var(--studio-line-strong);
-  border-radius: 9px;
-  background: #07111f;
+  border-radius: var(--radius-sm, 10px);
+  background: var(--color-input-fill, rgba(11, 18, 32, 0.6));
   color: var(--studio-text);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.045),
+    0 0 0 0 rgba(59, 138, 240, 0);
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    background-color 180ms ease;
 }
 
 .input::placeholder {
-  color: #6f87a7;
+  color: color-mix(in srgb, var(--studio-muted) 72%, transparent);
+}
+
+.input:hover {
+  border-color: rgba(185, 210, 255, 0.42);
+}
+
+.input:focus {
+  border-color: var(--studio-blue);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 0 0 3px rgba(59, 138, 240, 0.16);
 }
 
 .primaryButton {
   min-height: 44px;
-  border-radius: 9px;
-  background: var(--studio-blue);
-  color: #06101d;
+  border: 1px solid rgba(185, 210, 255, 0.22);
+  border-radius: var(--radius-sm, 10px);
+  background: var(--gradient-primary, linear-gradient(180deg, #7db8ff 0%, #3273e8 55%, #2258c4 100%));
+  color: #fff;
   font-weight: 700;
+  box-shadow:
+    0 12px 28px rgba(59, 138, 240, 0.34),
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.55);
+  transition:
+    filter 180ms ease,
+    transform 180ms ease,
+    box-shadow 180ms ease;
 }
 
 .primaryButton:hover {
-  background: var(--studio-blue-hover);
+  filter: brightness(1.07);
+  box-shadow:
+    0 15px 34px rgba(59, 138, 240, 0.42),
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.62);
+}
+
+.primaryButton:active {
+  transform: translateY(1px);
 }
 
 .secondaryButton {
   min-height: 44px;
   border: 1px solid var(--studio-line-strong);
-  border-radius: 9px;
-  color: var(--studio-muted);
+  border-radius: var(--radius-sm, 10px);
+  background: rgba(16, 26, 44, 0.5);
+  color: var(--color-text-muted-bright, #cfe0f7);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease;
 }
 
 .secondaryButton:hover {
-  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(185, 210, 255, 0.42);
+  background: var(--studio-panel-soft);
   color: var(--studio-text);
 }
 
@@ -227,6 +349,10 @@
     padding: 10px 14px;
   }
 
+  .studioRoute :is(input, select, textarea) {
+    font-size: 16px;
+  }
+
   .previewPane,
   .inspector {
     padding: 12px;
@@ -243,10 +369,17 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .studioRoute *,
+  .studioRoute *::before,
+  .studioRoute *::after,
   .studioRoot *,
   .studioRoot *::before,
   .studioRoot *::after {
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
+  }
+
+  .primaryButton:active {
+    transform: none;
   }
 }
