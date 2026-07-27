@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { Reveal } from "@/components/motion/reveal";
 import { Button } from "@/components/ui/button";
 import { collaborationPrinciples, processSteps } from "@/lib/site-data";
 import { buildMetadata } from "@/lib/seo/metadata";
@@ -20,85 +21,105 @@ const rapidOutcomes = [
 
 export default function ProcessPage() {
   return (
-    <div className="pb-24 pt-16" style={{ fontFamily: "var(--font-stitch), sans-serif" }}>
-      <section className="mx-auto max-w-7xl px-4 pb-16 pt-24 text-center">
-        <h1 className="text-6xl font-black tracking-[-0.08em] text-[var(--color-text-primary)] md:text-[6.5rem]">
-          Our Process
-        </h1>
-        <p className="mx-auto mt-6 max-w-4xl text-2xl leading-relaxed text-[var(--color-text-secondary)]">
-          High-velocity delivery from discovery to launch.
-        </p>
-      </section>
+    <div className="liquid-page pb-24">
+      <Reveal>
+        <section className="liquid-hero mx-auto max-w-5xl px-6 text-center">
+          <span className="protocol-label justify-center">Process Protocol</span>
+          <h1 className="liquid-h1 mt-8">
+            Our <span className="gradient-text">Process</span>
+          </h1>
+          <p className="liquid-lead mx-auto mt-6 max-w-3xl">
+            High-velocity delivery from discovery to launch.
+          </p>
+        </section>
+      </Reveal>
 
-      <section className="mx-auto max-w-7xl px-4 pb-16">
-        <div className="relative">
-          <div className="absolute left-1/2 top-0 hidden h-full w-px -translate-x-1/2 bg-[var(--color-brand-primary)]/40 lg:block"></div>
-          <div className="space-y-14">
-            {processSteps.map((step, index) => {
-              const leftAligned = index % 2 === 0;
-
-              return (
-                <article
-                  className={`grid gap-8 lg:grid-cols-2 ${leftAligned ? "" : "lg:[&>*:first-child]:order-2 lg:[&>*:last-child]:order-1"}`}
-                  key={step.step}
+      <Reveal delay={0.04}>
+        <section aria-label="Rapid Studios delivery process" className="mx-auto max-w-5xl px-6 pb-20">
+          <div className="relative grid gap-8">
+            <div
+              aria-hidden="true"
+              className="absolute bottom-12 left-[17px] top-12 w-px bg-[var(--color-brand-primary)]/30 sm:left-[23px]"
+            />
+            {processSteps.map((step, index) => (
+              <Reveal className="relative pl-12 sm:pl-16" delay={0.08 + index * 0.05} key={step.step}>
+                <div
+                  aria-hidden="true"
+                  className="absolute left-[10px] top-10 z-10 size-[15px] rounded-full border border-[var(--color-brand-primary)]/60 bg-[var(--color-canvas)] shadow-[0_0_0_6px_color-mix(in_srgb,var(--color-brand-primary)_10%,transparent)] sm:left-4"
                 >
-                  <div className={leftAligned ? "lg:pr-16" : "lg:pl-16"}>
-                    <div className="relative rounded-[2rem] p-8">
-                      <p className="absolute -top-8 text-[10rem] font-black leading-none tracking-[-0.1em] text-white/7">
-                        {step.step}
-                      </p>
-                      <p className="relative text-sm font-bold uppercase tracking-[0.18em] text-[var(--color-brand-primary)]">
-                        {step.title}
-                      </p>
-                      <p className="relative mt-6 text-xl leading-relaxed text-[var(--color-text-secondary)]">
-                        {step.description}
-                      </p>
-                      <span className="relative mt-6 inline-flex rounded-full border border-[var(--color-brand-accent)]/30 bg-[var(--color-brand-accent)]/10 px-4 py-2 text-sm font-semibold text-[var(--color-brand-accent)]">
-                        Rapid Outcome: {rapidOutcomes[index]}
-                      </span>
+                  <span className="absolute inset-[4px] rounded-full bg-[var(--color-brand-primary)]" />
+                </div>
+
+                <article className="surface-card interactive-card relative min-h-56 overflow-hidden p-7 sm:p-10">
+                  <span
+                    aria-hidden="true"
+                    className="font-display pointer-events-none absolute -right-2 -top-3 select-none text-[120px] font-bold leading-none tracking-[-0.08em] text-[var(--color-text-primary)] opacity-[0.06] sm:right-5"
+                  >
+                    {step.step}
+                  </span>
+
+                  <div className="relative z-10 max-w-3xl">
+                    <p className="text-[11.5px] font-bold uppercase tracking-[0.22em] text-[var(--color-brand-primary)]">
+                      Step {step.step}
+                    </p>
+                    <h2 className="mt-4 text-3xl font-bold tracking-[-0.03em] text-[var(--color-text-primary)] sm:text-4xl">
+                      {step.title}
+                    </h2>
+                    <p className="mt-4 text-base leading-7 text-[var(--color-text-secondary)] sm:text-lg sm:leading-8">
+                      {step.description}
+                    </p>
+                    <div className="mt-7">
+                      <span className="data-chip">Rapid Outcome: {rapidOutcomes[index]}</span>
                     </div>
                   </div>
-                  <div className="hidden lg:block"></div>
                 </article>
-              );
-            })}
+              </Reveal>
+            ))}
           </div>
-        </div>
-      </section>
+        </section>
+      </Reveal>
 
-      <section className="mx-auto max-w-7xl px-4 py-8">
-        <div className="mb-10">
-          <h2 className="text-3xl font-black tracking-[-0.05em] text-[var(--color-text-primary)]">Principles</h2>
-        </div>
-        <div className="grid gap-6 md:grid-cols-3">
-          {collaborationPrinciples.map((item) => (
-            <article className="surface-card p-8" key={item.title}>
-              <div className="mb-6 h-12 w-12 rounded-full bg-[var(--color-brand-primary)]/10"></div>
-              <h3 className="text-2xl font-black tracking-[-0.04em] text-[var(--color-text-primary)]">{item.title}</h3>
-              <p className="mt-4 text-base leading-7 text-[var(--color-text-secondary)]">{item.description}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="px-4 pt-12">
-        <div className="mx-auto max-w-7xl rounded-[2rem] border border-[var(--color-line-subtle)] bg-[rgba(18,28,42,0.84)] px-10 py-14 text-center">
-          <h2 className="text-4xl font-black tracking-[-0.05em] text-[var(--color-text-primary)] md:text-5xl">
-            Ready to build?
+      <Reveal delay={0.08}>
+        <section className="mx-auto max-w-7xl px-6 py-8">
+          <h2 className="text-4xl font-bold tracking-[-0.04em] text-[var(--color-text-primary)] sm:text-5xl">
+            Principles
           </h2>
-          <p className="mx-auto mt-5 max-w-3xl text-lg leading-relaxed text-[var(--color-text-secondary)]">
-            The process stays structured so direction, design, and build move with less drift and more confidence.
-          </p>
-          <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-            <Button asChild className="h-auto px-8 py-4 text-lg font-bold">
-              <Link href="/contact">Get Started</Link>
-            </Button>
-            <Button asChild className="h-auto px-8 py-4 text-lg font-bold" variant="secondary">
-              <Link href="/services">Explore Services</Link>
-            </Button>
+          <div className="grid gap-6 md:grid-cols-3">
+            {collaborationPrinciples.map((item, index) => (
+              <Reveal delay={0.12 + index * 0.05} key={item.title}>
+                <article className="surface-card h-full p-7 sm:p-8">
+                  <span className="data-chip">Principle {String(index + 1).padStart(2, "0")}</span>
+                  <h3 className="mt-6 text-2xl font-bold tracking-[-0.03em] text-[var(--color-text-primary)]">
+                    {item.title}
+                  </h3>
+                  <p className="mt-4 text-base leading-7 text-[var(--color-text-secondary)]">{item.description}</p>
+                </article>
+              </Reveal>
+            ))}
           </div>
-        </div>
-      </section>
+        </section>
+      </Reveal>
+
+      <Reveal delay={0.12}>
+        <section className="px-6 pt-20">
+          <div className="cta-shell mx-auto max-w-7xl p-8 text-center sm:p-12 md:p-16">
+            <h2 className="text-4xl font-bold tracking-[-0.04em] text-[var(--color-text-primary)] md:text-5xl">
+              Ready to build?
+            </h2>
+            <p className="mx-auto mt-5 max-w-3xl text-lg leading-relaxed text-[var(--color-text-secondary)]">
+              The process stays structured so direction, design, and build move with less drift and more confidence.
+            </p>
+            <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+              <Button asChild size="large">
+                <Link href="/contact">Get Started</Link>
+              </Button>
+              <Button asChild size="large" variant="secondary">
+                <Link href="/services">Explore Services</Link>
+              </Button>
+            </div>
+          </div>
+        </section>
+      </Reveal>
     </div>
   );
 }

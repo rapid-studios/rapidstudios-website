@@ -228,7 +228,7 @@ const SLOT_DEFINITIONS = [
     "home.nextSteps.item2.description",
     "text",
     220,
-    "A clear scope with deliverables, timeline, and pricing -- typically within 48 hours."
+    "A clear scope with deliverables, timeline, and next steps -- typically within 48 hours."
   ),
   slot("home.nextSteps.item3.title", "text", 50, "Kickoff"),
   slot(

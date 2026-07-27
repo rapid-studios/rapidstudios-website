@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import styles from "./studio.module.css";
 
 export const metadata: Metadata = {
   robots: {
@@ -14,5 +15,5 @@ export const metadata: Metadata = {
 };
 
 export default function StudioLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return children;
+  return <div className={styles.studioRoute}>{children}</div>;
 }

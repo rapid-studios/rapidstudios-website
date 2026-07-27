@@ -1,4 +1,4 @@
-import type { NavItem, PricingPlan, ProcessStep } from "@/types/content";
+import type { NavItem, ProcessStep } from "@/types/content";
 
 export const siteConfig = {
   name: "Rapid Studios",
@@ -13,7 +13,6 @@ export const navigation: NavItem[] = [
   { href: "/services", label: "Services" },
   { href: "/process", label: "Process" },
   { href: "/about", label: "About" },
-  { href: "/pricing", label: "Pricing" },
   { href: "/contact", label: "Contact" }
 ];
 
@@ -23,8 +22,7 @@ export const footerNavigation: NavItem[] = [
   { href: "/services", label: "Services" },
   { href: "/process", label: "Process" },
   { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
-  { href: "/pricing", label: "Pricing" }
+  { href: "/contact", label: "Contact" }
 ];
 
 export const trustSignals = [
@@ -96,33 +94,29 @@ export const collaborationPrinciples = [
   }
 ];
 
-export const pricingPlans: PricingPlan[] = [
+export const engagementModels = [
   {
     name: "Focused Sprint",
     summary: "For teams that need a sharper homepage, launch page, or strategic refresh quickly.",
-    price: "From $4k",
-    details: ["1-2 core pages", "Messaging and section rhythm", "Motion direction", "Delivery in days, not weeks"],
-    cta: "Book a sprint"
+    featured: false,
+    details: ["1-2 core pages", "Messaging and section rhythm", "Motion direction", "Delivery in days, not weeks"]
   },
   {
     name: "Website Engagement",
     summary: "A full marketing site with approved structure, reusable sections, and implementation-ready polish.",
-    price: "From $9k",
     featured: true,
-    details: ["Multi-page architecture", "Case-study and services system", "Responsive design and motion", "Production frontend delivery"],
-    cta: "Plan the site"
+    details: ["Multi-page architecture", "Case-study and services system", "Responsive design and motion", "Production frontend delivery"]
   },
   {
     name: "Ongoing Partner",
     summary: "A retained studio relationship for launches, iterations, and continuous marketing improvements.",
-    price: "Custom",
-    details: ["Launch support", "Ongoing optimization", "New landing pages", "Design-system consistency"],
-    cta: "Talk partnership"
+    featured: false,
+    details: ["Launch support", "Ongoing optimization", "New landing pages", "Design-system consistency"]
   }
-];
+] as const;
 
 export const faqNotes = [
   "Every engagement starts with a short discovery call and scope alignment.",
   "Copy and visuals can be refined during the build, but the structure is locked early.",
-  "Pricing stays premium on purpose: fewer pages, stronger decisions, cleaner execution."
+  "Scope stays intentional on purpose: fewer pages, stronger decisions, cleaner execution."
 ];
