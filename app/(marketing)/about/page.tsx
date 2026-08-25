@@ -58,7 +58,7 @@ const stack = [
 ] as const;
 
 const studioStats = [
-  { value: "01", label: "Studio lead" },
+  { value: "03", label: "Core disciplines" },
   { value: capabilities.length.toString().padStart(2, "0"), label: "Capabilities" },
   { value: stack.length.toString().padStart(2, "0"), label: "Stack" }
 ] as const;
@@ -106,7 +106,7 @@ export default function AboutPage() {
         </section>
       </Reveal>
 
-      <section aria-labelledby="studio-lead" className="mx-auto max-w-[1180px] px-6 pb-20">
+      <section aria-labelledby="studio-experience" className="mx-auto max-w-[1180px] px-6 pb-20">
         <Reveal delay={0.04}>
           <article className="surface-card grid gap-8 p-7 sm:p-9 md:grid-cols-[auto_1fr] md:items-center lg:gap-12 lg:p-12">
             <div className="flex items-center gap-5 md:block">
@@ -114,24 +114,24 @@ export default function AboutPage() {
                 <div aria-hidden="true" className="absolute inset-2 rounded-full border border-[var(--color-line-subtle)]" />
                 <BrandIcon
                   className="relative size-12 text-[var(--color-brand-primary)] md:size-14"
-                  title="Rapid Studios avatar for Travis Stephenson"
+                  title="Rapid Studios experience"
                 />
               </div>
               <div className="md:mt-6">
-                <span className="annotation-tag">Founder &amp; Principal</span>
+                <span className="annotation-tag">Cross-functional</span>
               </div>
             </div>
 
             <div>
-              <span className="protocol-label">Studio lead</span>
-              <h2 id="studio-lead" className="mt-5 text-4xl font-bold tracking-[-0.04em] text-[var(--color-text-primary)] sm:text-5xl">
-                Travis Stephenson
+              <span className="protocol-label">Studio experience</span>
+              <h2 id="studio-experience" className="mt-5 text-4xl font-bold tracking-[-0.04em] text-[var(--color-text-primary)] sm:text-5xl">
+                Strategy through production
               </h2>
               <p className="mt-2 text-sm font-semibold uppercase tracking-[0.16em] text-[var(--color-text-muted)]">
-                Founder &amp; Principal
+                Solutions architecture &middot; Product strategy &middot; Frontend delivery
               </p>
               <p className="mt-6 text-base leading-8 text-[var(--color-text-secondary)]">
-                Product-minded engineer who has designed and shipped digital products across SaaS, AI tooling, and product launches. Background spans solutions architecture, product strategy, and frontend delivery -- the combination that makes a studio like this work.
+                Experience designing and shipping digital products across SaaS, AI tooling, and product launches. The work connects technical architecture, product direction, and production frontend delivery to keep strategy and execution aligned.
               </p>
               <p className="mt-4 text-base leading-8 text-[var(--color-text-secondary)]">
                 Rapid Studios exists because too many product teams hire an agency and get process instead of output. The studio stays small on purpose -- fewer layers, faster decisions, better work.

@@ -8,11 +8,6 @@ export function getOrganizationSchema() {
     url: siteConfig.url,
     email: siteConfig.email,
     description: siteConfig.description,
-    founder: {
-      "@type": "Person",
-      name: "Travis Stephenson",
-      jobTitle: "Founder & Principal"
-    },
     areaServed: "US",
     serviceType: [
       "Product Design",
