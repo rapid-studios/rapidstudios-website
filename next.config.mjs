@@ -21,11 +21,16 @@ const noStoreHeaders = [
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   pageExtensions: ["ts", "tsx", "md", "mdx"],
+  async rewrites() {
+    return [{ source: "/kumo", destination: "/kumo/index.html" }];
+  },
   async headers() {
     return [
       { source: "/:path*", headers: securityHeaders },
       { source: "/studio/:path*", headers: noStoreHeaders },
       { source: "/api/cms/:path*", headers: noStoreHeaders },
+      { source: "/kumo/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }] },
+      { source: "/api/kumo/:path*", headers: noStoreHeaders },
     ];
   },
   images: {

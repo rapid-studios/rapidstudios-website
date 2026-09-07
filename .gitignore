@@ -11,6 +11,9 @@ coverage
 output/
 .playwright-cli/
 
+# Per-build signing key for the public synthetic Kumo demonstration.
+lib/kumo-demo/session-key.generated.json
+
 # AI-CMS local filesystem store
 .cms-data/
 
