@@ -3,13 +3,16 @@ import Link from "next/link";
 import { Reveal } from "@/components/motion/reveal";
 import { Button } from "@/components/ui/button";
 import { collaborationPrinciples, processSteps } from "@/lib/site-data";
+import { PageStructuredData } from "@/components/seo/page-structured-data";
 import { buildMetadata } from "@/lib/seo/metadata";
 
-export const metadata = buildMetadata({
+const pageSeo = {
   title: "Process",
   description: "Research, design, and build in focused sprints -- how Rapid Studios ships polished products in weeks, not months.",
   pathname: "/process"
-});
+};
+
+export const metadata = buildMetadata(pageSeo);
 
 const rapidOutcomes = [
   "Strategy Roadmap",
@@ -22,6 +25,7 @@ const rapidOutcomes = [
 export default function ProcessPage() {
   return (
     <div className="liquid-page pb-24">
+      <PageStructuredData {...pageSeo} />
       <Reveal>
         <section className="liquid-hero mx-auto max-w-5xl px-6 text-center">
           <span className="protocol-label justify-center">Process Protocol</span>

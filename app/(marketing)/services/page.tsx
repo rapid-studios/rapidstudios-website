@@ -5,21 +5,32 @@ import { Reveal } from "@/components/motion/reveal";
 import { CmsSizzleReel } from "@/components/sections/cms-sizzle-reel";
 import { Button } from "@/components/ui/button";
 import { getAllServices } from "@/lib/content/services";
+import { getServiceSchema } from "@/lib/seo/json-ld";
+import { PageStructuredData } from "@/components/seo/page-structured-data";
 import { buildMetadata } from "@/lib/seo/metadata";
 
-export const metadata = buildMetadata({
+const pageSeo = {
   title: "Services",
   description: "From positioning and launch surfaces to AI-powered workflows, we create digital systems that make businesses look sharper and run smoother.",
   pathname: "/services"
-});
+};
+
+export const metadata = buildMetadata(pageSeo);
 
 const serviceIcons = [TrendingUp, Brush, Bot, Code2] as const;
 
 export default function ServicesPage() {
   const services = getAllServices();
+  const serviceSchemas = services.map(getServiceSchema);
 
   return (
     <div className="pb-24 pt-10">
+      <PageStructuredData
+        {...pageSeo}
+        type="CollectionPage"
+        mainEntity={serviceSchemas.map((service) => ({ "@id": service["@id"] }))}
+        entities={serviceSchemas}
+      />
       <Reveal>
         <section className="mx-auto max-w-7xl px-4 pb-16 pt-20 md:px-6 lg:px-8">
           <div className="grid gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:items-center">
@@ -60,7 +71,7 @@ export default function ServicesPage() {
 
             return (
               <Reveal delay={0.08 + index * 0.06} key={service.slug}>
-                <article className="grid gap-6 border-t border-[var(--color-line-subtle)] py-10 lg:grid-cols-[1.05fr_0.95fr]">
+                <article id={service.slug} className="scroll-mt-28 grid gap-6 border-t border-[var(--color-line-subtle)] py-10 lg:grid-cols-[1.05fr_0.95fr]">
                   <div className="pr-0 lg:pr-8">
                     <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--color-brand-primary-strong)]">
                       Protocol 0{index + 1}

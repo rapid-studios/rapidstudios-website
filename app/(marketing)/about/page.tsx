@@ -4,13 +4,16 @@ import { ArrowRight, Code2, Layers, Lightbulb, Palette, Zap } from "lucide-react
 import { Reveal } from "@/components/motion/reveal";
 import { BrandIcon } from "@/components/ui/brand-icon";
 import { Button } from "@/components/ui/button";
+import { PageStructuredData } from "@/components/seo/page-structured-data";
 import { buildMetadata } from "@/lib/seo/metadata";
 
-export const metadata = buildMetadata({
+const pageSeo = {
   title: "About",
   description: "A small, deliberate product studio that ships polished digital products -- from positioning to production frontend.",
   pathname: "/about"
-});
+};
+
+export const metadata = buildMetadata(pageSeo);
 
 const principles = [
   {
@@ -66,6 +69,7 @@ const studioStats = [
 export default function AboutPage() {
   return (
     <div className="liquid-page pb-24">
+      <PageStructuredData {...pageSeo} type="AboutPage" />
       <Reveal>
         <section className="liquid-hero liquid-hero--left mx-auto grid max-w-[1180px] gap-12 px-6 lg:grid-cols-[1.28fr_0.72fr] lg:items-center lg:gap-16">
           <div className="max-w-3xl">

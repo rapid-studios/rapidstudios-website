@@ -6,13 +6,16 @@ import { Reveal } from "@/components/motion/reveal";
 import { Button } from "@/components/ui/button";
 import { getCaseStudyMedia } from "@/lib/content/case-study-media";
 import { getAllCaseStudies } from "@/lib/content/case-studies";
+import { PageStructuredData } from "@/components/seo/page-structured-data";
 import { buildMetadata } from "@/lib/seo/metadata";
 
-export const metadata = buildMetadata({
+const pageSeo = {
   title: "Work",
   description: "Selected case studies -- product design, marketing surfaces, and frontend delivery for SaaS, AI, and product teams.",
   pathname: "/work"
-});
+};
+
+export const metadata = buildMetadata(pageSeo);
 
 const filters = ["All Projects", "Developer Tools", "Financial Systems", "Automation", "AI Ops"] as const;
 
@@ -22,6 +25,7 @@ export default function WorkPage() {
 
   return (
     <div className="liquid-page pb-24">
+      <PageStructuredData {...pageSeo} type="CollectionPage" />
       <Reveal>
         <section className="liquid-hero mx-auto max-w-[1180px] px-4 pb-14 pt-16 sm:px-6 sm:pb-16 sm:pt-20 lg:px-8 lg:pt-[120px]">
           <span className="protocol-label">Artifact Archive</span>

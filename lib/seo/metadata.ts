@@ -5,7 +5,7 @@ import { siteConfig } from "@/lib/site-data";
 const ogImage = {
   url: `${siteConfig.url}/og-default.png`,
   width: 1200,
-  height: 630,
+  height: 600,
   alt: "Rapid Studios -- Digital Products Designed to Ship",
   type: "image/png"
 };

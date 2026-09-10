@@ -3,14 +3,17 @@ import Link from "next/link";
 import { CalendlyRightMorphButton } from "@/components/integrations/calendly";
 import { Reveal } from "@/components/motion/reveal";
 import { ContactForm } from "@/components/sections/contact-form";
+import { PageStructuredData } from "@/components/seo/page-structured-data";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { siteConfig } from "@/lib/site-data";
 
-export const metadata = buildMetadata({
+const pageSeo = {
   title: "Contact",
   description: "Tell us about your project. Rapid Studios typically responds within 24 hours with a clear next step.",
   pathname: "/contact"
-});
+};
+
+export const metadata = buildMetadata(pageSeo);
 
 const proofStats = [
   { value: "<24hr", label: "Response Time" },
@@ -21,6 +24,7 @@ const proofStats = [
 export default function ContactPage() {
   return (
     <div className="liquid-page pb-24">
+      <PageStructuredData {...pageSeo} type="ContactPage" />
       <Reveal>
         <section className="liquid-hero liquid-hero--left mx-auto max-w-[1180px] px-6">
           <div className="grid gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-start lg:gap-16">

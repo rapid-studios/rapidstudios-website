@@ -3,7 +3,6 @@ import { Inter, Space_Grotesk } from "next/font/google";
 
 import { Analytics } from "@vercel/analytics/next";
 
-import { getOrganizationSchema, getWebSiteSchema } from "@/lib/seo/json-ld";
 import { siteConfig } from "@/lib/site-data";
 import { getThemeInitScript } from "@/lib/theme";
 
@@ -47,12 +46,6 @@ export default function RootLayout({
     <html data-theme="dark" lang="en" suppressHydrationWarning>
       <body className={`${display.variable} ${body.variable} ${stitch.variable} antialiased`}>
         <script dangerouslySetInnerHTML={{ __html: getThemeInitScript() }} />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify([getOrganizationSchema(), getWebSiteSchema()])
-          }}
-          type="application/ld+json"
-        />
         {children}
         <Analytics />
       </body>

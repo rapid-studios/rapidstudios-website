@@ -7,6 +7,8 @@ import { Reveal } from "@/components/motion/reveal";
 import { Button } from "@/components/ui/button";
 import { getCaseStudyMedia } from "@/lib/content/case-study-media";
 import { getAllCaseStudies, getCaseStudyBySlug } from "@/lib/content/case-studies";
+import { PageStructuredData } from "@/components/seo/page-structured-data";
+import { getCaseStudySchema } from "@/lib/seo/json-ld";
 import { buildMetadata } from "@/lib/seo/metadata";
 
 export async function generateStaticParams() {
@@ -55,6 +57,7 @@ export default async function CaseStudyPage({
   const nextStudy = studies[(currentIndex + 1) % studies.length];
   const visuals = getCaseStudyMedia(study.slug);
   const nextVisuals = getCaseStudyMedia(nextStudy.slug);
+  const caseStudySchema = getCaseStudySchema(study, visuals.cover);
   const projectDetails = [
     { label: "Client", value: study.client },
     { label: "Year", value: study.year },
@@ -64,6 +67,14 @@ export default async function CaseStudyPage({
 
   return (
     <div className="liquid-page pb-24">
+      <PageStructuredData
+        pathname={`/work/${study.slug}`}
+        title={study.title}
+        description={study.summary}
+        ancestors={[{ name: "Work", pathname: "/work" }]}
+        mainEntity={{ "@id": caseStudySchema["@id"] }}
+        entities={[caseStudySchema]}
+      />
       <Reveal>
         <section className="relative isolate min-h-[clamp(42rem,72vw,52rem)] overflow-hidden border-y border-[var(--color-line-subtle)]">
           <Image

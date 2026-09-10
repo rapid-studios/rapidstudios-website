@@ -3,14 +3,18 @@ import { Check } from "lucide-react";
 
 import { Reveal } from "@/components/motion/reveal";
 import { Button } from "@/components/ui/button";
+import { getFaqSchema } from "@/lib/seo/json-ld";
+import { PageStructuredData } from "@/components/seo/page-structured-data";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { engagementModels } from "@/lib/site-data";
 
-export const metadata = buildMetadata({
+const pageSeo = {
   title: "Engagements",
   description: "Focused sprints, full website engagements, and ongoing studio partnerships tailored around the work.",
   pathname: "/pricing"
-});
+};
+
+export const metadata = buildMetadata(pageSeo);
 
 const engagementFaqs = [
   {
@@ -38,6 +42,11 @@ const engagementFaqs = [
 export default function PricingPage() {
   return (
     <div className="liquid-page pb-24">
+      <PageStructuredData
+        {...pageSeo}
+        type="FAQPage"
+        mainEntity={getFaqSchema(engagementFaqs, pageSeo.pathname).mainEntity}
+      />
       <Reveal>
         <section className="liquid-hero mx-auto max-w-5xl px-6 text-center">
           <span className="protocol-label justify-center">Engagement options</span>

@@ -7,6 +7,8 @@
     "build": "node scripts/kumo/prepare.mjs && npm run test:kumo && npm run lint:kumo && next build",
     "start": "next start",
     "lint": "eslint .",
+    "test:seo": "node --no-warnings --loader ./scripts/cms/tests/typescript-resolver.mjs --test scripts/seo/json-ld.test.mjs",
+    "check:seo": "node scripts/seo/check-rendered.mjs",
     "lint:kumo": "eslint lib/kumo-demo app/api/kumo scripts/kumo",
     "test:kumo": "node --test scripts/kumo/*.test.mjs && node scripts/kumo/check-static.mjs",
     "test:cms:security": "node --test scripts/cms/security-hardening.test.mjs",
