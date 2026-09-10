@@ -39,6 +39,12 @@ const nextConfig = {
       { source: "/united-dance-center", destination: "/united-dance-center/index.html" },
       { source: "/pantry-plenty", destination: "/pantry-plenty/index.html" },
       { source: "/exl-fitness", destination: "/exl-fitness/index.html" },
+      { source: "/valhalla-strength", destination: "/valhalla-strength/index.html" },
+      { source: "/alpine-fitness", destination: "/alpine-fitness/index.html" },
+      { source: "/purify-wellness", destination: "/purify-wellness/index.html" },
+      { source: "/spa-lounge", destination: "/spa-lounge/index.html" },
+      { source: "/unified-hot-yoga", destination: "/unified-hot-yoga/index.html" },
+      { source: "/ranches-fitness", destination: "/ranches-fitness/index.html" },
       // END GENERATED PROSPECT DEMOS
     ];
   },
@@ -60,6 +66,12 @@ const nextConfig = {
       { source: "/united-dance-center", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }] },
       { source: "/pantry-plenty", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }] },
       { source: "/exl-fitness", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }] },
+      { source: "/valhalla-strength", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }] },
+      { source: "/alpine-fitness", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }] },
+      { source: "/purify-wellness", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }] },
+      { source: "/spa-lounge", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }] },
+      { source: "/unified-hot-yoga", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }] },
+      { source: "/ranches-fitness", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }] },
       // END GENERATED PROSPECT HEADERS
       { source: "/studio/:path*", headers: noStoreHeaders },
       { source: "/api/cms/:path*", headers: noStoreHeaders },
