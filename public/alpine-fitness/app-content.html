@@ -6,7 +6,7 @@
   <meta name="robots" content="noindex,nofollow,noarchive">
   <meta name="theme-color" content="#111412">
   <meta name="description" content="An independent Alpine Fitness visit-planning concept using a fictional schedule.">
-  <title>Alpine Fitness Â· Visit planner concept</title>
+  <title>Alpine Fitness · Visit planner concept</title>
   <link rel="stylesheet" href="/alpine-fitness/styles.css">
   <script src="/alpine-fitness/model.js" defer></script>
   <script src="/alpine-fitness/app.js" defer></script>
@@ -26,7 +26,7 @@
       <div class="choices">
         <section class="date-section" aria-labelledby="date-title">
           <div><p class="section-kicker">YOUR NEXT VISIT</p><h2 id="date-title">Pick a day.</h2></div>
-          <div class="date-control"><button id="prev-day" class="icon-button" aria-label="Previous day" type="button">â€¹</button><label class="date-field"><span class="sr-only">Visit date</span><input id="visit-date" type="date" required></label><button id="next-day" class="icon-button" aria-label="Next day" type="button">â€º</button></div>
+          <div class="date-control"><button id="prev-day" class="icon-button" aria-label="Previous day" type="button">‹</button><label class="date-field"><span class="sr-only">Visit date</span><input id="visit-date" type="date" required></label><button id="next-day" class="icon-button" aria-label="Next day" type="button">›</button></div>
         </section>
         <p class="sample-note">Every session and time below is fictional. This planner creates a personal plan; it does not reserve anything.</p>
 
@@ -51,21 +51,21 @@
           <p id="plan-date" class="plan-date"></p>
           <div id="timeline" class="timeline"></div>
           <div id="plan-totals" class="plan-totals" hidden></div>
-          <button id="save-plan" class="primary-button" disabled type="button">Save this visit <span aria-hidden="true">â†—</span></button>
+          <button id="save-plan" class="primary-button" disabled type="button">Save this visit <span aria-hidden="true">↗</span></button>
           <button id="export-open" class="secondary-button" disabled type="button">Export to calendar</button>
           <p id="save-state" class="save-state">Choose a training session to start.</p>
           <p class="plan-disclaimer">Saved on this device only. Actual classes, appointments and membership access stay with Alpine's existing booking system.</p>
         </section>
-        <div class="side-note"><span class="side-note-icon" aria-hidden="true">â†”</span><div><h3>Time between matters.</h3><p>The concept leaves a 15-minute planning buffer. Alpine would confirm the actual service rules.</p></div></div>
+        <div class="side-note"><span class="side-note-icon" aria-hidden="true">↔</span><div><h3>Time between matters.</h3><p>The concept leaves a 15-minute planning buffer. Alpine would confirm the actual service rules.</p></div></div>
       </aside>
     </div>
 
 
   </main>
-  <footer><span>ALPINE FITNESS Â· INDEPENDENT CONCEPT</span><span>Sample data. No bookings or messages sent.</span></footer>
+  <footer><span>ALPINE FITNESS · INDEPENDENT CONCEPT</span><span>Sample data. No bookings or messages sent.</span></footer>
 
   <div id="toast" role="status" aria-live="polite" class="toast" hidden></div>
-  <dialog id="export-dialog" aria-labelledby="export-title"><div class="dialog-head"><p class="section-kicker">TAKE YOUR PLAN WITH YOU</p><button class="dialog-close icon-button" data-close="export-dialog" type="button" aria-label="Close calendar preview">Ã—</button></div><h2 id="export-title">A plan, not a reservation.</h2><p>Your calendar file will label every item as an unconfirmed sample plan. Dates use Alpine's time zone, America/Denver.</p><div id="export-summary" class="export-summary"></div><button id="download-calendar" class="primary-button" type="button">Download calendar file <span aria-hidden="true">â†“</span></button><button class="text-button" data-close="export-dialog" type="button">Keep planning</button></dialog>
-  <dialog id="reset-dialog" aria-labelledby="reset-title"><div class="dialog-head"><p class="section-kicker">START FRESH</p><button class="dialog-close icon-button" data-close="reset-dialog" type="button" aria-label="Close reset confirmation">Ã—</button></div><h2 id="reset-title">Reset this sample visit?</h2><p>This clears your saved visit and current choices on this device. It cannot change an Alpine booking.</p><div class="dialog-actions"><button id="reset-confirm" class="primary-button" type="button">Reset demo</button><button class="text-button" data-close="reset-dialog" type="button">Keep my plan</button></div></dialog>
+  <dialog id="export-dialog" aria-labelledby="export-title"><div class="dialog-head"><p class="section-kicker">TAKE YOUR PLAN WITH YOU</p><button class="dialog-close icon-button" data-close="export-dialog" type="button" aria-label="Close calendar preview">×</button></div><h2 id="export-title">A plan, not a reservation.</h2><p>Your calendar file will label every item as an unconfirmed sample plan. Dates use Alpine's time zone, America/Denver.</p><div id="export-summary" class="export-summary"></div><button id="download-calendar" class="primary-button" type="button">Download calendar file <span aria-hidden="true">↓</span></button><button class="text-button" data-close="export-dialog" type="button">Keep planning</button></dialog>
+  <dialog id="reset-dialog" aria-labelledby="reset-title"><div class="dialog-head"><p class="section-kicker">START FRESH</p><button class="dialog-close icon-button" data-close="reset-dialog" type="button" aria-label="Close reset confirmation">×</button></div><h2 id="reset-title">Reset this sample visit?</h2><p>This clears your saved visit and current choices on this device. It cannot change an Alpine booking.</p><div class="dialog-actions"><button id="reset-confirm" class="primary-button" type="button">Reset demo</button><button class="text-button" data-close="reset-dialog" type="button">Keep my plan</button></div></dialog>
 </body>
 </html>
