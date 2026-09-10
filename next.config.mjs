@@ -36,6 +36,9 @@ const nextConfig = {
       { source: "/spa-lounge/demo", destination: "/spa-lounge/demo/index.html" },
       { source: "/purify-wellness/demo", destination: "/purify-wellness/demo/index.html" },
       { source: "/unified-hot-yoga/demo", destination: "/unified-hot-yoga/demo/index.html" },
+      { source: "/united-dance-center", destination: "/united-dance-center/index.html" },
+      { source: "/pantry-plenty", destination: "/pantry-plenty/index.html" },
+      { source: "/exl-fitness", destination: "/exl-fitness/index.html" },
       // END GENERATED PROSPECT DEMOS
     ];
   },
@@ -54,6 +57,9 @@ const nextConfig = {
       { source: "/purify-wellness/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }] },
       { source: "/unified-hot-yoga/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }] },
       { source: "/dta-tumbling", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }] },
+      { source: "/united-dance-center", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }] },
+      { source: "/pantry-plenty", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }] },
+      { source: "/exl-fitness", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }] },
       // END GENERATED PROSPECT HEADERS
       { source: "/studio/:path*", headers: noStoreHeaders },
       { source: "/api/cms/:path*", headers: noStoreHeaders },
