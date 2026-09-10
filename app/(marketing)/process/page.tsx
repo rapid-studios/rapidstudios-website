@@ -8,7 +8,7 @@ import { buildMetadata } from "@/lib/seo/metadata";
 
 const pageSeo = {
   title: "Process",
-  description: "Research, design, and build in focused sprints -- how Rapid Studios ships polished products in weeks, not months.",
+  description: "How Rapid Studios scopes, designs, builds, and launches websites, apps, and automation with clear milestones and review points.",
   pathname: "/process"
 };
 
@@ -33,7 +33,7 @@ export default function ProcessPage() {
             Our <span className="gradient-text">Process</span>
           </h1>
           <p className="liquid-lead mx-auto mt-6 max-w-3xl">
-            High-velocity delivery from discovery to launch.
+            Agree the scope, review progress, and know what happens next at every stage of the build.
           </p>
         </section>
       </Reveal>

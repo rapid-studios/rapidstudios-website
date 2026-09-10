@@ -38,7 +38,7 @@ export async function sendCustomerConfirmation(inquiry: ContactInquiry): Promise
   try {
     const { InquiryConfirmation } = await import("@/emails/rapid-studios-inquiry");
 
-    const { error } = await getResend().emails.send({
+    const { data, error } = await getResend().emails.send({
       from: emailFrom(),
       to: inquiry.email,
       replyTo: emailReplyTo(),
@@ -46,16 +46,15 @@ export async function sendCustomerConfirmation(inquiry: ContactInquiry): Promise
       react: InquiryConfirmation({ inquiry })
     });
 
-    if (error) {
-      console.error("[email] Customer confirmation failed:", error);
-      return { success: false, error: error.message };
+    if (error || !data?.id) {
+      console.error("[email] Customer confirmation was not accepted.");
+      return { success: false, error: "Customer confirmation was not accepted." };
     }
 
     return { success: true };
-  } catch (err) {
-    const message = err instanceof Error ? err.message : "Unknown error";
-    console.error("[email] Customer confirmation exception:", message);
-    return { success: false, error: message };
+  } catch {
+    console.error("[email] Customer confirmation request failed.");
+    return { success: false, error: "Customer confirmation request failed." };
   }
 }
 
@@ -66,7 +65,7 @@ export async function sendInternalNotification(inquiry: ContactInquiry): Promise
   try {
     const { InternalNotification } = await import("@/emails/rapid-studios-internal-notification");
 
-    const { error } = await getResend().emails.send({
+    const { data, error } = await getResend().emails.send({
       from: emailFrom(),
       to: emailNotify(),
       replyTo: inquiry.email,
@@ -74,35 +73,37 @@ export async function sendInternalNotification(inquiry: ContactInquiry): Promise
       react: InternalNotification({ inquiry })
     });
 
-    if (error) {
-      console.error("[email] Internal notification failed:", error);
-      return { success: false, error: error.message };
+    if (error || !data?.id) {
+      console.error("[email] Internal notification was not accepted.");
+      return { success: false, error: "Internal notification was not accepted." };
     }
 
     return { success: true };
-  } catch (err) {
-    const message = err instanceof Error ? err.message : "Unknown error";
-    console.error("[email] Internal notification exception:", message);
-    return { success: false, error: message };
+  } catch {
+    console.error("[email] Internal notification request failed.");
+    return { success: false, error: "Internal notification request failed." };
   }
 }
 
 /**
- * Send both emails for a new inquiry. Failures are logged but do not
- * prevent the API from returning success -- the lead data is captured
- * regardless.
+ * Get the team notification accepted before acknowledging the inquiry.
+ * Email is the only lead destination; a customer receipt alone is not success.
  */
 export async function sendInquiryEmails(inquiry: ContactInquiry): Promise<{
   customer: SendResult;
   internal: SendResult;
 }> {
-  const [customer, internal] = await Promise.allSettled([
-    sendCustomerConfirmation(inquiry),
-    sendInternalNotification(inquiry)
-  ]);
+  const internal = await sendInternalNotification(inquiry);
+
+  if (!internal.success) {
+    return {
+      internal,
+      customer: { success: false, error: "Skipped because the team notification failed." }
+    };
+  }
 
   return {
-    customer: customer.status === "fulfilled" ? customer.value : { success: false, error: "Promise rejected" },
-    internal: internal.status === "fulfilled" ? internal.value : { success: false, error: "Promise rejected" }
+    internal,
+    customer: await sendCustomerConfirmation(inquiry)
   };
 }

@@ -82,24 +82,32 @@ export async function POST(request: Request) {
 
   const inquiry: ContactInquiry = { name, email, company, projectType, note };
 
-  // Send emails -- failures are logged but don't prevent success response
-  if (process.env.RESEND_API_KEY) {
+  const unavailableResponse = () => NextResponse.json(
+    { error: "We couldn't send your inquiry. Please try again later or email hello@rapidstudios.dev." },
+    { status: 503 }
+  );
+
+  if (!process.env.RESEND_API_KEY?.trim()) {
+    console.error("[contact] Email service is not configured.");
+    return unavailableResponse();
+  }
+
+  try {
     const results = await sendInquiryEmails(inquiry);
 
-    if (!results.customer.success) {
-      console.error("[contact] Customer email failed:", results.customer.error, { name, email });
-    }
+    // There is no durable lead store: the team notification must be accepted
+    // before the form can tell the customer their inquiry was received.
     if (!results.internal.success) {
-      console.error("[contact] Internal notification failed:", results.internal.error, { name, email, company, projectType, note: note.slice(0, 200) });
+      console.error("[contact] Team notification was not accepted.");
+      return unavailableResponse();
     }
-  } else {
-    console.warn("[contact] RESEND_API_KEY not set -- skipping emails. Inquiry:", {
-      name,
-      email,
-      company,
-      projectType,
-      note: note.slice(0, 100)
-    });
+
+    if (!results.customer.success) {
+      console.warn("[contact] Inquiry accepted, but customer acknowledgement failed.");
+    }
+  } catch {
+    console.error("[contact] Inquiry submission failed.");
+    return unavailableResponse();
   }
 
   return NextResponse.json({ success: true });

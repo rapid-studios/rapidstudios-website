@@ -45,7 +45,7 @@ export interface ManagedHomepageSnapshot {
   schemaVersion: 1;
   publishTarget: typeof MANAGED_HOMEPAGE_PUBLISH_TARGET;
   provenance: {
-    source: "bootstrap" | "local-codex-worker";
+    source: "bootstrap" | "local-codex-worker" | "repository-edit";
     snapshotId: string;
     jobId: string | null;
     publishedAt: string;
@@ -169,8 +169,8 @@ function parsePublishTarget(value: unknown): typeof MANAGED_HOMEPAGE_PUBLISH_TAR
 function parseProvenance(value: unknown): ManagedHomepageSnapshot["provenance"] {
   assertRecord(value, "Managed homepage provenance");
   assertExactKeys(value, PROVENANCE_KEYS, "Managed homepage provenance");
-  if (value.source !== "bootstrap" && value.source !== "local-codex-worker") {
-    throw new Error('Managed homepage provenance source must be "bootstrap" or "local-codex-worker".');
+  if (value.source !== "bootstrap" && value.source !== "local-codex-worker" && value.source !== "repository-edit") {
+    throw new Error('Managed homepage provenance source must be "bootstrap", "local-codex-worker", or "repository-edit".');
   }
   if (typeof value.snapshotId !== "string" || !SAFE_ID.test(value.snapshotId)) {
     throw new Error("Managed homepage provenance snapshotId is invalid.");
@@ -183,6 +183,9 @@ function parseProvenance(value: unknown): ManagedHomepageSnapshot["provenance"] 
   }
   if (value.source === "local-codex-worker" && value.jobId === null) {
     throw new Error("Managed homepage worker provenance requires a jobId.");
+  }
+  if (value.source === "repository-edit" && value.jobId !== null) {
+    throw new Error("Managed homepage repository edit may not claim a worker job.");
   }
   if (typeof value.publishedAt !== "string") throw new Error("Managed homepage provenance publishedAt is invalid.");
   const parsedDate = new Date(value.publishedAt);

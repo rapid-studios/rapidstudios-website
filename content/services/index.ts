@@ -3,6 +3,7 @@ import type { ServiceEntry, ServiceMeta } from "@/types/content";
 import AiAutomations, { meta as aiAutomationsMeta } from "./ai-automations.mdx";
 import FrontendImplementation, { meta as frontendImplementationMeta } from "./frontend-implementation.mdx";
 import MarketingWebsites, { meta as marketingWebsitesMeta } from "./marketing-websites.mdx";
+import MobileAppDevelopment, { meta as mobileAppDevelopmentMeta } from "./mobile-app-development.mdx";
 import PositioningAndMessaging, { meta as positioningAndMessagingMeta } from "./positioning-and-messaging.mdx";
 
 export const services: ServiceEntry[] = [
@@ -21,5 +22,9 @@ export const services: ServiceEntry[] = [
   {
     ...(frontendImplementationMeta as ServiceMeta),
     Content: FrontendImplementation
+  },
+  {
+    ...(mobileAppDevelopmentMeta as ServiceMeta),
+    Content: MobileAppDevelopment
   }
 ];

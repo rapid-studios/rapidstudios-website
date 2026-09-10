@@ -9,6 +9,7 @@
     "lint": "eslint .",
     "test:seo": "node --no-warnings --loader ./scripts/cms/tests/typescript-resolver.mjs --test scripts/seo/json-ld.test.mjs",
     "check:seo": "node scripts/seo/check-rendered.mjs",
+    "test:contact": "node --no-warnings --loader ./scripts/contact/test-loader.mjs --test scripts/contact/contact.test.mjs",
     "lint:kumo": "eslint lib/kumo-demo app/api/kumo scripts/kumo",
     "test:kumo": "node --test scripts/kumo/*.test.mjs && node scripts/kumo/check-static.mjs",
     "test:cms:security": "node --test scripts/cms/security-hardening.test.mjs",

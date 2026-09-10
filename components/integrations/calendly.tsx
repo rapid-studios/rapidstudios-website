@@ -1,12 +1,15 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import Script from "next/script";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { CalendarDays, X } from "lucide-react";
+import { track } from "@vercel/analytics";
 
 import { RapidWordmark } from "@/components/layout/rapid-wordmark";
 import { trackCtaClick } from "@/lib/analytics";
+import { bookingConfig } from "@/lib/booking";
 import { DEFAULT_THEME, readTheme, type SiteTheme } from "@/lib/theme";
 import { BrandIcon } from "@/components/ui/brand-icon";
 import { Button } from "@/components/ui/button";
@@ -29,7 +32,6 @@ const CALENDLY_HINT_IDS = {
   assetsPreconnect: "calendly-assets-preconnect",
   assetsDnsPrefetch: "calendly-assets-dns-prefetch"
 } as const;
-const CALENDLY_BASE_URL = "https://calendly.com/rapidstudios";
 const CALENDLY_THEME_PARAMS: Record<SiteTheme, { backgroundColor: string; textColor: string }> = {
   dark: {
     backgroundColor: "0a0d11",
@@ -64,7 +66,7 @@ function getCalendlyPopupUrl(theme: SiteTheme) {
     text_color: colors.textColor
   });
 
-  return `${CALENDLY_BASE_URL}?${params.toString()}`;
+  return `${bookingConfig.url}?${params.toString()}`;
 }
 
 function getCalendlyInlineUrl(theme: SiteTheme) {
@@ -168,19 +170,36 @@ function warmCalendly() {
 
 function CalendlyInlineEmbed({
   className = "absolute inset-0 calendly-inline-embed",
-  onHeightChange
+  location
 }: {
   className?: string;
-  onHeightChange?: (height: number) => void;
+  location: string;
 }) {
   const embedRef = useRef<HTMLDivElement>(null);
   const theme = useCalendlyTheme();
 
   useEffect(() => {
     const embedNode = embedRef.current;
-    let resizeObserver: ResizeObserver | null = null;
     let cancelled = false;
     let intervalId: number | null = null;
+    let bookingTracked = false;
+
+    const handleBookingMessage = (event: MessageEvent) => {
+      const iframe = embedNode?.querySelector("iframe");
+      if (
+        event.origin !== "https://calendly.com" ||
+        !iframe || event.source !== iframe.contentWindow ||
+        event.data?.event !== "calendly.event_scheduled" || bookingTracked
+      ) {
+        return;
+      }
+
+      bookingTracked = true;
+      // Only the conversion and CTA location are sent, never invitee details.
+      track("booking_scheduled", { location });
+    };
+
+    window.addEventListener("message", handleBookingMessage);
 
     const mountInlineWidget = () => {
       if (cancelled || !embedNode || !window.Calendly?.initInlineWidget) {
@@ -190,7 +209,7 @@ function CalendlyInlineEmbed({
       embedNode.innerHTML = "";
       window.Calendly.initInlineWidget({
         parentElement: embedNode,
-        resize: true,
+        resize: false,
         url: getCalendlyInlineUrl(theme)
       });
 
@@ -198,20 +217,6 @@ function CalendlyInlineEmbed({
     };
 
     warmCalendly();
-
-    if (embedNode && onHeightChange && typeof ResizeObserver !== "undefined") {
-      resizeObserver = new ResizeObserver((entries) => {
-        const entry = entries[0];
-
-        if (!entry) {
-          return;
-        }
-
-        onHeightChange(Math.ceil(entry.contentRect.height));
-      });
-
-      resizeObserver.observe(embedNode);
-    }
 
     if (!mountInlineWidget()) {
       intervalId = window.setInterval(() => {
@@ -223,22 +228,34 @@ function CalendlyInlineEmbed({
 
     return () => {
       cancelled = true;
+      window.removeEventListener("message", handleBookingMessage);
 
       if (intervalId) {
         window.clearInterval(intervalId);
-      }
-
-      if (resizeObserver) {
-        resizeObserver.disconnect();
       }
 
       if (embedNode) {
         embedNode.innerHTML = "";
       }
     };
-  }, [onHeightChange, theme]);
+  }, [location, theme]);
 
-  return <div className={className} ref={embedRef} />;
+  return (
+    <div className={className}>
+      <div className="absolute inset-x-0 bottom-10 top-0 overflow-y-auto" ref={embedRef} />
+      <div className="absolute inset-x-0 bottom-0 flex h-10 items-center justify-center border-t border-[var(--color-line-subtle)] bg-[var(--color-surface)] px-3">
+        <a
+          className="text-xs font-semibold text-[var(--color-brand-primary)] underline underline-offset-4"
+          href={bookingConfig.url}
+          onClick={() => trackCtaClick(`${location}_fallback`, bookingConfig.label)}
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          Open booking in a new tab
+        </a>
+      </div>
+    </div>
+  );
 }
 
 function openCalendly(url: string) {
@@ -258,7 +275,7 @@ function openCalendly(url: string) {
 
 export function CalendlyPopupButton({
   className,
-  label = "Book a Discovery Call",
+  label = bookingConfig.label,
   location,
   variant = "primary"
 }: {
@@ -271,19 +288,25 @@ export function CalendlyPopupButton({
     <>
       <CalendlyAssets />
       <Button
+        asChild
         className={className}
-        onClick={() => {
-          trackCtaClick(location, label);
-          openCalendly(getCalendlyPopupUrl(readTheme()));
-        }}
-        onFocus={warmCalendly}
-        onMouseEnter={warmCalendly}
         size="large"
-        type="button"
         variant={variant}
       >
-        <CalendarDays className="size-4" />
-        {label}
+        <a
+          href={bookingConfig.url}
+          onClick={(event) => {
+            trackCtaClick(location, label);
+            if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+            event.preventDefault();
+            openCalendly(getCalendlyPopupUrl(readTheme()));
+          }}
+          onFocus={warmCalendly}
+          onMouseEnter={warmCalendly}
+        >
+          <CalendarDays className="size-4" />
+          {label}
+        </a>
       </Button>
     </>
   );
@@ -291,7 +314,7 @@ export function CalendlyPopupButton({
 
 export function CalendlyRightMorphButton({
   className,
-  label = "Book a Discovery Call",
+  label = bookingConfig.label,
   location
 }: {
   className?: string;
@@ -301,10 +324,9 @@ export function CalendlyRightMorphButton({
   const prefersReducedMotion = useReducedMotion();
   const closeTimerRef = useRef<number | null>(null);
   const [closing, setClosing] = useState(false);
-  const [embedHeight, setEmbedHeight] = useState<number | null>(null);
   const [expanded, setExpanded] = useState(false);
   const [geometry, setGeometry] = useState<PanelGeometry | null>(null);
-  const triggerRef = useRef<HTMLButtonElement>(null);
+  const triggerRef = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
     warmCalendly();
@@ -333,7 +355,8 @@ export function CalendlyRightMorphButton({
       const rect = trigger.getBoundingClientRect();
       const margin = 24;
       const openWidth = Math.min(CONTACT_MORPH_PANEL_WIDTH, window.innerWidth - margin * 2);
-      const desiredOpenHeight = Math.max((embedHeight ?? CONTACT_MORPH_PANEL_HEIGHT) + CALENDLY_BADGE_OFFSET, 320);
+      // The viewport owns the panel height; measuring the nested embed causes a resize feedback loop.
+      const desiredOpenHeight = CONTACT_MORPH_PANEL_HEIGHT + CALENDLY_BADGE_OFFSET;
       const openHeight = Math.min(desiredOpenHeight, window.innerHeight - margin * 2);
       const openLeft = Math.max((window.innerWidth - openWidth) / 2, margin);
       const openTop = Math.max((window.innerHeight - openHeight) / 2, margin);
@@ -358,7 +381,7 @@ export function CalendlyRightMorphButton({
       window.removeEventListener("resize", updateGeometry);
       window.removeEventListener("scroll", updateGeometry, true);
     };
-  }, [embedHeight]);
+  }, []);
 
   useEffect(() => {
     if (!expanded || typeof window === "undefined") {
@@ -419,26 +442,39 @@ export function CalendlyRightMorphButton({
     <>
       <CalendlyAssets />
       <Button
+        asChild
         className={`${className ?? ""} ${panelVisible ? "pointer-events-none opacity-0" : "opacity-100"}`.trim()}
-        onClick={handleOpen}
-        onFocus={warmCalendly}
-        onMouseEnter={warmCalendly}
-        onTouchStart={warmCalendly}
-        ref={triggerRef}
         size="large"
         style={{ transition: "opacity 120ms cubic-bezier(0.22, 1, 0.36, 1)" }}
-        type="button"
         variant="primary"
       >
-        <CalendarDays className="size-4" />
-        {label}
+        <a
+          aria-expanded={expanded}
+          href={bookingConfig.url}
+          onClick={(event) => {
+            if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+            event.preventDefault();
+            handleOpen();
+          }}
+          onFocus={warmCalendly}
+          onMouseEnter={warmCalendly}
+          onTouchStart={warmCalendly}
+          ref={triggerRef}
+          tabIndex={panelVisible ? -1 : 0}
+        >
+          <CalendarDays className="size-4" />
+          {label}
+        </a>
       </Button>
+      {/* Geometry is measured after mount, so the portal never reads document during SSR. */}
+      {geometry ? createPortal(
+        <>
       <AnimatePresence>
-        {panelVisible && geometry ? (
+        {panelVisible ? (
           <motion.button
             animate={{ opacity: 1 }}
             aria-label="Close scheduling panel"
-            className="fixed inset-0 z-[55] bg-[rgba(8,12,18,0.46)] backdrop-blur-[2px]"
+            className="fixed inset-0 z-[75] bg-[rgba(8,12,18,0.46)] backdrop-blur-[2px]"
             exit={{ opacity: 0 }}
             initial={{ opacity: 0 }}
             onClick={handleClose}
@@ -450,7 +486,6 @@ export function CalendlyRightMorphButton({
           />
         ) : null}
       </AnimatePresence>
-      {geometry ? (
         <motion.div
           animate={{
             boxShadow:
@@ -462,9 +497,11 @@ export function CalendlyRightMorphButton({
             x: 0,
             y: 0
           }}
-          className={`fixed z-[65] overflow-hidden border border-[var(--color-line-subtle)] bg-[var(--color-surface-soft)] backdrop-blur-[20px] ${
+          className={`fixed z-[85] overflow-hidden border border-[var(--color-line-subtle)] bg-[var(--color-surface-soft)] backdrop-blur-[20px] ${
             panelVisible ? "pointer-events-auto" : "pointer-events-none"
           }`}
+          aria-hidden={!panelVisible}
+          inert={!panelVisible}
           initial={false}
           style={{
             height: geometry.openHeight,
@@ -518,12 +555,16 @@ export function CalendlyRightMorphButton({
               ease: [0.22, 1, 0.36, 1]
             }}
           >
-            <CalendlyInlineEmbed
-              className="absolute inset-x-0 bottom-0 top-[52px] calendly-inline-embed"
-              onHeightChange={setEmbedHeight}
-            />
+            {panelVisible ? (
+              <CalendlyInlineEmbed
+                className="absolute inset-x-0 bottom-0 top-[52px] calendly-inline-embed"
+                location={location}
+              />
+            ) : null}
           </motion.div>
         </motion.div>
+        </>,
+        document.body
       ) : null}
     </>
   );
@@ -531,12 +572,11 @@ export function CalendlyRightMorphButton({
 
 export function CalendlyBadgeWidget() {
   const prefersReducedMotion = useReducedMotion();
-  const [embedHeight, setEmbedHeight] = useState<number | null>(null);
   const [expanded, setExpanded] = useState(false);
   const [isCompact, setIsCompact] = useState(false);
   const collapsedHeight = 56;
   const collapsedWidth = isCompact ? 56 : 280;
-  const panelHeight = Math.max((embedHeight ?? CONTACT_MORPH_PANEL_HEIGHT) + CALENDLY_BADGE_OFFSET, 320);
+  const panelHeight = CONTACT_MORPH_PANEL_HEIGHT + CALENDLY_BADGE_OFFSET;
 
   useEffect(() => {
     warmCalendly();
@@ -572,7 +612,7 @@ export function CalendlyBadgeWidget() {
   };
 
   const handleOpen = () => {
-    trackCtaClick("floating_calendly", "Book a Discovery Call");
+    trackCtaClick("floating_calendly", bookingConfig.label);
     primeCalendly();
     setExpanded(true);
   };
@@ -637,7 +677,9 @@ export function CalendlyBadgeWidget() {
               opacity: expanded ? 0 : 1,
               y: expanded && !prefersReducedMotion ? 6 : 0
             }}
-            aria-label="Book a Discovery Call"
+            aria-label={bookingConfig.label}
+            aria-hidden={expanded}
+            tabIndex={expanded ? -1 : 0}
             className={`pointer-events-auto absolute bottom-0 right-0 flex h-14 w-14 items-center justify-center gap-0 overflow-hidden rounded-full border border-[var(--color-brand-primary-strong)] bg-[var(--color-brand-accent)] px-0 text-sm font-semibold uppercase tracking-[0.12em] text-white sm:w-[280px] sm:gap-2 sm:px-6 ${
               expanded ? "pointer-events-none" : ""
             }`}
@@ -670,7 +712,7 @@ export function CalendlyBadgeWidget() {
               />
               <span className="pointer-events-none absolute inset-0 rounded-full bg-[radial-gradient(circle_at_22%_20%,rgba(255,255,255,0.16),transparent_56%)]" />
               <CalendarDays className="relative z-10 size-4 shrink-0" />
-              <span className="relative z-10 hidden whitespace-nowrap sm:inline">Book a Discovery Call</span>
+              <span className="relative z-10 hidden whitespace-nowrap sm:inline">{bookingConfig.label}</span>
           </motion.button>
 
             <motion.div
@@ -679,6 +721,8 @@ export function CalendlyBadgeWidget() {
                 y: expanded || prefersReducedMotion ? 0 : 10
               }}
               className={`absolute inset-0 flex flex-col ${expanded ? "pointer-events-auto" : "pointer-events-none"}`}
+              aria-hidden={!expanded}
+              inert={!expanded}
               transition={{
                 delay: expanded && !prefersReducedMotion ? 0.06 : 0,
                 duration: prefersReducedMotion ? 0.12 : 0.16,
@@ -701,10 +745,12 @@ export function CalendlyBadgeWidget() {
                 </span>
               </div>
               <div className="relative min-h-0 flex-1 bg-[var(--color-surface)]">
-                <CalendlyInlineEmbed
-                  className="absolute inset-x-0 bottom-0 top-[52px] calendly-inline-embed"
-                  onHeightChange={setEmbedHeight}
-                />
+                {expanded ? (
+                  <CalendlyInlineEmbed
+                    className="absolute inset-x-0 bottom-0 top-[52px] calendly-inline-embed"
+                    location="floating_calendly"
+                  />
+                ) : null}
               </div>
             </motion.div>
           </motion.div>

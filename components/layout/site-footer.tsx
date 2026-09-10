@@ -11,15 +11,16 @@ import { siteConfig } from "@/lib/site-data";
 const studioLinks = [
   { href: "/work", label: "Work" },
   { href: "/services", label: "Services" },
+  { href: "/pricing", label: "Pricing & scope" },
   { href: "/process", label: "Process" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" }
 ];
 
 const serviceLinks = [
-  { href: "/services", label: "Product Design" },
-  { href: "/services", label: "Marketing & Launch Surfaces" },
-  { href: "/services", label: "Frontend Implementation" }
+  { href: "/services#marketing-websites", label: "Websites" },
+  { href: "/services#mobile-app-development", label: "iOS & Android apps" },
+  { href: "/services#ai-automations", label: "AI automations" }
 ];
 
 export function SiteFooter() {
@@ -36,7 +37,7 @@ export function SiteFooter() {
             </span>
           </Link>
           <p className="mt-6 max-w-sm text-[15.5px] leading-[1.7] text-[var(--color-text-secondary)]">
-            Premium product design and frontend delivery for teams that ship.
+            Websites, mobile apps, and practical automation for the people running the business.
           </p>
           <Link
             className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-brand-primary)] transition-colors hover:text-[var(--color-brand-primary-hover)]"

@@ -3,7 +3,7 @@ import type { NavItem, ProcessStep } from "@/types/content";
 export const siteConfig = {
   name: "Rapid Studios",
   description:
-    "Rapid Studios helps product teams design and launch polished digital products -- from positioning and UI to production frontend delivery.",
+    "Rapid Studios builds websites, iOS and Android apps, and practical AI automations for business owners. Start with a 15-minute project call with Travis.",
   url: "https://rapidstudios.dev",
   email: "hello@rapidstudios.dev"
 };
@@ -11,7 +11,7 @@ export const siteConfig = {
 export const navigation: NavItem[] = [
   { href: "/work", label: "Work" },
   { href: "/services", label: "Services" },
-  { href: "/process", label: "Process" },
+  { href: "/pricing", label: "Pricing" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" }
 ];
@@ -20,6 +20,7 @@ export const footerNavigation: NavItem[] = [
   { href: "/", label: "Home" },
   { href: "/work", label: "Work" },
   { href: "/services", label: "Services" },
+  { href: "/pricing", label: "Pricing & scope" },
   { href: "/process", label: "Process" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" }
@@ -37,27 +38,27 @@ export const processSteps: ProcessStep[] = [
   {
     step: "01",
     title: "Research",
-    description: "Reference mining, positioning calibration, and page-structure decisions before pixels get expensive."
+    description: "Understand the customer task or manual workflow to improve, review the current tools, and choose a useful first scope."
   },
   {
     step: "02",
     title: "Direction",
-    description: "Information architecture, design language, and conversion priorities locked into a clear system."
+    description: "Agree the deliverables, price, milestones, access requirements, and what success will look like before building."
   },
   {
     step: "03",
     title: "Design",
-    description: "High-confidence layouts, typography, and motion tuned to look premium without slowing the story down."
+    description: "Review the important screens and customer journeys so you can give feedback before they become finished code."
   },
   {
     step: "04",
     title: "Build",
-    description: "Production-ready Next.js implementation with reusable sections, MDX content, and state coverage."
+    description: "Build the agreed website, app, or automation. Review progress and test real tasks, including errors and mobile use."
   },
   {
     step: "05",
     title: "Launch",
-    description: "Final QA, analytics hooks, polish passes, and a handoff that keeps future edits easy."
+    description: "Complete launch checks and handoff. Review feedback and usage, then agree any support or next improvements separately."
   }
 ];
 
@@ -97,21 +98,21 @@ export const collaborationPrinciples = [
 export const engagementModels = [
   {
     name: "Focused Sprint",
-    summary: "For teams that need a sharper homepage, launch page, or strategic refresh quickly.",
+    summary: "Start with one clear problem: a better landing page, a focused prototype, or a repetitive workflow.",
     featured: false,
-    details: ["1-2 core pages", "Messaging and section rhythm", "Motion direction", "Delivery in days, not weeks"]
+    details: ["One agreed goal and scope", "Design or workflow review", "Clear deliverables and milestones", "Price and timing agreed before work"]
   },
   {
-    name: "Website Engagement",
-    summary: "A full marketing site with approved structure, reusable sections, and implementation-ready polish.",
+    name: "Complete Build",
+    summary: "Take a website, mobile app, or business workflow from an agreed plan through build and launch preparation.",
     featured: true,
-    details: ["Multi-page architecture", "Case-study and services system", "Responsive design and motion", "Production frontend delivery"]
+    details: ["Design and implementation", "Required integrations scoped early", "Testing and launch preparation", "Handoff of your custom work"]
   },
   {
-    name: "Ongoing Partner",
-    summary: "A retained studio relationship for launches, iterations, and continuous marketing improvements.",
+    name: "Ongoing Support",
+    summary: "Keep improving after launch with maintenance, customer feedback, and a prioritized list of useful updates.",
     featured: false,
-    details: ["Launch support", "Ongoing optimization", "New landing pages", "Design-system consistency"]
+    details: ["Maintenance scope agreed separately", "Feedback and usage review", "Prioritized fixes and improvements", "Clear monthly scope and cost"]
   }
 ] as const;
 

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, Code2, Layers, Lightbulb, Palette, Zap } from "lucide-react";
 
+import { bookingConfig } from "@/lib/booking";
 import { Reveal } from "@/components/motion/reveal";
 import { BrandIcon } from "@/components/ui/brand-icon";
 import { Button } from "@/components/ui/button";
@@ -9,7 +10,7 @@ import { buildMetadata } from "@/lib/seo/metadata";
 
 const pageSeo = {
   title: "About",
-  description: "A small, deliberate product studio that ships polished digital products -- from positioning to production frontend.",
+  description: "A small studio building websites, mobile apps, and AI automations around real customer needs and everyday business work.",
   pathname: "/about"
 };
 
@@ -33,13 +34,15 @@ const principles = [
   },
   {
     title: "You own everything",
-    description: "Code, design system, content structure, assets. No lock-in, no recurring platform fee, no dependency on us to make edits.",
+    description: "Your custom code, designs, and content are handed over to you. Third-party tools and assets keep their own licenses, and any ongoing support is scoped separately.",
     icon: Code2
   }
 ] as const;
 
 const capabilities = [
   "Product strategy and positioning",
+  "iOS and Android app development",
+  "Practical AI workflow automation",
   "UI/UX design systems",
   "Marketing and launch surfaces",
   "Homepage and landing page design",
@@ -82,7 +85,7 @@ export default function AboutPage() {
               </span>
             </h1>
             <p className="liquid-lead mt-7 max-w-3xl">
-              Rapid Studios is a product design and frontend studio built for teams that need polished digital products shipped with speed and craft -- not a 12-person agency with a 6-month timeline.
+              Rapid Studios designs and builds websites, mobile apps, and AI automations for business owners and lean teams. Start with the problem you want to solve, then build a focused solution around it.
             </p>
           </div>
 
@@ -260,12 +263,12 @@ export default function AboutPage() {
               Ready to ship something better?
             </h2>
             <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-[var(--color-text-secondary)]">
-              Start with a 30-minute call. No pitch deck, no commitment -- just a clear conversation about what you&apos;re building and how we can help.
+              Start with a 15-minute call with Travis. Bring the idea or the problem you want to solve. No prepared brief or commitment needed.
             </p>
             <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
               <Button asChild size="large">
-                <Link href="/contact">
-                  Book a Discovery Call
+                <Link href={bookingConfig.url}>
+                  {bookingConfig.label}
                   <ArrowRight className="size-5" />
                 </Link>
               </Button>

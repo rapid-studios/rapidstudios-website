@@ -10,7 +10,7 @@ import { engagementModels } from "@/lib/site-data";
 
 const pageSeo = {
   title: "Engagements",
-  description: "Focused sprints, full website engagements, and ongoing studio partnerships tailored around the work.",
+  description: "Compare focused projects, complete website or app builds, and ongoing support. Get a scope-based quote and answers about timing, ownership, and integrations.",
   pathname: "/pricing"
 };
 
@@ -18,24 +18,39 @@ export const metadata = buildMetadata(pageSeo);
 
 const engagementFaqs = [
   {
-    question: "How is an engagement scoped?",
+    question: "What will my project cost?",
     answer:
-      "Every engagement is anchored to a clear outcome, page set, and launch timeline before work starts. That keeps the process fast and avoids the bloated feel of agency-style overhead."
+      "We quote the agreed scope rather than publish one price for every project. Share the outcome you need, the pages or features involved, your existing tools, and your timing. The proposal sets out deliverables, dependencies, and cost before work begins."
   },
   {
-    question: "Can scope expand after kickoff?",
+    question: "Can you work with our existing website and tools?",
     answer:
-      "Yes. If a sprint turns into a broader site or retained partnership, the work is re-scoped into the next best engagement model instead of getting buried in change-order friction."
+      "We review what you already use before recommending a build or replacement. Integrations depend on the access, APIs, and permissions your tools provide. Bring the names of your website platform, booking system, CRM, or other key tools to the first conversation."
   },
   {
-    question: "How fast can we start?",
+    question: "How long does a project take, and can the scope change?",
     answer:
-      "Most projects can begin within a few business days once direction, availability, and source material are aligned."
+      "Timing depends on the agreed scope, availability, content, and integration access. We set a schedule with review points before kickoff. If the work changes, we agree the effect on cost and timing before adding it. External approvals can also affect a launch date."
   },
   {
-    question: "Do you handle custom or larger engagements?",
+    question: "Who owns the work, and are there other fees?",
     answer:
-      "Yes. The options shown here are the cleanest starting points, but custom engagements are available when the work spans more surfaces, approvals, or implementation depth."
+      "You receive the project code, design files, and content produced for your engagement. Third-party software, stock assets, and services remain subject to their own licenses and fees. Hosting, app developer accounts, and paid integrations may have ongoing costs separate from the project."
+  },
+  {
+    question: "What happens after launch?",
+    answer:
+      "Launch support is defined in the project scope. Maintenance, content updates, new features, and workflow improvements can be scoped through Ongoing Support. We agree the coverage and priorities so you know what is included."
+  },
+  {
+    question: "What happens on the first call?",
+    answer:
+      "The first call is a 15-minute conversation about the problem, your current setup, and the result you want. You do not need a finished brief. There is no commitment to a project; the aim is to decide whether there is a useful next step."
+  },
+  {
+    question: "Do you build and submit iOS and Android apps?",
+    answer:
+      "Yes. A scoped app engagement can include production development, device testing, and App Store and Google Play submission support. The work depends on the agreed features, suitable integration access, and developer accounts. Store approval and review timing are controlled by the stores. A demo or prototype is separate from a production app release."
   }
 ] as const;
 
@@ -51,10 +66,10 @@ export default function PricingPage() {
         <section className="liquid-hero mx-auto max-w-5xl px-6 text-center">
           <span className="protocol-label justify-center">Engagement options</span>
           <h1 className="liquid-h1 mt-8">
-            Find the right <span className="gradient-text">engagement</span>
+            Choose your <span className="gradient-text">starting point</span>
           </h1>
           <p className="liquid-lead mx-auto mt-6 max-w-3xl">
-            Premium engagements, clear scope, and fast starts. The goal is momentum and polish, not a cheap-feeling menu of deliverables.
+            Start with a focused project, a complete build, or ongoing support. Tell us the goal and constraints; we will recommend a scope and quote before work starts.
           </p>
         </section>
       </Reveal>
@@ -69,7 +84,7 @@ export default function PricingPage() {
                 <Reveal className="relative flex h-full pt-4" delay={0.08 + index * 0.05} key={plan.name}>
                   {featured ? (
                     <span className="data-chip absolute left-1/2 top-0 z-10 -translate-x-1/2 whitespace-nowrap">
-                      Most popular
+                      Featured
                     </span>
                   ) : null}
 
@@ -102,6 +117,9 @@ export default function PricingPage() {
                         </li>
                       ))}
                     </ul>
+                    <Button asChild className="mt-8" variant={featured ? "primary" : "secondary"}>
+                      <Link href="/contact">Discuss your project</Link>
+                    </Button>
                   </article>
                 </Reveal>
               );
@@ -117,10 +135,10 @@ export default function PricingPage() {
               Not sure which fits?
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-[var(--color-text-secondary)]">
-              We can map the right engagement quickly if you share the launch goal, the pages in scope, and how fast you need to move.
+              Bring the problem, your current tools, and any target date. A short conversation can help identify a useful first step before you commit to a larger build.
             </p>
             <Button asChild className="mt-8" size="large">
-              <Link href="/contact">Book a Discovery Call</Link>
+              <Link href="/contact">Discuss your project</Link>
             </Button>
           </div>
         </section>
@@ -134,7 +152,7 @@ export default function PricingPage() {
                 Frequently Asked Questions
               </h2>
               <p className="mt-4 text-sm leading-7 text-[var(--color-text-secondary)]">
-                These engagement options are meant to keep expectations clear. If the answer is not here, a short call will usually settle scope fast.
+                What to expect before kickoff, during the build, and after launch.
               </p>
             </div>
 

@@ -4,21 +4,22 @@ import { CalendlyRightMorphButton } from "@/components/integrations/calendly";
 import { Reveal } from "@/components/motion/reveal";
 import { ContactForm } from "@/components/sections/contact-form";
 import { PageStructuredData } from "@/components/seo/page-structured-data";
+import { bookingConfig } from "@/lib/booking";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { siteConfig } from "@/lib/site-data";
 
 const pageSeo = {
   title: "Contact",
-  description: "Tell us about your project. Rapid Studios typically responds within 24 hours with a clear next step.",
+  description: "Talk through your app, website or automation project in a 15-minute call, or send a note. Rapid Studios typically replies within one business day.",
   pathname: "/contact"
 };
 
 export const metadata = buildMetadata(pageSeo);
 
-const proofStats = [
-  { value: "<24hr", label: "Response Time" },
-  { value: "30 min", label: "Discovery Call" },
-  { value: "48hr", label: "Proposal Turnaround" }
+const contactExpectations = [
+  { value: "15 min", label: "Project call" },
+  { value: "No prep", label: "Bring your idea" },
+  { value: "Next step", label: "Goals and scope" }
 ] as const;
 
 export default function ContactPage() {
@@ -29,16 +30,16 @@ export default function ContactPage() {
         <section className="liquid-hero liquid-hero--left mx-auto max-w-[1180px] px-6">
           <div className="grid gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-start lg:gap-16">
             <div className="max-w-2xl">
-              <span className="protocol-label">Contact Protocol</span>
+              <span className="protocol-label">Let&apos;s talk about your project</span>
               <h1 className="liquid-h1 mt-7">
-                Start your next
+                What&apos;s your next
                 <br />
                 <span className="bg-[linear-gradient(120deg,var(--color-brand-primary),var(--color-brand-accent))] bg-clip-text italic text-transparent">
-                  product.
+                  step?
                 </span>
               </h1>
               <p className="liquid-lead mt-7 max-w-xl">
-                We transform ambitious ideas into market-ready products in record time. Let&apos;s build something remarkable.
+                Need an app, a clearer website, or less manual work? Tell us what&apos;s getting in the way and what you want to achieve. We&apos;ll help you work out a practical next step.
               </p>
 
               <div className="mt-9 border-y border-[var(--color-line-subtle)] py-6">
@@ -54,14 +55,14 @@ export default function ContactPage() {
               </div>
 
               <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
-                <CalendlyRightMorphButton label="Book a Discovery Call" location="contact_page_hero" />
+                <CalendlyRightMorphButton label={bookingConfig.label} location="contact_page_hero" />
                 <p className="max-w-sm text-sm leading-relaxed text-[var(--color-text-secondary)]">
-                  Prefer to talk it through live? Pick a time instantly and we&apos;ll meet on the calendar instead of starting over email.
+                  A short conversation about your goals, your current setup and what to build first. No presentation or finished brief needed.
                 </p>
               </div>
 
               <dl aria-label="What to expect after contacting Rapid Studios" className="mt-10 grid gap-4 sm:grid-cols-3">
-                {proofStats.map((item, index) => (
+                {contactExpectations.map((item, index) => (
                   <Reveal delay={0.08 + index * 0.05} key={item.label}>
                     <div className="surface-card interactive-card h-full p-5">
                       <dt className="text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--color-text-muted)]">
@@ -80,14 +81,14 @@ export default function ContactPage() {
               <aside aria-labelledby="project-intake-heading" className="surface-card p-7 sm:p-9 lg:p-10">
                 <div className="mb-8 border-b border-[var(--color-line-subtle)] pb-5">
                   <h2 id="project-intake-heading" className="protocol-label">
-                    Project Intake
+                    Prefer to send a note?
                   </h2>
                   <p className="mt-4 max-w-xl text-base leading-7 text-[var(--color-text-secondary)]">
-                    Send the brief, share the rough scope, and we&apos;ll come back with a clear next step.
+                    Share the problem you want to solve. A rough idea is enough to start the conversation.
                   </p>
                 </div>
                 <ContactForm />
-                <p className="mt-6 text-sm font-semibold text-[var(--color-brand-accent)]">Typical response time: &lt;12 hours</p>
+                <p className="mt-6 text-sm font-semibold text-[var(--color-brand-accent)]">We typically reply within one business day.</p>
               </aside>
             </Reveal>
           </div>

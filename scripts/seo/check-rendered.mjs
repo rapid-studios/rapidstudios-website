@@ -68,8 +68,8 @@ for (const pathname of paths) {
     const image = await fetch(new URL(new URL(work.image).pathname, origin));
     assert.equal(image.status, 200, "Case-study image must exist");
   }
-  if (pathname === "/services") assert.equal(byType("Service").length, 4);
-  if (pathname === "/pricing") assert.equal(byType("FAQPage")[0]?.mainEntity.length, 4);
+  if (pathname === "/services") assert.equal(byType("Service").length, 5);
+  if (pathname === "/pricing") assert.equal(byType("FAQPage")[0]?.mainEntity.length, 7);
   results.push({ pathname, types: nodes.map((node) => node["@type"]) });
 }
 

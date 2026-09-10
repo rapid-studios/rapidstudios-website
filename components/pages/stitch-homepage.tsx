@@ -5,13 +5,14 @@ import {
   ArrowUpRight,
   Calendar,
   CheckCircle2,
-  Code2,
+  Bot,
   FileText,
   Layers,
-  Palette
+  Smartphone
 } from "lucide-react";
 
 import { Reveal } from "@/components/motion/reveal";
+import { CalendlyRightMorphButton } from "@/components/integrations/calendly";
 import { CmsSizzleReel } from "@/components/sections/cms-sizzle-reel";
 import { Button } from "@/components/ui/button";
 import { TrackedLink } from "@/components/ui/tracked-link";
@@ -26,14 +27,15 @@ export function StitchHomepage() {
     description: copy[`home.differentiators.item${item}.description`]
   }));
   const services = ([
-    { item: 1, icon: Palette },
-    { item: 2, icon: Layers },
-    { item: 3, icon: Code2 }
-  ] as const).map(({ item, icon }) => ({
+    { item: 1, icon: Layers, href: "/services#marketing-websites" },
+    { item: 2, icon: Smartphone, href: "/services#mobile-app-development" },
+    { item: 3, icon: Bot, href: "/services#ai-automations" }
+  ] as const).map(({ item, icon, href }) => ({
     title: copy[`home.services.item${item}.title`],
     kicker: copy[`home.services.item${item}.kicker`],
     description: copy[`home.services.item${item}.description`],
-    icon
+    icon,
+    href
   }));
   const audiencePills = ([1, 2, 3, 4, 5] as const).map((item) => copy[`home.audience.item${item}`]);
   const featuredStudies = ([
@@ -87,15 +89,7 @@ export function StitchHomepage() {
                   {copy["home.hero.description"]}
                 </p>
                 <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-                  <Button asChild size="large">
-                    <TrackedLink
-                      href="/contact"
-                      trackLabel={copy["home.hero.primaryCta"]}
-                      trackLocation="hero"
-                    >
-                      {copy["home.hero.primaryCta"]}
-                    </TrackedLink>
-                  </Button>
+                  <CalendlyRightMorphButton label={copy["home.hero.primaryCta"]} location="hero" />
                   <Button asChild size="large" variant="secondary">
                     <TrackedLink
                       href="/work"
@@ -222,7 +216,7 @@ export function StitchHomepage() {
             </div>
 
             <div className="grid gap-6 lg:grid-cols-3">
-              {services.map(({ title, kicker, description, icon: Icon }, index) => (
+              {services.map(({ title, kicker, description, icon: Icon, href }, index) => (
                 <Reveal delay={0.1 + index * 0.05} key={title}>
                   <article className="surface-card interactive-card p-7">
                     <div className="flex items-start justify-between gap-4 border-b border-[var(--color-line-subtle)] pb-5">
@@ -239,6 +233,15 @@ export function StitchHomepage() {
                       </div>
                     </div>
                     <p className="mt-6 text-base leading-7 text-[var(--color-text-secondary)]">{description}</p>
+                    <TrackedLink
+                      className="annotation-tag mt-6"
+                      href={href}
+                      trackLabel={title}
+                      trackLocation="home_service"
+                    >
+                      Explore {title}
+                      <ArrowRight aria-hidden="true" className="size-4" />
+                    </TrackedLink>
                   </article>
                 </Reveal>
               ))}
@@ -423,15 +426,7 @@ export function StitchHomepage() {
                 {copy["home.cta.description"]}
               </p>
               <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-                <Button asChild size="large">
-                  <TrackedLink
-                    href="/contact"
-                    trackLabel={copy["home.cta.button"]}
-                    trackLocation="bottom_cta"
-                  >
-                    {copy["home.cta.button"]}
-                  </TrackedLink>
-                </Button>
+                <CalendlyRightMorphButton label={copy["home.cta.button"]} location="bottom_cta" />
                 <Button asChild size="large" variant="secondary">
                   <Link href="/work">{copy["home.portfolio.linkLabel"]}</Link>
                 </Button>

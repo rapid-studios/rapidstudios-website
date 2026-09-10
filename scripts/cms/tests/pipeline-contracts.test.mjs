@@ -352,8 +352,9 @@ test("checked-in managed snapshot validates, hashes deterministically, and uses 
   assert.deepEqual(snapshot.publishTarget, MANAGED_HOMEPAGE_PUBLISH_TARGET);
   assert.deepEqual(getManagedHomepageSnapshot(), snapshot);
   assert.equal(isManagedHomepagePlaceholder(snapshot), false);
-  assert.equal(snapshot.provenance.source, "local-codex-worker");
-  assert.ok(snapshot.provenance.jobId);
+  assert.ok(["local-codex-worker", "repository-edit"].includes(snapshot.provenance.source));
+  if (snapshot.provenance.source === "local-codex-worker") assert.ok(snapshot.provenance.jobId);
+  else assert.equal(snapshot.provenance.jobId, null);
 
   const bootstrapSnapshot = exportManagedSnapshot({
     schemaVersion: 1,
@@ -394,6 +395,32 @@ test("checked-in managed snapshot validates, hashes deterministically, and uses 
 
   const extraField = { ...structuredClone(rawSnapshot), arbitrary: true };
   assert.throws(() => validateManagedSnapshot(extraField), /invalid key set/);
+});
+
+test("repository copy edits retain snapshot integrity without impersonating a CMS worker job", () => {
+  const snapshot = { ...getManagedHomepageSnapshot() };
+  delete snapshot.contentHash;
+  const input = {
+    ...snapshot,
+    provenance: {
+      source: "repository-edit",
+      snapshotId: "repository-copy-test",
+      jobId: null,
+      publishedAt: "2026-09-10T00:00:00.000Z",
+      publishedBy: "codex-user-request",
+    },
+  };
+  const exported = exportManagedSnapshot(input);
+  assert.equal(validateManagedSnapshot(exported).provenance.jobId, null);
+  assert.throws(() => exportManagedSnapshot({
+    ...input, provenance: { ...input.provenance, jobId: "pretend-worker-job" },
+  }), /may not claim a worker job/);
+  assert.throws(() => exportManagedSnapshot({
+    ...input, provenance: { ...input.provenance, source: "local-codex-worker" },
+  }), /requires a jobId/);
+  assert.throws(() => validateManagedSnapshot({
+    ...exported, slots: { ...exported.slots, "home.hero.description": "Unhashed edit" },
+  }), /contentHash mismatch/);
 });
 
 test("managed homepage projection is a closed manifest with immutable slot constraints", () => {
