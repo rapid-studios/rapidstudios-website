@@ -6,6 +6,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Reveal } from "@/components/motion/reveal";
 import { BeforeAfter } from "@/components/ui/before-after";
 import { Button } from "@/components/ui/button";
+import { SiteReel } from "@/components/ui/site-reel";
 import { getCaseStudyMedia } from "@/lib/content/case-study-media";
 import { getAllCaseStudies, getCaseStudyBySlug } from "@/lib/content/case-studies";
 import { PageStructuredData } from "@/components/seo/page-structured-data";
@@ -163,6 +164,29 @@ export default async function CaseStudyPage({
                   beforeAlt={`Old ${study.client} website homepage`}
                   interactive
                   sizes="(min-width: 1000px) 1000px, 100vw"
+                />
+              </div>
+            </div>
+          </section>
+        </Reveal>
+      ) : null}
+
+      {visuals.reel ? (
+        <Reveal className="mx-auto max-w-[1000px] px-4 pt-16 sm:px-6 lg:px-8" delay={0.06}>
+          <section aria-labelledby="site-reel-heading">
+            <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
+              <span className="protocol-label" id="site-reel-heading">
+                Full site reel
+              </span>
+              <p className="text-sm text-[var(--color-text-muted)]">Every page, desktop and mobile, recorded on the live site.</p>
+            </div>
+            <div className="surface-card overflow-hidden">
+              <div className="relative aspect-video">
+                <SiteReel
+                  mp4={visuals.reel.mp4}
+                  poster={visuals.reel.poster}
+                  title={`${study.client} website walkthrough`}
+                  webm={visuals.reel.webm}
                 />
               </div>
             </div>
