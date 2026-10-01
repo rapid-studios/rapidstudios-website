@@ -4,6 +4,7 @@ export const caseStudyMedia: Record<
     cover: string;
     gallery: string[];
     beforeAfter?: { before: string; after: string };
+    reel?: { webm: string; mp4: string; poster: string };
   }
 > = {
   codeverified: {
@@ -28,6 +29,11 @@ export const caseStudyMedia: Record<
     beforeAfter: {
       before: "/case-studies/sant-electric-before.jpg",
       after: "/case-studies/sant-electric-home.jpg"
+    },
+    reel: {
+      webm: "/case-studies/reels/sant-electric-reel.webm",
+      mp4: "/case-studies/reels/sant-electric-reel.mp4",
+      poster: "/case-studies/reels/sant-electric-reel-poster.jpg"
     }
   },
   "american-interior-systems": {
@@ -36,6 +42,11 @@ export const caseStudyMedia: Record<
     beforeAfter: {
       before: "/case-studies/ais-before.jpg",
       after: "/case-studies/ais-home.jpg"
+    },
+    reel: {
+      webm: "/case-studies/reels/ais-reel.webm",
+      mp4: "/case-studies/reels/ais-reel.mp4",
+      poster: "/case-studies/reels/ais-reel-poster.jpg"
     }
   }
 };
