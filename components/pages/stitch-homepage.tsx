@@ -14,6 +14,7 @@ import {
 import { Reveal } from "@/components/motion/reveal";
 import { CalendlyRightMorphButton } from "@/components/integrations/calendly";
 import { CmsSizzleReel } from "@/components/sections/cms-sizzle-reel";
+import { BeforeAfter } from "@/components/ui/before-after";
 import { Button } from "@/components/ui/button";
 import { TrackedLink } from "@/components/ui/tracked-link";
 import { getCaseStudyMedia } from "@/lib/content/case-study-media";
@@ -40,7 +41,7 @@ export function StitchHomepage() {
   const audiencePills = ([1, 2, 3, 4, 5] as const).map((item) => copy[`home.audience.item${item}`]);
   const featuredStudies = ([
     { item: 1, slug: "codeverified" },
-    { item: 2, slug: "ai-trading-decision-platform" },
+    { item: 2, slug: "sant-electric" },
     { item: 3, slug: "upward-pt-automation" }
   ] as const).map(({ item, slug }) => ({
     slug,
@@ -279,14 +280,24 @@ export function StitchHomepage() {
                       return (
                         <article className="surface-card interactive-card media-card overflow-hidden">
                           <div className="media-frame aspect-[4/3] border-b border-[var(--color-line-subtle)] bg-[var(--color-surface)]">
-                            <Image
-                              alt={study.imageAlt}
-                              className="media-asset object-cover"
-                              fill
-                              priority={studyIndex === 0}
-                              sizes="(min-width: 768px) 33vw, 100vw"
-                              src={featuredImage}
-                            />
+                            {visuals.beforeAfter ? (
+                              <BeforeAfter
+                                after={visuals.beforeAfter.after}
+                                afterAlt={study.imageAlt}
+                                before={visuals.beforeAfter.before}
+                                beforeAlt={`Old ${study.title} website`}
+                                sizes="(min-width: 768px) 33vw, 100vw"
+                              />
+                            ) : (
+                              <Image
+                                alt={study.imageAlt}
+                                className="media-asset object-cover"
+                                fill
+                                priority={studyIndex === 0}
+                                sizes="(min-width: 768px) 33vw, 100vw"
+                                src={featuredImage}
+                              />
+                            )}
                           </div>
                           <div className="flex items-start justify-between gap-4 p-6">
                             <div>

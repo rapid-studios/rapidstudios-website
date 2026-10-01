@@ -11,10 +11,10 @@
   },
   "provenance": {
     "source": "repository-edit",
-    "snapshotId": "sales-copy-20260910055153751",
+    "snapshotId": "portfolio-sant-electric-20261001201544530",
     "jobId": null,
-    "publishedAt": "2026-09-10T05:51:53.751Z",
-    "publishedBy": "codex-user-request"
+    "publishedAt": "2026-10-01T20:15:44.530Z",
+    "publishedBy": "claude-user-request"
   },
   "theme": {
     "bg": "#101822",
@@ -73,10 +73,10 @@
     "home.portfolio.item1.title": "CodeVerified",
     "home.portfolio.item1.summary": "AI-powered code review platform that analyzes repositories and generates actionable engineering reports.",
     "home.portfolio.item1.imageAlt": "Created a scalable platform for automated technical due diligence on software projects.",
-    "home.portfolio.item2.tag": "Machine Learning / Financial Systems",
-    "home.portfolio.item2.title": "AI Trading Decision Platform",
-    "home.portfolio.item2.summary": "Machine-learning powered system for evaluating trading signals and ranking opportunities.",
-    "home.portfolio.item2.imageAlt": "Enabled rapid evaluation of trading opportunities and scalable model experimentation.",
+    "home.portfolio.item2.tag": "Marketing Website / Lead Capture",
+    "home.portfolio.item2.title": "Sant Electric",
+    "home.portfolio.item2.summary": "Custom website for a Utah electrical contractor, with quote requests that land directly in the company's JobTread CRM and a guided quote assistant.",
+    "home.portfolio.item2.imageAlt": "Old and new Sant Electric homepages, compared side by side.",
     "home.portfolio.item3.tag": "AI / Operations Automation",
     "home.portfolio.item3.title": "AI Operations Automation for Physical Therapy",
     "home.portfolio.item3.summary": "AI-powered system for streamlining recruiting, financial analysis, and operational decision-making in a growing physical therapy clinic.",
@@ -112,5 +112,5 @@
     "home.cta.description": "Bring an idea, an existing website, or one task that takes too much time. Start with a 15-minute call with Travis.",
     "home.cta.button": "Book a 15-min call"
   },
-  "contentHash": "sha256:64f5bfcd665341199c6f903fa35be4978b2ab70b808fa27f0bfb7ebf64e597f9"
+  "contentHash": "sha256:3b96fbde88e8d0373c73c761e6a684e47945ebc6f16e4a8ac85e8f94c1990195"
 }
