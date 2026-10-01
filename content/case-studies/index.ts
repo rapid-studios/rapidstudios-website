@@ -1,9 +1,13 @@
 import type { CaseStudyEntry, CaseStudyMeta } from "@/types/content";
 
+import AmericanInteriorSystems, {
+  meta as americanInteriorSystemsMeta
+} from "./american-interior-systems.mdx";
 import AITradingDecisionPlatform, {
   meta as aiTradingDecisionPlatformMeta
 } from "./ai-trading-decision-platform.mdx";
 import CodeVerified, { meta as codeVerifiedMeta } from "./codeverified.mdx";
+import SantElectric, { meta as santElectricMeta } from "./sant-electric.mdx";
 import UpwardPtAutomation, { meta as upwardPtAutomationMeta } from "./upward-pt-automation.mdx";
 
 export const caseStudies: CaseStudyEntry[] = [
@@ -18,5 +22,13 @@ export const caseStudies: CaseStudyEntry[] = [
   {
     ...(upwardPtAutomationMeta as CaseStudyMeta),
     Content: UpwardPtAutomation
+  },
+  {
+    ...(santElectricMeta as CaseStudyMeta),
+    Content: SantElectric
+  },
+  {
+    ...(americanInteriorSystemsMeta as CaseStudyMeta),
+    Content: AmericanInteriorSystems
   }
 ];

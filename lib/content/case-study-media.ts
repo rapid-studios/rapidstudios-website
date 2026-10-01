@@ -3,6 +3,7 @@ export const caseStudyMedia: Record<
   {
     cover: string;
     gallery: string[];
+    beforeAfter?: { before: string; after: string };
   }
 > = {
   codeverified: {
@@ -20,6 +21,22 @@ export const caseStudyMedia: Record<
   "upward-pt-automation": {
     cover: "/case-studies/upward-pt.png",
     gallery: ["/case-studies/upward-pt.png"]
+  },
+  "sant-electric": {
+    cover: "/case-studies/sant-electric-home.jpg",
+    gallery: ["/case-studies/sant-electric-projects.jpg", "/case-studies/sant-electric-services.jpg"],
+    beforeAfter: {
+      before: "/case-studies/sant-electric-before.jpg",
+      after: "/case-studies/sant-electric-home.jpg"
+    }
+  },
+  "american-interior-systems": {
+    cover: "/case-studies/ais-home.jpg",
+    gallery: ["/case-studies/ais-installations.jpg", "/case-studies/ais-products.jpg"],
+    beforeAfter: {
+      before: "/case-studies/ais-before.jpg",
+      after: "/case-studies/ais-home.jpg"
+    }
   }
 };
 

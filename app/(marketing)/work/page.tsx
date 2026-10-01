@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 
 import { Reveal } from "@/components/motion/reveal";
+import { BeforeAfter } from "@/components/ui/before-after";
 import { Button } from "@/components/ui/button";
 import { getCaseStudyMedia } from "@/lib/content/case-study-media";
 import { getAllCaseStudies } from "@/lib/content/case-studies";
@@ -17,7 +18,7 @@ const pageSeo = {
 
 export const metadata = buildMetadata(pageSeo);
 
-const filters = ["All Projects", "Developer Tools", "Financial Systems", "Automation", "AI Ops"] as const;
+const filters = ["All Projects", "Websites", "Developer Tools", "Financial Systems", "Automation", "AI Ops"] as const;
 
 export default function WorkPage() {
   const studies = getAllCaseStudies();
@@ -59,13 +60,23 @@ export default function WorkPage() {
                 >
                   <article className="surface-card interactive-card media-card flex h-full flex-col overflow-hidden transition-transform duration-300 motion-safe:group-hover:-translate-y-1">
                     <div className="media-frame aspect-[16/10] w-full border-b border-[var(--color-line-subtle)] bg-[var(--color-surface)]">
-                      <Image
-                        alt={study.highlight}
-                        className="media-asset object-cover"
-                        fill
-                        sizes="(min-width: 768px) 50vw, 100vw"
-                        src={getCaseStudyMedia(study.slug).cover}
-                      />
+                      {getCaseStudyMedia(study.slug).beforeAfter ? (
+                        <BeforeAfter
+                          after={getCaseStudyMedia(study.slug).beforeAfter!.after}
+                          afterAlt={`New ${study.client} website`}
+                          before={getCaseStudyMedia(study.slug).beforeAfter!.before}
+                          beforeAlt={`Old ${study.client} website`}
+                          sizes="(min-width: 768px) 50vw, 100vw"
+                        />
+                      ) : (
+                        <Image
+                          alt={study.highlight}
+                          className="media-asset object-cover"
+                          fill
+                          sizes="(min-width: 768px) 50vw, 100vw"
+                          src={getCaseStudyMedia(study.slug).cover}
+                        />
+                      )}
                     </div>
                     <div className="flex flex-1 flex-col p-6 sm:p-8">
                       <div className="flex flex-wrap items-center justify-between gap-3">

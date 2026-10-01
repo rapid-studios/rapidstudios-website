@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
 import { Reveal } from "@/components/motion/reveal";
+import { BeforeAfter } from "@/components/ui/before-after";
 import { Button } from "@/components/ui/button";
 import { getCaseStudyMedia } from "@/lib/content/case-study-media";
 import { getAllCaseStudies, getCaseStudyBySlug } from "@/lib/content/case-studies";
@@ -143,6 +144,31 @@ export default async function CaseStudyPage({
           ))}
         </dl>
       </Reveal>
+
+      {visuals.beforeAfter ? (
+        <Reveal className="mx-auto max-w-[1000px] px-4 pt-20 sm:px-6 lg:px-8 lg:pt-24" delay={0.06}>
+          <section aria-labelledby="before-after-heading">
+            <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
+              <span className="protocol-label" id="before-after-heading">
+                Before / After
+              </span>
+              <p className="text-sm text-[var(--color-text-muted)]">Drag to compare the old site with the new one.</p>
+            </div>
+            <div className="surface-card media-card overflow-hidden">
+              <div className="relative aspect-[16/10]">
+                <BeforeAfter
+                  after={visuals.beforeAfter.after}
+                  afterAlt={`New ${study.client} website homepage`}
+                  before={visuals.beforeAfter.before}
+                  beforeAlt={`Old ${study.client} website homepage`}
+                  interactive
+                  sizes="(min-width: 1000px) 1000px, 100vw"
+                />
+              </div>
+            </div>
+          </section>
+        </Reveal>
+      ) : null}
 
       <div className="mx-auto max-w-[680px] space-y-8 px-4 pt-20 sm:px-6 lg:pt-24">
         <Reveal delay={0.08}>
