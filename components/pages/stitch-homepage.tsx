@@ -42,7 +42,7 @@ export function StitchHomepage() {
   const featuredStudies = ([
     { item: 1, slug: "codeverified" },
     { item: 2, slug: "sant-electric" },
-    { item: 3, slug: "upward-pt-automation" }
+    { item: 3, slug: "american-interior-systems" }
   ] as const).map(({ item, slug }) => ({
     slug,
     tag: copy[`home.portfolio.item${item}.tag`],
