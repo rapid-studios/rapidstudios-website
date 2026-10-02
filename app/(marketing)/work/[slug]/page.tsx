@@ -183,6 +183,7 @@ export default async function CaseStudyPage({
             <div className="surface-card overflow-hidden">
               <div className="relative aspect-video">
                 <SiteReel
+                  hevc={visuals.reel.hevc}
                   mp4={visuals.reel.mp4}
                   poster={visuals.reel.poster}
                   title={`${study.client} website walkthrough`}

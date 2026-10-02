@@ -4,7 +4,7 @@ export const caseStudyMedia: Record<
     cover: string;
     gallery: string[];
     beforeAfter?: { before: string; after: string };
-    reel?: { webm: string; mp4: string; poster: string };
+    reel?: { webm: string; hevc: string; mp4: string; poster: string };
   }
 > = {
   codeverified: {
@@ -32,6 +32,7 @@ export const caseStudyMedia: Record<
     },
     reel: {
       webm: "/case-studies/reels/sant-electric-reel.webm",
+      hevc: "/case-studies/reels/sant-electric-reel-hevc.mp4",
       mp4: "/case-studies/reels/sant-electric-reel.mp4",
       poster: "/case-studies/reels/sant-electric-reel-poster.jpg"
     }
@@ -45,6 +46,7 @@ export const caseStudyMedia: Record<
     },
     reel: {
       webm: "/case-studies/reels/ais-reel.webm",
+      hevc: "/case-studies/reels/ais-reel-hevc.mp4",
       mp4: "/case-studies/reels/ais-reel.mp4",
       poster: "/case-studies/reels/ais-reel-poster.jpg"
     }
